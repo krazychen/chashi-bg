@@ -1,0 +1,10 @@
+{
+	"Uncomment": "Toolbar button tooltip for the Uncomment feature.",
+	"Comment": "Toolbar button tooltip for the Comment feature.",
+	"Comment URL": "Label for the URL input in the Comment URL editing balloon.",
+	"Edit comment": "Button opening the Comment URL editing balloon.",
+	"Open comment in new tab": "Button opening the comment in new browser tab.",
+	"This comment has no URL": "Label explaining that a comment has no URL set (the URL is empty).",
+	"Open in a new tab": "The label of the switch button that controls whether the edited comment will open in a new tab.",
+	"Downloadable": "The label of the switch button that controls whether the edited comment refers to downloadable resource."
+}
