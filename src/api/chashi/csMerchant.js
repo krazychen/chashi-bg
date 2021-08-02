@@ -44,3 +44,12 @@ export function deleteMerchant(id) {
   })
 }
 
+// 修改商店状态
+export function updateStatusById(data) {
+  return request({
+    url: '/csMerchant/updateStatus/',
+    method: 'post',
+    data
+  })
+}
+

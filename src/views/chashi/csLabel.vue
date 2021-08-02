@@ -279,7 +279,6 @@ export default {
       for (let i = 0; i < length; i++) {
         delarr.push(this.multipleSelection[i].id)
       }
-      console.log(delarr)
       deleteCsLabels(delarr).then(() => {
         this.fetchData()
         this.$notify({

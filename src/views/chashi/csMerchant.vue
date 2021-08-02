@@ -54,6 +54,8 @@
           <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleView(scope.row)" />
           <i class="el-icon-edit" title="修改" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleUpdate(scope.row)" />
           <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handleDelete(scope.row)" />
+          <i v-if="scope.row.status==='1'" class="fa fa-ban" title="禁用" style="color: #F56C6C;margin-left:10px;" @click="updateStatus(scope.row)" />
+          <i v-else class="fa fa-power-off" style="color: #F56C6C;margin-left:10px;" title="启用" @click="updateStatus(scope.row)" />
         </template>
       </el-table-column>
     </el-table>
@@ -66,7 +68,7 @@
           <el-input v-model="temp.merchantName" placeholder="请输入商店名称" />
         </el-form-item>
         <el-form-item label="账户" prop="merchantAccount">
-          <el-input v-model="temp.merchantAccount" placeholder="账户" />
+          <el-input v-model="temp.merchantAccount" placeholder="账户" :disabled="viewCodeDisabled" />
         </el-form-item>
         <el-form-item label="密码" prop="merchantPassword">
           <el-input v-model="temp.merchantPassword" placeholder="密码" />
@@ -140,11 +142,10 @@
 </template>
 
 <script>
-import { getMerchantList, createMerchantPic, createMerchant, updateMerchant, deleteMerchant } from '@/api/chashi/csMerchant'
+import { getMerchantList, createMerchantPic, updateMerchant, deleteMerchant, updateStatusById } from '@/api/chashi/csMerchant'
 import Pagination from '@/components/Pagination'
 import waves from '@/directive/waves' // waves directive
 import { getDictDataList } from '@/utils/dictUtils'
-import { unescape } from '../../utils'
 
 export default {
   name: 'CsMerchant',
@@ -161,6 +162,10 @@ export default {
         merchantName: '',
         merchantAccount: ''
       },
+      statusQueryParam: {
+        id: undefined,
+        status: undefined
+      },
       temp: {
         id: undefined,
         merchantName: '',
@@ -174,7 +179,7 @@ export default {
         logoUrlName: '',
         carouselUrlValue: '',
         carouselUrlName: '',
-        officeCode,
+        officeCode: '',
         logoUploadFile: [],
         bannerUploadFile: []
       },
@@ -187,6 +192,7 @@ export default {
       headers: { 'Content-Type': 'multipart/form-data' },
       dialogFormVisible: false,
       dialogStatus: '',
+      viewCodeDisabled: false,
       textMap: {
         update: '编辑',
         create: '创建',
@@ -245,6 +251,7 @@ export default {
     },
     handleCreate() {
       this.chakan = false
+      this.viewCodeDisabled = false
       this.resetTemp()
       this.logoFileLists = []
       this.bannerFileLists = []
@@ -291,6 +298,7 @@ export default {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'view'
       this.dialogFormVisible = true
+      this.viewCodeDisabled = true
       this.chakan = true
       if (this.temp.logoUrlValue) {
         const logoPicLists = this.temp.logoUrlValue.split(',')
@@ -317,6 +325,7 @@ export default {
     },
     handleUpdate(row) {
       this.chakan = false
+      this.viewCodeDisabled = true
       this.temp = Object.assign({}, row) // copy obj
       if (this.temp.logoUrlValue) {
         const logoPicLists = this.temp.logoUrlValue.split(',')
@@ -402,7 +411,7 @@ export default {
           formData.append('carouselUrlValue', this.temp.carouselUrlValue)
           formData.append('carouselUrlName', this.temp.carouselUrlName)
           formData.append('id', this.temp.id)
-          formData.append('officeCode',this.temp.officeCode)
+          formData.append('officeCode', this.temp.officeCode)
 
           for (var pair of formData.entries()) {
             console.log(pair[0] + ' - ' + pair[1].toString())
@@ -422,6 +431,10 @@ export default {
     },
     handleDelete(row) {
       this.temp = Object.assign({}, row) // copy obj
+      if (this.temp.status === '1') {
+        this.$message('已启用的商店无法删除！')
+        return
+      }
       deleteMerchant(this.temp.id).then(() => {
         this.fetchData()
         this.$notify({
@@ -568,6 +581,29 @@ export default {
         this.$message.error('只能上传jpg/png文件')
         return
       }
+    },
+
+    updateStatus(row) {
+      let vv = '0'
+      let msg = '已启用'
+      console.log(row)
+      if (row.status === '0') {
+        vv = '1'
+      }
+      if (row.status === '1') {
+        vv = '2'
+        msg = '已停用'
+      }
+      if (row.status === '2') {
+        vv = '1'
+      }
+      this.statusQueryParam.status = vv
+      this.statusQueryParam.id = row.id
+      updateStatusById(this.statusQueryParam).then(() => {
+        this.fetchData()
+        // const mess = vv === '0' ? '已启用' : '已停用'
+        this.$message(msg)
+      })
     },
 
     statusFormat(row) {
