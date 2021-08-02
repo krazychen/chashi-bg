@@ -41,12 +41,6 @@ export const superadminRoutes = [
         name: '行政区划',
         component: () => import('@/views/system/sysArea'),
         meta: { roles: ['sys:area:page'], title: '行政区划', faicon: 'table' }
-      },
-      {
-        path: 'msgMgn',
-        name: '消息管理',
-        component: () => import('@/views/system/msgMgn'),
-        meta: { roles: ['sys:user:page'], title: '消息管理', faicon: 'table' }
       }, {
         path: 'sysConfig',
         name: '参数配置',
@@ -57,6 +51,41 @@ export const superadminRoutes = [
         name: '任务监控',
         component: () => import('@/views/system/taskMonitoring'),
         meta: { roles: ['sys:user:page'], title: '任务监控', faicon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/wxmngt',
+    component: Layout,
+    name: '小程序管理',
+    meta: { roles: ['cs:label:page'], title: '小程序管理', icon: 'example' },
+    children: [
+      {
+        path: 'caLabel',
+        name: '标签管理',
+        component: () => import('@/views/chashi/csLabel'),
+        meta: { roles: ['cs:label:page'], title: '标签管理', faicon: 'table' }
+      },
+      {
+        path: 'caLabel2',
+        name: '管理',
+        component: () => import('@/views/chashi/csLabel'),
+        meta: { roles: ['cs:label:page'], title: '标签管理2', faicon: 'table' }
+      }
+    ]
+  },
+  ,
+  {
+    path: '/merchant',
+    component: Layout,
+    name: '商家管理',
+    meta: { roles: ['cs:label:page'], title: '商家管理', icon: 'example' },
+    children: [
+      {
+        path: 'merchant',
+        name: '商家列表',
+        component: () => import('@/views/chashi/csMerchant'),
+        meta: { roles: ['cs:label:page'], title: '商家列表', faicon: 'table' }
       }
     ]
   }

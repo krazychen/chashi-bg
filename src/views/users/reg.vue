@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { regStudent } from '@/api/homework/student'
+// import { regStudent } from '@/api/homework/student'
 import request from '@/utils/request'
 // import { validUsername } from '@/utils/validate'
 import Wrapper from './wrapper'
@@ -148,14 +148,14 @@ export default {
       //     return false
       //   }
       // })
-      regStudent(this.form).then(() => {
-        this.$notify({
-          title: '成功',
-          message: '创建成功',
-          type: 'success',
-          duration: 2000
-        })
-      })
+      // regStudent(this.form).then(() => {
+      //   this.$notify({
+      //     title: '成功',
+      //     message: '创建成功',
+      //     type: 'success',
+      //     duration: 2000
+      //   })
+      // })
     }
   }
 }

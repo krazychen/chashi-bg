@@ -27,8 +27,6 @@
 <script>
 import QRCode from 'qrcode'
 
-import { getImgUrl } from '@/api/homework/hwHomework'
-
 export default {
   name: 'Test',
   props: {

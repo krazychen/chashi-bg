@@ -6,16 +6,9 @@ Vue.use(Router)
 /* Layout */
 // import Layout from '@/layout'
 
-import { scoreRoutes } from './score'
 import { systemRoutes } from './system'
-import { studentRoutes } from './student'
-import { teacherRoutes } from './teacher'
-import { studentNoWXRoutes } from './studentnowx'
-import { teacherNoWXRoutes } from './teachernowx'
-import { leve2teacherRoutes } from './leve2teacher'
-import { teacherSeeRoutes } from './seeteacher'
+import { merchantRoutes } from './merchant'
 import { superadminRoutes } from './superadmin'
-import { adviserRoutes } from './adviser'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -90,24 +83,7 @@ export const constantRoutes = [
 ]
 
 export const anonymousRoutes = [
-  {
-    path: '/homeworkShare/:id/studetailsShare/:stu',
-    hidden: true,
-    component: () => import('@/views/homework/assignments/StudentDetailsViewShare'),
-    meta: { title: '学生作业详情' }
-  },
-  {
-    path: '/homeworkShare/showOneImageShare',
-    hidden: true,
-    component: () => import('@/views/homework/assignments/showOneImageShare'),
-    meta: { title: '图片详情' }
-  },
-  {
-    path: '/homeworkShare/:id/relatedStudetailsShare/:stu',
-    hidden: true,
-    component: () => import('@/views/homework/assignments/relatedStudentDetailsViewShare'),
-    meta: { title: '学生作业详情' }
-  }
+
 ]
 
 /**
@@ -117,7 +93,8 @@ export const anonymousRoutes = [
 export const asyncRoutes = [
   // TODO: 必須要有辦法保證下面的每個 reotes 的 root 不重複
   ...systemRoutes,
-  ...superadminRoutes
+  ...superadminRoutes,
+  ...merchantRoutes
   // TODO: refactor below
 
   // { path: '*', redirect: '/404', hidden: true }
@@ -125,7 +102,8 @@ export const asyncRoutes = [
 
 export const roleTypeRoutes = {
   'sysadmin': systemRoutes,
-  'superadmin': superadminRoutes
+  'superadmin': superadminRoutes,
+  'merchant': merchantRoutes
 }
 
 const createRouter = () => new Router({

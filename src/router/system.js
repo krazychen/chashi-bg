@@ -42,12 +42,13 @@ export const systemRoutes = [
       //   component: () => import('@/views/system/sysSchool'),
       //   meta: { roles: ['sys:school:page'], title: '学校管理', faicon: 'table' }
       // },
+      // {
+      //   path: 'msgMgn',
+      //   name: '消息管理',
+      //   component: () => import('@/views/system/msgMgn'),
+      //   meta: { roles: ['sys:user:page'], title: '消息管理', faicon: 'tree' }
+      // }, {
       {
-        path: 'msgMgn',
-        name: '消息管理',
-        component: () => import('@/views/system/msgMgn'),
-        meta: { roles: ['sys:user:page'], title: '消息管理', faicon: 'tree' }
-      }, {
         path: 'sysConfig',
         name: '参数配置',
         component: () => import('@/views/system/sysConfig'),

@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-container class="logo-wrapper" style="justify-content: center;">
-      <div class="site-logo">星舟</div>
+      <div class="site-logo">荣景</div>
     </el-container>
 
     <div class="card">
@@ -20,12 +20,9 @@
       </div>
     </div>
 
-<!--    <div class="footer-sign">-->
-<!--      Copyright ©2019-2020 武汉胖六文化传播有限公司 <a href="http://www.beian.miit.gov.cn/" target="_blank">鄂ICP备19031664号</a>-->
-<!--    </div>-->
     <div style="width:580px;margin:0 auto; padding:20px 0;">
-      Copyright ©2019-2020 武汉胖六文化传播有限公司 <a href="http://www.beian.miit.gov.cn/" target="_blank">鄂ICP备19031664号</a>
-      <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42011102003915" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;padding: 6px 0px 0px 5px;"><img src="@/assets/beian.jpg" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; ">鄂公网安备 42011102003915号</p></a>
+      Copyright ©2021-2022 荣景茶业合作联社 <a href="http://www.beian.miit.gov.cn/" target="_blank">待提供</a>
+      <a target="_blank" href="待提供" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;padding: 6px 0px 0px 5px;"><img src="@/assets/beian.jpg" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; ">待提供</p></a>
     </div>
   </div>
 </template>

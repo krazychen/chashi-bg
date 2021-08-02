@@ -115,9 +115,8 @@
 <script>
 
 import $ from 'jquery'
-import QRCode from 'qrcode' // 引入生成二维码插件
 import test from './QRcodeGeneration' // 引入生成二维码插件
-import { getImgUrl, getBaiduShortURL } from '@/api/homework/hwHomework'
+// import { getImgUrl, getBaiduShortURL } from '@/api/homework/hwHomework'
 import logo from '@/views/users/liyuer.png'
 
 export default {
@@ -152,19 +151,19 @@ export default {
       this.getLink()
     },
     getImg(data, val) {
-      getImgUrl(data).then(ress => {
-        this.imgUrl = ress.data.imgUrl
-        val(ress.data.imgUrl)
-      })
+      // getImgUrl(data).then(ress => {
+      //   this.imgUrl = ress.data.imgUrl
+      //   val(ress.data.imgUrl)
+      // })
     },
     getLink() {
       const data = { longUrl: this.link, termOfValidity: '1-year' }
-      getBaiduShortURL(data).then(ress => {
-        this.link = ress.data.shortUrl
-        this.$refs.child.handleQrcodeToDataUrl()
-
-        /* val(ress.data)*/
-      })
+      // getBaiduShortURL(data).then(ress => {
+      //   this.link = ress.data.shortUrl
+      //   this.$refs.child.handleQrcodeToDataUrl()
+      //
+      //   /* val(ress.data)*/
+      // })
     },
     // 复制成功时的回调函数
     onCopy(e) {
