@@ -67,10 +67,10 @@ export const superadminRoutes = [
         meta: { roles: ['cs:label:page'], title: '标签管理', faicon: 'table' }
       },
       {
-        path: 'caLabel2',
-        name: '管理',
-        component: () => import('@/views/chashi/csLabel'),
-        meta: { roles: ['cs:label:page'], title: '标签管理2', faicon: 'table' }
+        path: 'caAdvertise',
+        name: '广告管理',
+        component: () => import('@/views/chashi/csAdvertise'),
+        meta: { roles: ['cs:advertise:page'], title: '广告管理', faicon: 'table' }
       }
     ]
   },

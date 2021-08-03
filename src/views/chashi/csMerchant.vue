@@ -459,7 +459,9 @@ export default {
       //     type: 'image/jpeg'
       //   }))
       // }
-      this.logoFileLists = fileList
+      if (fileList.length > 0) {
+        this.logoFileLists = fileList
+      }
       if (this.logoLocalFileList.length > 0) {
         const templogoLocalFileList = []
         const templogoDelFileList = this.logoDelFileList
@@ -517,7 +519,9 @@ export default {
       //     type: 'image/jpeg'
       //   }))
       // }
-      this.bannerFileLists = fileList
+      if (fileList.length > 0) {
+        this.bannerFileLists = fileList
+      }
       if (this.bannerLocalFileList.length > 0) {
         const tempBannerLocalFileList = []
         const tempbannerDelFileList = this.bannerDelFileList

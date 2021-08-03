@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '星舟',
+  title: '荣景',
 
   /**
    * @type {boolean} true | false
