@@ -217,10 +217,10 @@ export default {
       listLoading: true,
       rowr: {},
       tableData: [{}],
-      moduleCodess: [{ label: '系统管理', value: '1' }, { label: '后台作业管理', value: '2' }, { label: '学员作业管理', value: '3' }, { label: '老师作业管理', value: '4' }],
+      moduleCodess: [{ label: '平台管理', value: '1' }, { label: '商家管理', value: '2' }],
       menuTypes: [{ label: '菜单', value: '1' }, { label: '权限', value: '2' }],
       isShows: [{ label: '否', value: '0' }, { label: '是', value: '1' }],
-      sysCodes: [{ label: '后台管理系统', value: '1' }, { label: '作业批改系统', value: '2' }, { label: '在线网课系统', value: '3' }],
+      sysCodes: [{ label: '后台管理系统', value: '1' }, { label: '小程序', value: '2' }],
       moduleCodesval: [],
       multipleSelection: [],
       listQuery: {

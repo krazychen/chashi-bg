@@ -74,18 +74,17 @@ export const superadminRoutes = [
       }
     ]
   },
-  ,
   {
     path: '/merchant',
     component: Layout,
     name: '商家管理',
-    meta: { roles: ['cs:label:page'], title: '商家管理', icon: 'example' },
+    meta: { roles: ['cs:merchant:page'], title: '商家管理', icon: 'example' },
     children: [
       {
         path: 'merchant',
         name: '商家列表',
         component: () => import('@/views/chashi/csMerchant'),
-        meta: { roles: ['cs:label:page'], title: '商家列表', faicon: 'table' }
+        meta: { roles: ['cs:merchant:page'], title: '商家列表', faicon: 'table' }
       }
     ]
   }

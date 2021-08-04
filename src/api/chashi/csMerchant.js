@@ -53,3 +53,11 @@ export function updateStatusById(data) {
   })
 }
 
+// 获取商店
+export function getMerchant(id) {
+  return request({
+    url: '/csMerchant/infoByOffice/' + id,
+    method: 'get'
+  })
+}
+
