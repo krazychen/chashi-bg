@@ -1,18 +1,12 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.merchantName" placeholder="商家名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.merchantAccount" placeholder="商家账户" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.roomName" placeholder="茶室名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
 
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        查询
-      </el-button>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="rest">
-        重置
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        新增
-      </el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="rest">重置</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">新增</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-download" @click="exportList">导出</el-button>
     </div>
     <el-table
       v-loading="listLoading"
@@ -23,32 +17,16 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column align="center" label="商店名称" width="180">
-        <template slot-scope="scope">
-          {{ scope.row.merchantName }}
+      <el-table-column align="center" label="商户图片" width="180">
+        <template   slot-scope="scope">
+          <img :src="scope.row.merchant.logoUrlValue"  min-width="50" height="50" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="账户" width="180 ">
-        <template slot-scope="scope">
-          {{ scope.row.merchantAccount }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="orderFee"
-        label="订单手续费%"
-      />
-      <el-table-column
-        align="center"
-        prop="createTime"
-        label="创建时间"
-      />
-      <el-table-column
-        align="center"
-        prop="status"
-        label="状态"
-        :formatter="statusFormat"
-      />
+      <el-table-column align="center" prop="roomName" label="茶室名称" width="180" />
+      <el-table-column align="center" prop="hoursAmount" label="小时金额" width="180" />
+      <el-table-column align="center" prop="recomNumUsers" label="建议使用人数" width="180" />
+      <el-table-column align="center" prop="createTime" label="创建时间" width="180" />
+      <el-table-column align="center" prop="status" label="状态" :formatter="statusFormat" />
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleView(scope.row)" />
@@ -64,31 +42,39 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="商店名称" prop="merchantName">
-          <el-input v-model="temp.merchantName" placeholder="请输入商店名称" />
+        <el-form-item label="茶室名称" prop="roomName">
+          <el-input v-model="temp.roomName" placeholder="请输入茶室名称" />
         </el-form-item>
-        <el-form-item label="账户" prop="merchantAccount">
-          <el-input v-model="temp.merchantAccount" placeholder="账户" :disabled="viewCodeDisabled" />
+        <el-form-item label="服务设施" prop="facilities">
+          <el-select v-model="facilities" multiple placeholder="请选择">
+            <el-option
+              v-for="item in facilitieOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="密码" prop="merchantPassword">
-          <el-input v-model="temp.merchantPassword" placeholder="密码" />
-        </el-form-item>
-        <el-form-item label="订单手续费" prop="orderFee">
-          <el-input v-model="temp.orderFee" placeholder="订单手续费 0~100">
-            <template slot="append">%</template>
+        <el-form-item label="小时金额" prop="hoursAmount">
+          <el-input v-model="temp.hoursAmount" placeholder="请输入小时金额">
+            <template slot="append">元</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="所在城市" prop="city">
-          <el-input v-model="temp.city" placeholder="所在城市" />
+        <el-form-item label="起订时间" prop="startTime">
+          <el-select v-model="startTime" placeholder="请选择">
+            <el-option
+              v-for="item in timeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="地址" prop="address">
-          <el-input v-model="temp.address" placeholder="地址" />
-        </el-form-item>
-        <el-form-item label="经纬度" prop="address">
-          <el-input v-model="temp.longAlat" placeholder="经纬度" />
+        <el-form-item label="建议使用人数" prop="recomNumUsers">
+          <el-input v-model="temp.recomNumUsers" placeholder="请输入建议使用人数" />
         </el-form-item>
 
-        <el-form-item label="商店Logo" prop="logoPicValue">
+        <el-form-item label="茶室封面" prop="logoPicValue">
           <el-upload
             accept="image/png,image/jpg,image/jpeg"
             action="auto"
@@ -108,7 +94,7 @@
           </el-dialog>
         </el-form-item>
 
-        <el-form-item label="商店轮播图" prop="bannerPicValue">
+        <el-form-item label="轮播" prop="bannerPicValue">
           <el-upload
             accept="image/png,image/jpg,image/jpeg"
             action="auto"
@@ -128,6 +114,9 @@
           </el-dialog>
         </el-form-item>
 
+        <el-form-item label="排序" prop="sort">
+          <el-input v-model="temp.sort" placeholder="请输入排序号" />
+        </el-form-item>
       </el-form>
       <div v-if="!chakan" slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -142,13 +131,16 @@
 </template>
 
 <script>
-import { getMerchantList, createMerchantPic, updateMerchant, deleteMerchant, updateStatusById } from '@/api/chashi/csMerchant'
+import { getRoomList, createRoomPic, updateRoom, deleteRoom, updateStatusById, exportList } from '@/api/chashi/csRoom'
+import { getMerchant } from '@/api/chashi/csMerchant'
+import { getLoginSysUserVo } from '@/utils/auth'
+import { getFacilitiesList } from '@/api/chashi/csFacilities.js'
 import Pagination from '@/components/Pagination'
 import waves from '@/directive/waves' // waves directive
 import { getDictDataList } from '@/utils/dictUtils'
 
 export default {
-  name: 'CsMerchant',
+  name: 'CsRoom',
   components: { Pagination },
   directives: { waves },
   data() {
@@ -159,30 +151,38 @@ export default {
       total: 0,
       listQuery: {
         current: 1,
-        merchantName: '',
-        merchantAccount: ''
+        roomName: ''
       },
       statusQueryParam: {
         id: undefined,
         status: undefined
       },
+      facilitieOptions: [],
+      timeOptions: [{ value: '1', label: '1小时' }, { value: '2', label: '2小时' },
+        { value: '3', label: '3小时' }, { value: '4', label: '4小时' },
+        { value: '5', label: '5小时' }, { value: '6', label: '6小时' },
+        { value: '7', label: '7小时' }, { value: '8', label: '8小时' },
+        { value: '9', label: '9小时' }, { value: '10', label: '10小时' }],
       temp: {
         id: undefined,
-        merchantName: '',
-        merchantAccount: '',
-        merchantPassword: '',
-        orderFee: '',
-        city: '',
-        address: '',
-        longAlat: '',
-        logoUrlValue: '',
-        logoUrlName: '',
-        carouselUrlValue: '',
-        carouselUrlName: '',
-        officeCode: '',
-        logoUploadFile: [],
-        bannerUploadFile: []
+        roomName: '',
+        facilitiesId: '',
+        facilitiesName: '',
+        hoursAmount: '',
+        startTime: '1',
+        recomNumUsers: '',
+        roomLogoUrl: '',
+        roomLogoName: '',
+        roomBannerUrl: '',
+        roomBannerName: '',
+        doorOpenMethod: '',
+        sort: '',
+        merchantId: '',
+        merchantObj: {}
       },
+      facilities: [],
+      startTime: '1',
+      merchantId: '',
       logoFileLists: [],
       logoDelFileList: [],
       bannerFileLists: [],
@@ -199,10 +199,7 @@ export default {
         view: '查看'
       },
       rulesText: {
-        merchantName: [{ required: true, message: '请输入商店名称', trigger: 'blur' }],
-        merchantAccount: [{ required: true, message: '请输入账户', trigger: 'blur' }],
-        merchantPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        orderFee: [{ required: true, message: '请输入订单手续费', trigger: 'blur' }]
+        roomName: [{ required: true, message: '请输入商店名称', trigger: 'blur' }]
       },
       logoDialogImageUrl: '',
       logoDialogVisible: false,
@@ -214,12 +211,26 @@ export default {
   },
   created() {
     this.statuss = getDictDataList('sys_status')
+    getFacilitiesList({}).then(response => {
+      console.log(response.data.records)
+      const optionss = []
+      response.data.records.forEach(function(labelObj) {
+        const option = { value: labelObj.id, label: labelObj.titleName }
+        optionss.push(option)
+      })
+      this.facilitieOptions = optionss
+    })
+    const userInfo = getLoginSysUserVo()
+    getMerchant(userInfo.officeCode).then(response => {
+      console.log(response.data)
+      this.merchantId = response.data.id
+    })
     this.fetchData()
   },
   methods: {
     fetchData() {
       this.listLoading = true
-      getMerchantList(this.listQuery).then(response => {
+      getRoomList(this.listQuery).then(response => {
         console.log(response.data)
         this.list = response.data.records
         this.total = parseInt(response.data.total)
@@ -233,21 +244,24 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        merchantName: '',
-        merchantAccount: '',
-        merchantPassword: '',
-        orderFee: '',
-        city: '',
-        address: '',
-        longAlat: '',
-        logoUrlValue: '',
-        logoUrlName: '',
-        carouselUrlValue: '',
-        carouselUrlVName: '',
-        officeCode: '',
-        logoUploadFile: [],
-        bannerUploadFile: []
+        roomName: '',
+        facilitiesId: '',
+        facilitiesName: '',
+        hoursAmount: '',
+        startTime: '1',
+        recomNumUsers: '',
+        roomLogoUrl: '',
+        roomLogoName: '',
+        roomBannerUrl: '',
+        roomBannerName: '',
+        doorOpenMethod: '',
+        sort: '',
+        merchantId: '',
+        merchantObj: {}
       }
+      this.facilities = []
+      this.startTime = '1'
+      this.merchantId = ''
       this.logoFileLists = []
       this.logoDelFileList = []
       this.bannerFileLists = []
@@ -259,10 +273,6 @@ export default {
       this.chakan = false
       this.viewCodeDisabled = false
       this.resetTemp()
-      this.logoFileLists = []
-      this.bannerFileLists = []
-      this.logoLocalFileList = []
-      this.bannerLocalFileList = []
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -279,17 +289,28 @@ export default {
           this.bannerFileLists.forEach(function(file) {
             formData.append('bannerUploadFile', file, file.name)
           })
-          formData.append('merchantName', this.temp.merchantName)
-          formData.append('merchantAccount', this.temp.merchantAccount)
-          formData.append('merchantPassword', this.temp.merchantPassword)
-          formData.append('orderFee', this.temp.orderFee)
-          formData.append('city', this.temp.city)
-          formData.append('address', this.temp.address)
-          formData.append('longAlat', this.temp.longAlat)
-          formData.append('merchantInfo', '')
-          formData.append('usageNotice', '')
+          formData.append('roomName', this.temp.roomName)
+          if (this.temp.facilitiesId) {
+            const idArr = this.temp.facilitiesId.split(',')
+            const optionss = []
+            idArr.forEach(function(obj, index) {
+              optionss.push(obj)
+            })
+            this.facilities = optionss
+          }
+          formData.append('facilitiesId', this.facilities)
+          formData.append('hoursAmount', this.temp.hoursAmount)
+          formData.append('startTime', this.startTime)
+          formData.append('recomNumUsers', this.temp.recomNumUsers)
+          formData.append('doorOpenMethod', 0)
+          formData.append('sort', this.temp.sort)
+          formData.append('merchantId', this.merchantId)
 
-          createMerchantPic(formData).then(() => {
+          for (const pair of formData.entries()) {
+            console.log(pair[0] + ' - ' + pair[1].toString())
+          }
+
+          createRoomPic(formData).then(() => {
             // this.list.unshift(this.temp)
             this.fetchData()
             this.dialogFormVisible = false
@@ -304,14 +325,15 @@ export default {
       })
     },
     handleView(row) { // 查看详情
+      this.resetTemp()
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'view'
       this.dialogFormVisible = true
       this.viewCodeDisabled = true
       this.chakan = true
-      if (this.temp.logoUrlValue) {
-        const logoPicLists = this.temp.logoUrlValue.split(',')
-        const logoNameLists = this.temp.logoUrlName.split(',')
+      if (this.temp.roomLogoUrl) {
+        const logoPicLists = this.temp.roomLogoUrl.split(',')
+        const logoNameLists = this.temp.roomLogoName.split(',')
         this.logoLocalFileList = []
         for (let i = 0; i < logoPicLists.length; i++) {
           const cop = {}
@@ -320,9 +342,9 @@ export default {
           this.logoLocalFileList.push(cop)
         }
       }
-      if (this.temp.carouselUrlValue) {
-        const bannerPicLists = this.temp.carouselUrlValue.split(',')
-        const bannerNameLists = this.temp.carouselUrlName.split(',')
+      if (this.temp.roomBannerUrl) {
+        const bannerPicLists = this.temp.roomBannerUrl.split(',')
+        const bannerNameLists = this.temp.roomBannerName.split(',')
         this.bannerLocalFileList = []
         for (let i = 0; i < bannerPicLists.length; i++) {
           const cop = {}
@@ -330,15 +352,27 @@ export default {
           cop['url'] = bannerPicLists[i]
           this.bannerLocalFileList.push(cop)
         }
+      }
+      if (this.temp.facilitiesId) {
+        const idArr = this.temp.facilitiesId.split(',')
+        const optionss = []
+        idArr.forEach(function(obj, index) {
+          optionss.push(obj)
+        })
+        this.facilities = optionss
+      }
+      if (this.temp.startTime) {
+        this.startTime = this.temp.startTime
       }
     },
     handleUpdate(row) {
       this.chakan = false
       this.viewCodeDisabled = true
+      this.resetTemp()
       this.temp = Object.assign({}, row) // copy obj
-      if (this.temp.logoUrlValue) {
-        const logoPicLists = this.temp.logoUrlValue.split(',')
-        const logoNameLists = this.temp.logoUrlName.split(',')
+      if (this.temp.roomLogoUrl) {
+        const logoPicLists = this.temp.roomLogoUrl.split(',')
+        const logoNameLists = this.temp.roomLogoName.split(',')
         this.logoLocalFileList = []
         for (let i = 0; i < logoPicLists.length; i++) {
           const cop = {}
@@ -347,9 +381,9 @@ export default {
           this.logoLocalFileList.push(cop)
         }
       }
-      if (this.temp.carouselUrlValue) {
-        const bannerPicLists = this.temp.carouselUrlValue.split(',')
-        const bannerNameLists = this.temp.carouselUrlName.split(',')
+      if (this.temp.roomBannerUrl) {
+        const bannerPicLists = this.temp.roomBannerUrl.split(',')
+        const bannerNameLists = this.temp.roomBannerName.split(',')
         this.bannerLocalFileList = []
         for (let i = 0; i < bannerPicLists.length; i++) {
           const cop = {}
@@ -357,6 +391,17 @@ export default {
           cop['url'] = bannerPicLists[i]
           this.bannerLocalFileList.push(cop)
         }
+      }
+      if (this.temp.facilitiesId) {
+        const idArr = this.temp.facilitiesId.split(',')
+        const optionss = []
+        idArr.forEach(function(obj, index) {
+          optionss.push(obj)
+        })
+        this.facilities = optionss
+      }
+      if (this.temp.startTime) {
+        this.startTime = this.temp.startTime
       }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -368,10 +413,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           // const tempData = Object.assign({}, this.temp)
-          console.log(this.logoFileLists)
-          console.log(this.logoLocalFileList)
-          console.log(this.bannerFileLists)
-          console.log(this.bannerLocalFileList)
           const formData = new FormData()
 
           // 新增的文件
@@ -392,6 +433,7 @@ export default {
           }
 
           // 新增的文件
+          console.log(this.bannerFileLists)
           if (this.bannerFileLists) {
             this.bannerFileLists.forEach(function(file) {
               if (!file.url) {
@@ -400,6 +442,7 @@ export default {
             })
           }
           // 处理删除的文件
+          console.log(this.bannerDelFileList)
           if (this.bannerDelFileList.length > 0) {
             const bannerDelFiles = []
             this.bannerDelFileList.forEach(function(fileName) {
@@ -408,24 +451,28 @@ export default {
             formData.append('bannerUploadFileDel', bannerDelFiles)
           }
 
-          formData.append('merchantName', this.temp.merchantName)
-          formData.append('merchantAccount', this.temp.merchantAccount)
-          formData.append('merchantPassword', this.temp.merchantPassword)
-          formData.append('orderFee', this.temp.orderFee)
-          formData.append('city', this.temp.city)
-          formData.append('address', this.temp.address)
-          formData.append('longAlat', this.temp.longAlat)
-          formData.append('logoUrlValue', this.temp.logoUrlValue)
-          formData.append('logoUrlName', this.temp.logoUrlName)
-          formData.append('carouselUrlValue', this.temp.carouselUrlValue)
-          formData.append('carouselUrlName', this.temp.carouselUrlName)
+          formData.append('roomName', this.temp.roomName)
+          if (this.temp.facilitiesId) {
+            const idArr = this.temp.facilitiesId.split(',')
+            const optionss = []
+            idArr.forEach(function(obj, index) {
+              optionss.push(obj)
+            })
+            this.facilities = optionss
+          }
+          formData.append('facilitiesId', this.facilities)
+          formData.append('hoursAmount', this.temp.hoursAmount)
+          formData.append('startTime', this.startTime)
+          formData.append('recomNumUsers', this.temp.recomNumUsers)
+          formData.append('doorOpenMethod', 0)
+          formData.append('sort', this.temp.sort)
+          formData.append('merchantId', this.merchantId)
           formData.append('id', this.temp.id)
-          formData.append('officeCode', this.temp.officeCode)
 
           for (var pair of formData.entries()) {
             console.log(pair[0] + ' - ' + pair[1].toString())
           }
-          updateMerchant(formData).then(() => {
+          updateRoom(formData).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
@@ -444,7 +491,7 @@ export default {
         this.$message('已启用的商店无法删除！')
         return
       }
-      deleteMerchant(this.temp.id).then(() => {
+      deleteRoom(this.temp.id).then(() => {
         this.fetchData()
         this.$notify({
           title: '成功',
@@ -482,6 +529,7 @@ export default {
           }
         })
         this.logoLocalFileList = templogoLocalFileList
+        console.log(this.logoDelFileList)
         this.logoDelFileList = templogoDelFileList
         this.temp.logoUrlName = tempLogoUrlName
       }
@@ -527,7 +575,6 @@ export default {
         if (isExist !== true) {
           this.logoFileLists.push(param.file)
         }
-        // this.logoFileLists.push(param.file)
       } else {
         this.$message.error('只能上传jpg/png文件')
         return
@@ -547,8 +594,8 @@ export default {
       if (this.bannerLocalFileList.length > 0) {
         const tempBannerLocalFileList = []
         const tempbannerDelFileList = this.bannerDelFileList
-        const bannerUrlNameArr = this.temp.carouselUrlName.split(',')
-        const bannerUrlValueArr = this.temp.carouselUrlValue.split(',')
+        const bannerUrlNameArr = this.temp.roomBannerUrl.split(',')
+        const bannerUrlValueArr = this.temp.roomBannerName.split(',')
         const tempBannerUrlNameArr = []
         const tempBannerUrlValueArr = []
         let remIndex = 0
@@ -576,8 +623,8 @@ export default {
         })
         this.bannerLocalFileList = tempBannerLocalFileList
         this.bannerDelFileList = tempbannerDelFileList
-        this.temp.carouselUrlName = tempBannerUrlNameArr.toString()
-        this.temp.carouselUrlValue = tempBannerUrlValueArr.toString()
+        this.temp.roomBannerName = tempBannerUrlNameArr.toString()
+        this.temp.roomBannerUrl = tempBannerUrlValueArr.toString()
       }
     },
     handleBannerExceed(files, fileList) {
@@ -585,7 +632,6 @@ export default {
     },
     uploadBannerSectionFile(param) {
       const fileObj = param.file
-
       const isLt2M = fileObj.size / 1024 / 1024 < 5
       if (!isLt2M) {
         this.$message.error('上传图片大小不能超过 5MB!')
@@ -604,7 +650,6 @@ export default {
         if (isExist !== true) {
           this.bannerFileLists.push(param.file)
         }
-        // this.bannerFileLists.push(param.file)
       } else if (fileObj.type === 'image/png') {
         // this.temp.uploadFile.push(new File([fileObj], new Date().getTime() + '.png', {
         //   type: 'image/png'
@@ -618,7 +663,6 @@ export default {
         if (isExist !== true) {
           this.bannerFileLists.push(param.file)
         }
-        // this.bannerFileLists.push(param.file)
       } else {
         this.$message.error('只能上传jpg/png文件')
         return
@@ -660,6 +704,10 @@ export default {
         }
       })
       return vv
+    },
+
+    exportList() {
+      exportList(this.listQuery)
     }
 
   }

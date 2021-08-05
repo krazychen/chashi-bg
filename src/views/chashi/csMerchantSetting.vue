@@ -97,7 +97,7 @@
           <el-form-item label="综合设施" prop="facilities">
             <el-select v-model="facilities" multiple placeholder="请选择">
               <el-option
-                v-for="item in labelOptions"
+                v-for="item in facilitieOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -108,7 +108,7 @@
           <el-form-item label="服务项目" prop="services">
             <el-select v-model="services" multiple placeholder="请选择">
               <el-option
-                v-for="item in labelOptions"
+                v-for="item in facilitieOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -150,6 +150,7 @@
 import { getMerchant, updateMerchant } from '@/api/chashi/csMerchant'
 import { getLoginSysUserVo } from '@/utils/auth'
 import { getCsLabelList } from '@/api/chashi/csLabel.js'
+import { getFacilitiesList } from '@/api/chashi/csFacilities.js'
 import waves from '@/directive/waves' // waves directive
 import { getDictDataList } from '@/utils/dictUtils'
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor'
@@ -197,6 +198,7 @@ export default {
         }
       },
       labelOptions: [],
+      facilitieOptions: [],
       temp: {
         id: undefined,
         merchantName: '',
@@ -254,6 +256,15 @@ export default {
         labelOptionss.push(labelOption)
       })
       this.labelOptions = labelOptionss
+    })
+    getFacilitiesList({}).then(response => {
+      console.log(response.data.records)
+      const optionss = []
+      response.data.records.forEach(function(labelObj) {
+        const option = { value: labelObj.id, label: labelObj.titleName }
+        optionss.push(option)
+      })
+      this.facilitieOptions = optionss
     })
     this.fetchData()
   },

@@ -71,6 +71,12 @@ export const superadminRoutes = [
         name: '广告管理',
         component: () => import('@/views/chashi/csAdvertise'),
         meta: { roles: ['cs:advertise:page'], title: '广告管理', faicon: 'table' }
+      },
+      {
+        path: 'caFacilities',
+        name: '服务设施管理',
+        component: () => import('@/views/chashi/csFacilities'),
+        meta: { roles: ['cs:facilities:page'], title: '服务设施管理', faicon: 'table' }
       }
     ]
   },
