@@ -81,6 +81,20 @@ export const superadminRoutes = [
     ]
   },
   {
+    path: '/wxuser',
+    component: Layout,
+    name: '用户管理',
+    meta: { roles: ['wx:user:page'], title: '用户管理', icon: 'example' },
+    children: [
+      {
+        path: 'wxuser',
+        name: '用户列表',
+        component: () => import('@/views/chashi/wxUser'),
+        meta: { roles: ['wx:user:page'], title: '用户列表', faicon: 'table' }
+      }
+    ]
+  },
+  {
     path: '/merchant',
     component: Layout,
     name: '商家管理',
