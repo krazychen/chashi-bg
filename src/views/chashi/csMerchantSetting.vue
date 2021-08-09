@@ -25,11 +25,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="所在城市" prop="city">
-            <el-input v-model="temp.city" placeholder="所在城市" style="width: 71%; padding-right: 10px" :disabled="true" />
-            <el-button @click="selectAddress" type="primary">选择地址</el-button>
+            <el-input v-model="temp.city" placeholder="所在城市" :disabled="true" />
           </el-form-item>
           <el-form-item label="地址" prop="address">
-            <el-input v-model="temp.address" placeholder="地址" :disabled="true" />
+            <el-input v-model="temp.address" placeholder="地址" style="width: 71%; padding-right: 10px" :disabled="true" />
+            <el-button @click="selectAddress" type="primary">选择地址</el-button>
           </el-form-item>
           <el-form-item label="经纬度" prop="longAlat">
             <el-input v-model="temp.longAlat" placeholder="经纬度" :disabled="true" />
@@ -370,6 +370,7 @@ export default {
       })
     },
     updateData() {
+      const that = this
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           // const tempData = Object.assign({}, this.temp)
@@ -431,36 +432,57 @@ export default {
           formData.append('orderRefundFee', this.temp.orderRefundFee)
           if (this.labels) {
             let tempLabelId = ''
+            let tempLabelName = ''
             this.labels.forEach(function(label, index, arr) {
+              const obj = that.labelOptions.find((item) => {
+                return item.value === label
+              })
               if (index === (arr.length - 1)) {
                 tempLabelId += label
+                tempLabelName += obj.label
               } else {
                 tempLabelId += label + ','
+                tempLabelName += obj.label + ','
               }
             })
             formData.append('labelId', tempLabelId)
+            formData.append('labelName', tempLabelName)
           }
           if (this.facilities) {
             let tempFacilitieId = ''
+            let tempFacilitieName = ''
             this.facilities.forEach(function(facilitie, index, arr) {
+              const obj = that.facilitieOptions.find((item) => {
+                return item.value === facilitie
+              })
               if (index === (arr.length - 1)) {
                 tempFacilitieId += facilitie
+                tempFacilitieName += obj.label
               } else {
                 tempFacilitieId += facilitie + ','
+                tempFacilitieName += obj.label + ','
               }
             })
             formData.append('facilitiesId', tempFacilitieId)
+            formData.append('facilitiesName', tempFacilitieName)
           }
           if (this.services) {
             let tempServicesId = ''
+            let tempServicesName = ''
             this.services.forEach(function(service, index, arr) {
+              const obj = that.facilitieOptions.find((item) => {
+                return item.value === service
+              })
               if (index === (arr.length - 1)) {
                 tempServicesId += service
+                tempServicesName += obj.label
               } else {
                 tempServicesId += service + ','
+                tempServicesName += obj.label + ','
               }
             })
             formData.append('servicesId', tempServicesId)
+            formData.append('servicesName', tempServicesName)
           }
           if (this.temp.merchantInfo) {
             formData.append('merchantInfo', unescape(this.temp.merchantInfo))

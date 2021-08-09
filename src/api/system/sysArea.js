@@ -70,3 +70,11 @@ export function updateStatusById(data) {
   })
 }
 
+// 修改行政区域状态
+export function getReleaseCity() {
+  return request({
+    url: '/sysArea/getReleaseCity/',
+    method: 'get'
+  })
+}
+

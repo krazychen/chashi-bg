@@ -71,7 +71,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="建议使用人数" prop="recomNumUsers">
-          <el-input v-model="temp.recomNumUsers" placeholder="请输入建议使用人数" />
+          <el-input v-model="temp.recomNumUsers" placeholder="请输入建议使用人数(格式:3~5)" />
         </el-form-item>
 
         <el-form-item label="茶室封面" prop="logoPicValue">
@@ -261,7 +261,6 @@ export default {
       }
       this.facilities = []
       this.startTime = '1'
-      this.merchantId = ''
       this.logoFileLists = []
       this.logoDelFileList = []
       this.bannerFileLists = []
@@ -304,6 +303,7 @@ export default {
           formData.append('recomNumUsers', this.temp.recomNumUsers)
           formData.append('doorOpenMethod', 0)
           formData.append('sort', this.temp.sort)
+          console.log(this.merchantId)
           formData.append('merchantId', this.merchantId)
 
           for (const pair of formData.entries()) {

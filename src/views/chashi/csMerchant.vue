@@ -79,11 +79,14 @@
           </el-input>
         </el-form-item>
         <el-form-item label="所在城市" prop="city">
-          <el-input v-model="temp.city" placeholder="所在城市" style="width: 71%; padding-right: 10px" :disabled="true" />
-          <el-button @click="selectAddress" type="primary">选择地址</el-button>
+          <el-select v-model="temp.cityCode" filterable placeholder="请选择所在城市" @change="changeCity">
+            <el-option clearable filterable v-for="item in cityOptions" :key="item.value" :label="item.label" :value="item.value" >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="地址" prop="address">
-          <el-input v-model="temp.address" placeholder="地址" :disabled="true" />
+          <el-input v-model="temp.address" placeholder="地址" style="width: 71%; padding-right: 10px" :disabled="true" />
+          <el-button @click="selectAddress" type="primary">选择地址</el-button>
         </el-form-item>
         <el-form-item label="经纬度" prop="longAlat">
           <el-input v-model="temp.longAlat" placeholder="经纬度" :disabled="true" />
@@ -101,7 +104,8 @@
             value-format="HH:mm"
             style="width: 99%"
             :picker-options="{
-              format: 'HH:mm'
+              format: 'HH:mm',
+              step: '00:30'
             }">
           </el-time-picker>
         </el-form-item>
@@ -181,6 +185,7 @@
 
 <script>
 import { getMerchantList, createMerchantPic, updateMerchant, deleteMerchant, updateStatusById } from '@/api/chashi/csMerchant'
+import { getReleaseCity } from '@/api/system/sysArea'
 import Pagination from '@/components/Pagination'
 import waves from '@/directive/waves' // waves directive
 import { getDictDataList } from '@/utils/dictUtils'
@@ -251,7 +256,9 @@ export default {
       logoDialogImageUrl: '',
       logoDialogVisible: false,
       bannerDialogImageUrl: '',
-      bannerDialogVisible: false
+      bannerDialogVisible: false,
+      cityOptions: [],
+      tempCityName: ''
     }
   },
   beforeCreate() {
@@ -261,6 +268,14 @@ export default {
   },
   created() {
     this.statuss = getDictDataList('sys_status')
+    getReleaseCity().then(response => {
+      const optionss = []
+      response.data.forEach(function(labelObj) {
+        const option = { value: labelObj.areaCode, label: labelObj.areaName }
+        optionss.push(option)
+      })
+      this.cityOptions = optionss
+    })
     this.fetchData()
   },
   methods: {
@@ -268,7 +283,7 @@ export default {
       const loc = event.data
       if (loc && loc.module === 'locationPicker') { // 防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
         console.log('location', loc)
-        this.temp.city = loc.cityname
+        // this.temp.city = loc.cityname
         this.temp.address = loc.poiaddress
         const latlng = loc.latlng
         this.temp.longAlat = latlng['lng'] + ',' + latlng['lat']
@@ -316,6 +331,7 @@ export default {
       this.logoLocalFileList = []
       this.bannerLocalFileList = []
       this.bannerDelFileList = []
+      this.tempCityName = ''
     },
     handleCreate() {
       this.chakan = false
@@ -345,7 +361,8 @@ export default {
           formData.append('merchantAccount', this.temp.merchantAccount)
           formData.append('merchantPassword', this.temp.merchantPassword)
           formData.append('orderFee', this.temp.orderFee)
-          formData.append('city', this.temp.city)
+          formData.append('cityCode', this.temp.cityCode)
+          formData.append('city', this.tempCityName)
           formData.append('address', this.temp.address)
           if (this.temp.longAlat) {
             const lnglat = this.temp.longAlat.split(',')
@@ -496,7 +513,8 @@ export default {
           formData.append('merchantAccount', this.temp.merchantAccount)
           formData.append('merchantPassword', this.temp.merchantPassword)
           formData.append('orderFee', this.temp.orderFee)
-          formData.append('city', this.temp.city)
+          formData.append('cityCode', this.temp.cityCode)
+          formData.append('city', this.tempCityName)
           formData.append('address', this.temp.address)
           if (this.temp.longAlat) {
             const lnglat = this.temp.longAlat.split(',')
@@ -762,6 +780,14 @@ export default {
 
     configSelectAddress() {
       this.dialogMapVisible = false
+    },
+
+    changeCity(val) {
+      let obj = {}
+      obj = this.cityOptions.find((item) => {
+        return item.value === val
+      })
+      this.tempCityName = obj.label
     }
 
   }
