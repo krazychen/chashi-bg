@@ -79,13 +79,31 @@
           </el-input>
         </el-form-item>
         <el-form-item label="所在城市" prop="city">
-          <el-input v-model="temp.city" placeholder="所在城市" />
+          <el-input v-model="temp.city" placeholder="所在城市" style="width: 71%; padding-right: 10px" :disabled="true" />
+          <el-button @click="selectAddress" type="primary">选择地址</el-button>
         </el-form-item>
         <el-form-item label="地址" prop="address">
-          <el-input v-model="temp.address" placeholder="地址" />
+          <el-input v-model="temp.address" placeholder="地址" :disabled="true" />
         </el-form-item>
-        <el-form-item label="经纬度" prop="address">
-          <el-input v-model="temp.longAlat" placeholder="经纬度" />
+        <el-form-item label="经纬度" prop="longAlat">
+          <el-input v-model="temp.longAlat" placeholder="经纬度" :disabled="true" />
+        </el-form-item>
+
+        <el-form-item label="营业时间" >
+          <el-time-picker
+            is-range
+            v-model="temp.opsTime"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            placeholder="选择时间范围"
+            format = 'HH:mm'
+            value-format="HH:mm"
+            style="width: 99%"
+            :picker-options="{
+              format: 'HH:mm'
+            }">
+          </el-time-picker>
         </el-form-item>
 
         <el-form-item label="商店Logo" prop="logoPicValue">
@@ -138,6 +156,26 @@
         </el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="选择地址" :visible.sync="dialogMapVisible">
+      <iframe
+        id="mapPage"
+        width="100%"
+        height="450px"
+        frameborder=0
+        src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=FMXBZ-TXULW-2SVRL-RY734-IDFSF-2QFWF&referer=chashi">
+      </iframe>
+      <br/>
+      <br/>
+      <el-row :gutter="20" >
+        <el-col :offset="19">
+          <el-button type="primary" @click="configSelectAddress">
+            确定选中地址
+          </el-button>
+        </el-col>
+      </el-row>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -174,12 +212,17 @@ export default {
         orderFee: '',
         city: '',
         address: '',
+        longitude: '',
+        latitude: '',
         longAlat: '',
         logoUrlValue: '',
         logoUrlName: '',
         carouselUrlValue: '',
         carouselUrlName: '',
         officeCode: '',
+        opsTime: [],
+        startTime: '',
+        endTime: '',
         logoUploadFile: [],
         bannerUploadFile: []
       },
@@ -193,6 +236,7 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       viewCodeDisabled: false,
+      dialogMapVisible: false,
       textMap: {
         update: '编辑',
         create: '创建',
@@ -212,11 +256,24 @@ export default {
   },
   beforeCreate() {
   },
+  mounted() {
+    window.addEventListener('message',this.handleMapEvent)
+  },
   created() {
     this.statuss = getDictDataList('sys_status')
     this.fetchData()
   },
   methods: {
+    handleMapEvent(event) {
+      const loc = event.data
+      if (loc && loc.module === 'locationPicker') { // 防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+        console.log('location', loc)
+        this.temp.city = loc.cityname
+        this.temp.address = loc.poiaddress
+        const latlng = loc.latlng
+        this.temp.longAlat = latlng['lng'] + ',' + latlng['lat']
+      }
+    },
     fetchData() {
       this.listLoading = true
       getMerchantList(this.listQuery).then(response => {
@@ -239,12 +296,17 @@ export default {
         orderFee: '',
         city: '',
         address: '',
+        longitude: '',
+        latitude: '',
         longAlat: '',
         logoUrlValue: '',
         logoUrlName: '',
         carouselUrlValue: '',
         carouselUrlVName: '',
         officeCode: '',
+        opsTime: [],
+        startTime: '',
+        endTime: '',
         logoUploadFile: [],
         bannerUploadFile: []
       }
@@ -285,10 +347,19 @@ export default {
           formData.append('orderFee', this.temp.orderFee)
           formData.append('city', this.temp.city)
           formData.append('address', this.temp.address)
-          formData.append('longAlat', this.temp.longAlat)
+          if (this.temp.longAlat) {
+            const lnglat = this.temp.longAlat.split(',')
+            formData.append('longitude', lnglat[0])
+            formData.append('latitude', lnglat[1])
+          }
+          // formData.append('longAlat', this.temp.longAlat)
           formData.append('merchantInfo', '')
           formData.append('usageNotice', '')
 
+          if (this.temp.opsTime) {
+            formData.append('startTime', this.temp.opsTime[0])
+            formData.append('endTime', this.temp.opsTime[1])
+          }
           createMerchantPic(formData).then(() => {
             // this.list.unshift(this.temp)
             this.fetchData()
@@ -331,6 +402,14 @@ export default {
           this.bannerLocalFileList.push(cop)
         }
       }
+      if (this.temp.longitude) {
+        this.temp.longAlat = this.temp.longitude + ',' + this.temp.latitude
+      }
+      if (this.temp.startTime) {
+        this.temp.opsTime = []
+        this.temp.opsTime.push(this.temp.startTime)
+        this.temp.opsTime.push(this.temp.endTime)
+      }
     },
     handleUpdate(row) {
       this.chakan = false
@@ -358,20 +437,25 @@ export default {
           this.bannerLocalFileList.push(cop)
         }
       }
+      if (this.temp.longitude) {
+        this.temp.longAlat = this.temp.longitude + ',' + this.temp.latitude
+      }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+
+      if (this.temp.startTime) {
+        this.temp.opsTime = []
+        this.temp.opsTime.push(this.temp.startTime)
+        this.temp.opsTime.push(this.temp.endTime)
+      }
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           // const tempData = Object.assign({}, this.temp)
-          console.log(this.logoFileLists)
-          console.log(this.logoLocalFileList)
-          console.log(this.bannerFileLists)
-          console.log(this.bannerLocalFileList)
           const formData = new FormData()
 
           // 新增的文件
@@ -414,13 +498,23 @@ export default {
           formData.append('orderFee', this.temp.orderFee)
           formData.append('city', this.temp.city)
           formData.append('address', this.temp.address)
-          formData.append('longAlat', this.temp.longAlat)
+          if (this.temp.longAlat) {
+            const lnglat = this.temp.longAlat.split(',')
+            formData.append('longitude', lnglat[0])
+            formData.append('latitude', lnglat[1])
+          }
+          // formData.append('longAlat', this.temp.longAlat)
           formData.append('logoUrlValue', this.temp.logoUrlValue)
           formData.append('logoUrlName', this.temp.logoUrlName)
           formData.append('carouselUrlValue', this.temp.carouselUrlValue)
           formData.append('carouselUrlName', this.temp.carouselUrlName)
           formData.append('id', this.temp.id)
           formData.append('officeCode', this.temp.officeCode)
+
+          if (this.temp.opsTime) {
+            formData.append('startTime', this.temp.opsTime[0])
+            formData.append('endTime', this.temp.opsTime[1])
+          }
 
           for (var pair of formData.entries()) {
             console.log(pair[0] + ' - ' + pair[1].toString())
@@ -507,7 +601,7 @@ export default {
         // }))
         let isExist = false
         this.logoFileLists.forEach(function(file) {
-          if (file.uid === param.file.uid){
+          if (file.uid === param.file.uid) {
             isExist = true
           }
         })
@@ -660,12 +754,19 @@ export default {
         }
       })
       return vv
+    },
+
+    selectAddress() {
+      this.dialogMapVisible = true
+    },
+
+    configSelectAddress() {
+      this.dialogMapVisible = false
     }
 
   }
 }
 </script>
-
 <style>
   .el-upload--picture-card{
     width: 70px!important;

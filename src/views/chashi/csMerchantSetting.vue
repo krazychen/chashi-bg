@@ -3,9 +3,6 @@
     <el-tabs type="border-card">
       <el-tab-pane label="基本信息">
         <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
-          <el-form-item label="所在城市" prop="city">
-            <el-input v-model="temp.city" placeholder="所在城市" :disabled="true"/>
-          </el-form-item>
           <el-form-item label="订单手续费" prop="orderFee">
             <el-input v-model="temp.orderFee" placeholder="订单手续费 0~100" :disabled="true">
               <template slot="append">%</template>
@@ -27,12 +24,17 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="商户地址" prop="address">
-            <el-input v-model="temp.address" placeholder="商户地址" />
+          <el-form-item label="所在城市" prop="city">
+            <el-input v-model="temp.city" placeholder="所在城市" style="width: 71%; padding-right: 10px" :disabled="true" />
+            <el-button @click="selectAddress" type="primary">选择地址</el-button>
           </el-form-item>
-          <el-form-item label="经纬度" prop="address">
-            <el-input v-model="temp.longAlat" placeholder="经纬度" />
+          <el-form-item label="地址" prop="address">
+            <el-input v-model="temp.address" placeholder="地址" :disabled="true" />
           </el-form-item>
+          <el-form-item label="经纬度" prop="longAlat">
+            <el-input v-model="temp.longAlat" placeholder="经纬度" :disabled="true" />
+          </el-form-item>
+
           <el-form-item label="后台登录账户" prop="merchantAccount">
             <el-input v-model="temp.merchantAccount" placeholder="后台登录账户" :disabled="true" />
           </el-form-item>
@@ -143,6 +145,26 @@
       <el-tab-pane label="智能锁设备">智能锁设备</el-tab-pane>
       <el-tab-pane label="智能取电设备">智能取电设备</el-tab-pane>
     </el-tabs>
+
+    <el-dialog title="选择地址" :visible.sync="dialogMapVisible">
+      <iframe
+        id="mapPage"
+        width="100%"
+        height="450px"
+        frameborder=0
+        src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=FMXBZ-TXULW-2SVRL-RY734-IDFSF-2QFWF&referer=chashi">
+      </iframe>
+      <br/>
+      <br/>
+      <el-row :gutter="20" >
+        <el-col :offset="19">
+          <el-button type="primary" @click="configSelectAddress">
+            确定选中地址
+          </el-button>
+        </el-col>
+      </el-row>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -207,6 +229,8 @@ export default {
         orderFee: '',
         city: '',
         address: '',
+        longitude: '',
+        latitude: '',
         longAlat: '',
         logoUrlValue: '',
         logoUrlName: '',
@@ -235,6 +259,7 @@ export default {
       logoLocalFileList: [],
       bannerLocalFileList: [],
       bannerDelFileList: [],
+      dialogMapVisible: false,
       headers: { 'Content-Type': 'multipart/form-data' },
       rulesText: {
         merchantName: [{ required: true, message: '请输入商店名称', trigger: 'blur' }],
@@ -246,6 +271,9 @@ export default {
     }
   },
   beforeCreate() {
+  },
+  mounted() {
+    window.addEventListener('message',this.handleMapEvent)
   },
   created() {
     this.statuss = getDictDataList('sys_status')
@@ -269,6 +297,16 @@ export default {
     this.fetchData()
   },
   methods: {
+    handleMapEvent(event) {
+      const loc = event.data
+      if (loc && loc.module === 'locationPicker') { // 防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+        console.log('location', loc)
+        this.temp.city = loc.cityname
+        this.temp.address = loc.poiaddress
+        const latlng = loc.latlng
+        this.temp.longAlat = latlng['lng'] + ',' + latlng['lat']
+      }
+    },
     fetchData() {
       const userInfo = getLoginSysUserVo()
       getMerchant(userInfo.officeCode).then(response => {
@@ -326,6 +364,9 @@ export default {
         if (this.temp.usageNotice) {
           this.temp.usageNotice = unescape(this.temp.usageNotice)
         }
+        if (this.temp.longitude) {
+          this.temp.longAlat = this.temp.longitude + ',' + this.temp.latitude
+        }
       })
     },
     updateData() {
@@ -374,7 +415,12 @@ export default {
           formData.append('orderFee', this.temp.orderFee)
           formData.append('city', this.temp.city)
           formData.append('address', this.temp.address)
-          formData.append('longAlat', this.temp.longAlat)
+          if (this.temp.longAlat) {
+            const lnglat = this.temp.longAlat.split(',')
+            formData.append('longitude', lnglat[0])
+            formData.append('latitude', lnglat[1])
+          }
+          // formData.append('longAlat', this.temp.longAlat)
           formData.append('logoUrlValue', this.temp.logoUrlValue)
           formData.append('logoUrlName', this.temp.logoUrlName)
           formData.append('carouselUrlValue', this.temp.carouselUrlValue)
@@ -596,6 +642,14 @@ export default {
       // editor.model.document.on('change', () => {
       //   this.$emit('content-change', editor.getData())
       // })
+    },
+
+    selectAddress() {
+      this.dialogMapVisible = true
+    },
+
+    configSelectAddress() {
+      this.dialogMapVisible = false
     }
   }
 }
