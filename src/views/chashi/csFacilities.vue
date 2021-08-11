@@ -219,9 +219,6 @@ export default {
       })
     },
     rest() { // 重置
-      this.listQuery.configName = ''
-      this.listQuery.configKey = ''
-      this.listQuery.isSys = ''
       this.fetchData()
     },
     updateStatus(row) {

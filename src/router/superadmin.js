@@ -107,5 +107,26 @@ export const superadminRoutes = [
         meta: { roles: ['cs:merchant:page'], title: '商家列表', faicon: 'table' }
       }
     ]
+  },
+  ,
+  {
+    path: '/marketing',
+    component: Layout,
+    name: '营销管理',
+    meta: { roles: ['cs:member:card:page'], title: '营销管理', icon: 'example' },
+    children: [
+      {
+        path: 'csMemberCard',
+        name: '会员卡管理',
+        component: () => import('@/views/chashi/csMemberCard'),
+        meta: { roles: ['cs:member:card:page'], title: '会员卡管理', faicon: 'table' }
+      },
+      {
+        path: 'csCoupon',
+        name: '优惠卷管理',
+        component: () => import('@/views/chashi/csCoupon'),
+        meta: { roles: ['cs:coupon:page'], title: '优惠卷管理', faicon: 'table' }
+      }
+    ]
   }
 ]

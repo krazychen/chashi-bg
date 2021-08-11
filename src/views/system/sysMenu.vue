@@ -60,9 +60,15 @@
         label="菜单名称"
       />
       <el-table-column
+        prop="menuCode"
+        label="菜单代码 "
+        width="120"
+      />
+      <el-table-column
         prop="moduleCodes"
         label="归属模块"
         :formatter="menuModuleCodesFormat"
+        width="140"
       />
       <el-table-column
         prop="menuHref"
@@ -71,16 +77,19 @@
       <el-table-column
         prop="treeSort"
         label="排序"
+        width="80"
       />
       <el-table-column
         prop="menuType"
         label="类型"
         :formatter="menuTypeFormat"
+        width="80"
       />
       <el-table-column
         prop="isShow"
         label="可见"
         :formatter="menuIsShowFormat"
+        width="80"
       />
       <el-table-column
         prop="permission"

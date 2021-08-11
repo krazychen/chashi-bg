@@ -263,6 +263,9 @@ export default {
       })
     },
     updateData() {
+      if (this.fileLists.length > 0) {
+        this.rulesText.logoUrl = []
+      }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           // const tempData = Object.assign({}, this.temp)
@@ -319,9 +322,7 @@ export default {
       })
     },
     rest() { // 重置
-      this.listQuery.configName = ''
-      this.listQuery.configKey = ''
-      this.listQuery.isSys = ''
+      this.listQuery.sort = ''
       this.fetchData()
     },
 
