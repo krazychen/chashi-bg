@@ -279,6 +279,7 @@ export default {
       })
     },
     createData() {
+      const that = this
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const formData = new FormData()
@@ -297,7 +298,25 @@ export default {
             })
             this.facilities = optionss
           }
-          formData.append('facilitiesId', this.facilities)
+          // formData.append('facilitiesId', this.facilities)
+          if (this.facilities) {
+            let tempFacilitieId = ''
+            let tempFacilitieName = ''
+            this.facilities.forEach(function(facilitie, index, arr) {
+              const obj = that.facilitieOptions.find((item) => {
+                return item.value === facilitie
+              })
+              if (index === (arr.length - 1)) {
+                tempFacilitieId += facilitie
+                tempFacilitieName += obj.label
+              } else {
+                tempFacilitieId += facilitie + ','
+                tempFacilitieName += obj.label + ','
+              }
+            })
+            formData.append('facilitiesId', tempFacilitieId)
+            formData.append('facilitiesName', tempFacilitieName)
+          }
           formData.append('hoursAmount', this.temp.hoursAmount)
           formData.append('startTime', this.startTime)
           formData.append('recomNumUsers', this.temp.recomNumUsers)

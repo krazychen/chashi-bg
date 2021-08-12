@@ -173,7 +173,9 @@ export default {
       },
       rulesText: {
         couponName: [{ required: true, message: '请输入优惠卷名称', trigger: 'blur' }],
-        releasedMethod: [{ required: true, message: '请输入获取方式', trigger: 'blur' }]
+        releasedMethod: [{ required: true, message: '请输入获取方式', trigger: 'blur' }],
+        startTime: [{ required: true, message: '请输入开始日期', trigger: 'blur' }],
+        endTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }]
       },
       dialogReleaseFormVisible: false,
       releasedTemp: {
