@@ -95,7 +95,7 @@ service.interceptors.response.use(
         const msg = res.msg || 'You have been logged out, you can cancel to stay on this page, or log in again'
         // const msg = '当前登录状态已过期，请重新登陆！' || 'You have been logged out, you can cancel to stay on this page, or log in again'
         MessageBox.confirm(msg, '操作失败', {
-          confirmButtonText: '重新登入',
+          // confirmButtonText: '重新登入',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {

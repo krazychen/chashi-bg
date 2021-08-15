@@ -35,7 +35,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="nickname" label="昵称" width="150" />
-      <el-table-column align="center" prop="phone" label="手机号码" width="150" />
+      <el-table-column align="center" prop="phoneNumber" label="手机号码" width="150" />
       <el-table-column align="center" prop="menberType" label="会员类型" width="150" />
       <el-table-column align="center" prop="integral" label="积分" width="150" />
       <el-table-column align="center" prop="balance" label="余额" width="150" />
@@ -122,7 +122,7 @@ export default {
       listQuery: {
         current: 1,
         nickname: '',
-        phone: ''
+        phoneNumber: ''
       },
       statusQueryParam: {
         id: undefined,
@@ -131,7 +131,7 @@ export default {
       temp: {
         id: undefined,
         nickname: '',
-        phone: '',
+        phoneNumber: '',
         avatar: '',
         menberType: '',
         integral: '',
@@ -180,7 +180,7 @@ export default {
       this.temp = {
         id: undefined,
         nickname: '',
-        phone: '',
+        phoneNumber: '',
         avatar: '',
         menberType: '',
         integral: '',

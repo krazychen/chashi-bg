@@ -157,7 +157,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           console.log(this.temp)
-           createFacilities(this.temp).then(() => {
+          createFacilities(this.temp).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({

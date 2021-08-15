@@ -2,31 +2,16 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.couponName" placeholder="请输入优惠券名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-radio-group v-model="listQuery.releasedMethod" style="width: 400px; margin-left:15px;" class="filter-item"@change="handleFilter">
+      <el-radio-group v-model="listQuery.releasedMethod" style="width: 400px; margin-left:15px;" class="filter-item" @change="handleFilter">
         <el-radio :label="1">新人优惠卷</el-radio>
         <el-radio :label="2">分享优惠卷</el-radio>
         <el-radio :label="3">领卷中心</el-radio>
       </el-radio-group>
-
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        查询
-      </el-button>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="rest">
-        重置
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleDialog(null, 'create')">
-        新增
-      </el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="rest">重置</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleDialog(null, 'create')">新增</el-button>
     </div>
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-    >
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
       <el-table-column type="index" :index="indexMethod" align="center" label="序号" />
       <el-table-column align="center" prop="couponName" label="优惠卷名称" width="180 " />
       <el-table-column align="center" label="满减金额" width="180 ">
@@ -88,7 +73,7 @@
           确定
         </el-button>
       </div>
-    </el-dialog>
+    </el-dialog>，
 
     <el-dialog title="发放优惠卷" :visible.sync="dialogReleaseFormVisible">
       <div class="filter-container">
