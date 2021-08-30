@@ -53,3 +53,11 @@ export function createReleasedCoupon(data) {
   })
 }
 
+// 获取用户有效的优惠卷
+export function getReleasedCouponForUser(wxuserId) {
+  return request({
+    url: '/csCouponReleased/getCouponForWx/' + wxuserId,
+    method: 'get'
+  })
+}
+

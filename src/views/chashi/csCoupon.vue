@@ -97,7 +97,7 @@
         </el-table-column>
       </el-table>
 
-      <pagination v-show="userTotal>0" :total="userTotal" :page.sync="userListQuery.current" :limit.sync="userListQuery.size" @pagination="fetchData" />
+      <pagination v-show="userTotal>0" :total="userTotal" :page.sync="userListQuery.current" :limit.sync="userListQuery.size" @pagination="fetchReleaseData" />
       <br>
       <el-row :gutter="20">
         <el-col :span="4" style="text-align: left; line-height: 32px">优惠券数量</el-col>
@@ -324,6 +324,9 @@ export default {
     },
     handleReleaseFilter() {
       this.userListQuery.page = 1
+      this.fetchReleaseData()
+    },
+    fetchReleaseData() {
       this.userListLoading = true
       getWxUserList(this.userListQuery).then(response => {
         this.userList = response.data.records

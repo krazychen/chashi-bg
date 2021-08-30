@@ -108,7 +108,20 @@ export const superadminRoutes = [
       }
     ]
   },
-  ,
+  {
+    path: '/merchantOrder',
+    component: Layout,
+    name: '订单管理',
+    meta: { roles: ['cs:merchant:order:page'], title: '订单管理', icon: 'example' },
+    children: [
+      {
+        path: 'merchantOrder',
+        name: '订单管理',
+        component: () => import('@/views/chashi/csMerchantOrder'),
+        meta: { roles: ['cs:merchant:order:page'], title: '订单列表', faicon: 'table' }
+      }
+    ]
+  },
   {
     path: '/marketing',
     component: Layout,
@@ -126,6 +139,12 @@ export const superadminRoutes = [
         name: '优惠卷管理',
         component: () => import('@/views/chashi/csCoupon'),
         meta: { roles: ['cs:coupon:page'], title: '优惠卷管理', faicon: 'table' }
+      },
+      {
+        path: 'csRecharge',
+        name: '充值管理',
+        component: () => import('@/views/chashi/csRechargeSetting'),
+        meta: { roles: ['cs:recharge:setting:page'], title: '充值管理', faicon: 'table' }
       }
     ]
   }

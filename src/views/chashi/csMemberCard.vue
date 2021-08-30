@@ -24,11 +24,10 @@
           highlight-current-row
           style="width: 100%;"
         >
-          <el-table-column type="index" :index="indexMethod" align="center" label="序号">
-          </el-table-column>
+          <el-table-column type="index" :index="indexMethod" align="center" label="序号" />
           <el-table-column align="center" label="图片" width="180">
-            <template   slot-scope="scope">
-              <img :src="scope.row.logoUrl"  min-width="50" height="50" />
+            <template slot-scope="scope">
+              <img :src="scope.row.logoUrl" min-width="50" height="50">
             </template>
           </el-table-column>
           <el-table-column align="center" prop="cardname" label="名称" width="180" />
@@ -71,8 +70,7 @@
           highlight-current-row
           style="width: 100%;"
         >
-          <el-table-column type="index" :index="indexMethod" align="center" label="序号">
-          </el-table-column>
+          <el-table-column type="index" :index="indexMethod" align="center" label="序号" />
           <el-table-column align="center" prop="wxuserName" label="用户昵称" width="150" />
           <el-table-column align="center" prop="wxuserPhone" label="用户手机" width="150" />
           <el-table-column align="center" prop="membercardName" label="会员卡名称" width="150" />
@@ -82,10 +80,10 @@
           <el-table-column align="center" prop="" label="剩余优惠时间" width="100" />
           <el-table-column align="center" prop="discountOff" label="折扣" width="100" />
           <el-table-column align="center" prop="status" label="卡片状态" :formatter="cardStatus" />
-          <el-table-column align="center" prop="orderDate" label="购买时间"  />
+          <el-table-column align="center" prop="orderDate" label="购买时间" />
         </el-table>
 
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.size" @pagination="fetchData" />
+        <pagination v-show="total>0" :total="orderTotal" :page.sync="orderListQuery.current" :limit.sync="orderListQuery.size" @pagination="fetchOrderData" />
       </el-tab-pane>
     </el-tabs>
 
@@ -122,8 +120,8 @@
               v-for="item in levelOptions"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="会员折扣" prop="discountOff">
@@ -176,27 +174,27 @@
 
     <el-dialog title="发放会员卡" :visible.sync="dialogReleaseFormVisible">
       <div class="filter-container">
-        <el-input v-model="userListQuery.userName" placeholder="请输入用户昵称/手机号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleReleaseFilter" />
+        <el-input v-model="userListQuery.nameAphone" placeholder="请输入用户昵称/手机号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleReleaseFilter" />
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleReleaseFilter">
           查询
         </el-button>
       </div>
       <el-table v-loading="userListLoading" :data="userList" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
         <el-table-column align="center" label="头像" width="180 ">
-          <template   slot-scope="scope">
-            <img :src="scope.row.avatarUrl"  min-width="50" height="50" />
+          <template slot-scope="scope">
+            <img :src="scope.row.avatarUrl" min-width="50" height="50">
           </template>
         </el-table-column>
         <el-table-column align="center" prop="nickname" label="昵称" />
         <el-table-column align="center" prop="phoneNumber" label="手机号" />
         <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
           <template slot-scope="scope">
-            <el-button type="primary" @click="handleReleaseCoupon(scope.row)" >发放会员卡</el-button>
+            <el-button type="primary" @click="handleReleaseCoupon(scope.row)">发放会员卡</el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <pagination v-show="userTotal>0" :total="userTotal" :page.sync="userListQuery.current" :limit.sync="userListQuery.size" @pagination="fetchData" />
+      <pagination v-show="userTotal>0" :total="userTotal" :page.sync="userListQuery.current" :limit.sync="userListQuery.size" @pagination="fetchReleaseData" />
     </el-dialog>
   </div>
 </template>
@@ -265,12 +263,14 @@ export default {
       userListLoading: false,
       userTotal: 0,
       userListQuery: {
+        current: 1,
         nameAphone: ''
       },
       orderList: null,
       orderListLoading: false,
       orderTotal: 0,
       orderListQuery: {
+        current: 1,
         membercardName: '',
         wxuserPhoneAname: ''
       },
@@ -647,6 +647,9 @@ export default {
     },
     handleReleaseFilter() {
       this.userListQuery.page = 1
+      this.fetchReleaseData()
+    },
+    fetchReleaseData() {
       this.userListLoading = true
       getWxUserList(this.userListQuery).then(response => {
         this.userList = response.data.records
@@ -675,6 +678,9 @@ export default {
     },
     handleOrderFilter() {
       this.orderListQuery.page = 1
+      this.fetchOrderData()
+    },
+    fetchOrderData() {
       this.orderListLoading = true
       getMembercardOrderList(this.orderListQuery).then(response => {
         this.orderList = response.data.records
@@ -682,7 +688,6 @@ export default {
         this.orderListLoading = false
       })
     }
-
   }
 }
 </script>

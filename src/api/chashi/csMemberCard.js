@@ -30,7 +30,7 @@ export function updateMemberCard(data) {
 // 删除会员卡
 export function deleteMemberCard(id) {
   return request({
-    url: '/csAdvertise/delete/' + id,
+    url: '/csMemberCard/delete/' + id,
     method: 'post'
   })
 }

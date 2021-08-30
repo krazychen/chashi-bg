@@ -44,3 +44,11 @@ export function updateStatusById(data) {
   })
 }
 
+// 修改微信用户状态
+export function getWxUser(id) {
+  return request({
+    url: '/wxUser/info/' + id,
+    method: 'get'
+  })
+}
+

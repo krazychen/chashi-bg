@@ -26,4 +26,10 @@ export function deleteMembercardOrder(id) {
   })
 }
 
-
+// 获取用户的会员卡
+export function getMemberCard(wxuserId) {
+  return request({
+    url: '/csMembercardOrder/getMemberCardForWx/' + wxuserId,
+    method: 'get'
+  })
+}
