@@ -31,6 +31,20 @@ export const systemRoutes = [
     ]
   },
   {
+    path: '/merchantOrder',
+    component: Layout,
+    name: '订单管理',
+    meta: { roles: ['cs:merchant:order:page'], title: '订单管理', icon: 'example' },
+    children: [
+      {
+        path: 'merchantOrder',
+        name: '订单列表',
+        component: () => import('@/views/chashi/csMerchantOrder'),
+        meta: { roles: ['cs:merchant:order:page'], title: '订单列表', faicon: 'table' }
+      }
+    ]
+  },
+  {
     path: '/merchantSetting',
     component: Layout,
     name: '商户设置',

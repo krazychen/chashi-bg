@@ -273,7 +273,7 @@ export default {
   beforeCreate() {
   },
   mounted() {
-    window.addEventListener('message',this.handleMapEvent)
+    window.addEventListener('message', this.handleMapEvent)
   },
   created() {
     this.statuss = getDictDataList('sys_status')

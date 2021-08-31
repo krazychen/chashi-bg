@@ -83,7 +83,7 @@ export const superadminRoutes = [
   {
     path: '/wxuser',
     component: Layout,
-    name: '用户管理',
+    name: '微信用户管理',
     meta: { roles: ['wx:user:page'], title: '用户管理', icon: 'example' },
     children: [
       {
@@ -116,7 +116,7 @@ export const superadminRoutes = [
     children: [
       {
         path: 'merchantOrder',
-        name: '订单管理',
+        name: '订单列表',
         component: () => import('@/views/chashi/csMerchantOrder'),
         meta: { roles: ['cs:merchant:order:page'], title: '订单列表', faicon: 'table' }
       }

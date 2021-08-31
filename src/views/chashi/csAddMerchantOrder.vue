@@ -102,7 +102,7 @@ import { getRoomList } from '@/api/chashi/csRoom'
 import { getMemberCard } from '@/api/chashi/csMemberCardOrder'
 import { getReleasedCouponForUser } from '@/api/chashi/csCoupon'
 import { getWxUser } from '@/api/chashi/wxUser'
-import { accAdd, accSub, accMul, accDiv, accSub } from '../../utils'
+import { accAdd, accSub, accMul, accDiv } from '../../utils'
 import waves from '@/directive/waves'
 
 export default {
@@ -193,6 +193,7 @@ export default {
           that.listQuery.merchant = obj
         }
       })
+      console.log(this.listQuery.merchantId)
       getRoomList({ 'merchantId': this.listQuery.merchantId }).then(response => {
         const optionss = [{}]
         this.roomList = response.data.records

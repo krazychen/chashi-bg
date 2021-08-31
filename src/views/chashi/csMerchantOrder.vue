@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.merchantId" placeholder="请选择商店">
+      <el-select v-if="userType == 'superadmin' " v-model="listQuery.merchantId" placeholder="请选择商店">
         <el-option
           v-for="item in merchantOptions"
           :key="item.value"
@@ -164,7 +164,8 @@
 
 <script>
 import { getMerchantOrderList } from '@/api/chashi/csMerchantOrder'
-import { getMerchantList } from '@/api/chashi/csMerchant'
+import { getMerchant, getMerchantList } from '@/api/chashi/csMerchant'
+import { getLoginSysUserVo } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 import CsAddMerchantOrder from '@/views/chashi/csAddMerchantOrder'
 import waves from '@/directive/waves'
@@ -202,26 +203,50 @@ export default {
         view: '查看'
       },
       merchantOptions: [],
-      merchantModel: ''
+      merchantModel: '',
+      userType: ''
     }
   },
+  mounted() {
+    const that = this
+    // 获取当前的用户
+    const userInfo = getLoginSysUserVo()
+    const userInfoRole = userInfo.sysRoleList
+    if (userInfoRole) {
+      userInfoRole.forEach(function(role) {
+        if (role.code === 'superadmin') {
+          that.userType = 'superadmin'
+        } else {
+          that.userType = 'admin'
+          getMerchant(userInfo.officeCode).then(response => {
+            that.listQuery.merchantId = response.data.id
+            that.fetchData()
+          })
+        }
+      })
+    }
+    // console.log(this.userType)
+  },
   beforeCreate() {
+
   },
   created() {
-    getMerchantList({}).then(response => {
-      const merchantOptionss = [{}]
-      response.data.records.forEach(function(obj) {
-        const merchantOption = { value: obj.id, label: obj.merchantName }
-        merchantOptionss.push(merchantOption)
+    if (this.userType === 'superadmin') {
+      getMerchantList({}).then(response => {
+        const merchantOptionss = [{}]
+        response.data.records.forEach(function(obj) {
+          const merchantOption = { value: obj.id, label: obj.merchantName }
+          merchantOptionss.push(merchantOption)
+        })
+        this.merchantOptions = merchantOptionss
       })
-      this.merchantOptions = merchantOptionss
-    })
-    this.fetchData()
+    }
   },
   methods: {
     fetchData() {
       this.listLoading = true
-      console.log(this.listQuery)
+      console.log(1111)
+      console.log(this.listQuery.merchantId)
       getMerchantOrderList(this.listQuery).then(response => {
         this.list = response.data.records
         this.total = parseInt(response.data.total)
