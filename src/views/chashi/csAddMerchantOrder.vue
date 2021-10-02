@@ -68,7 +68,7 @@
 
       <br/>
       <el-form-item label="预定日期" prop="orderDate">
-        <el-date-picker v-model="listQuery.orderDate" style="width: 90%" type="date" placeholder="选择日期"></el-date-picker>
+        <el-date-picker v-model="listQuery.orderDate" style="width: 90%" type="date" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
       </el-form-item>
       <el-form-item label="预订时长范围" prop="orderTimerage">
         <el-input v-model="listQuery.orderTimerage"></el-input>

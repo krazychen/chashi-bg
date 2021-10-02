@@ -46,6 +46,29 @@
               <template slot="append">%</template>
             </el-input>
           </el-form-item>
+          <el-form-item label="营业时间">
+            <el-time-select
+              v-model="temp.startTime"
+              placeholder="起始时间"
+              style="width: 47%; padding-right: 5px"
+              :picker-options="{
+              start: '00:00',
+              step: '01:00',
+              end: '24:00'
+            }"
+            />
+            <el-time-select
+              v-model="temp.endTime"
+              placeholder="结束时间"
+              style="width: 47%"
+              :picker-options="{
+              start: '00:00',
+              step: '01:00',
+              end: '24:00',
+              minTime: temp.startTime
+            }"
+            />
+          </el-form-item>
           <el-form-item>
             <el-button>取消</el-button>
             <el-button type="primary" @click="updateData()">保存</el-button>
@@ -248,7 +271,9 @@ export default {
         merchantInfo: '',
         usageNotice: '',
         logoUploadFile: [],
-        bannerUploadFile: []
+        bannerUploadFile: [],
+        startTime: '',
+        endTime: '',
       },
       labels: [],
       facilities: [],
@@ -430,6 +455,8 @@ export default {
           formData.append('officeCode', this.temp.officeCode)
           formData.append('contactPhonse', this.temp.contactPhonse)
           formData.append('orderRefundFee', this.temp.orderRefundFee)
+          formData.append('startTime', this.temp.startTime)
+          formData.append('endTime', this.temp.endTime)
           if (this.labels) {
             let tempLabelId = ''
             let tempLabelName = ''

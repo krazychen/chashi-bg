@@ -80,34 +80,54 @@
         </el-form-item>
         <el-form-item label="所在城市" prop="city">
           <el-select v-model="temp.cityCode" filterable placeholder="请选择所在城市" @change="changeCity">
-            <el-option clearable filterable v-for="item in cityOptions" :key="item.value" :label="item.label" :value="item.value" >
-            </el-option>
+            <el-option v-for="item in cityOptions" :key="item.value" clearable filterable :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="地址" prop="address">
           <el-input v-model="temp.address" placeholder="地址" style="width: 71%; padding-right: 10px" :disabled="true" />
-          <el-button @click="selectAddress" type="primary">选择地址</el-button>
+          <el-button type="primary" @click="selectAddress">选择地址</el-button>
         </el-form-item>
         <el-form-item label="经纬度" prop="longAlat">
           <el-input v-model="temp.longAlat" placeholder="经纬度" :disabled="true" />
         </el-form-item>
 
-        <el-form-item label="营业时间" >
-          <el-time-picker
-            is-range
-            v-model="temp.opsTime"
-            range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-            placeholder="选择时间范围"
-            format = 'HH:mm'
-            value-format="HH:mm"
-            style="width: 99%"
+        <el-form-item label="营业时间">
+          <!--          <el-time-picker-->
+          <!--            is-range-->
+          <!--            arrow-control-->
+          <!--            v-model="temp.opsTime"-->
+          <!--            range-separator="至"-->
+          <!--            start-placeholder="开始时间"-->
+          <!--            end-placeholder="结束时间"-->
+          <!--            placeholder="选择时间范围"-->
+          <!--            format = 'HH:mm'-->
+          <!--            value-format="HH:mm"-->
+          <!--            :picker-options="{-->
+          <!--              selectableRange: '00:00 - 24:00',-->
+          <!--              format: 'HH'-->
+          <!--            }">-->
+          <!--          </el-time-picker>-->
+          <el-time-select
+            v-model="temp.startTime"
+            placeholder="起始时间"
+            style="width: 47%; padding-right: 5px"
             :picker-options="{
-              format: 'HH:mm',
-              step: '00:30'
-            }">
-          </el-time-picker>
+              start: '00:00',
+              step: '01:00',
+              end: '24:00'
+            }"
+          />
+          <el-time-select
+            v-model="temp.endTime"
+            placeholder="结束时间"
+            style="width: 47%"
+            :picker-options="{
+              start: '00:00',
+              step: '01:00',
+              end: '24:00',
+              minTime: temp.startTime
+            }"
+          />
         </el-form-item>
 
         <el-form-item label="商店Logo" prop="logoPicValue">
@@ -166,12 +186,12 @@
         id="mapPage"
         width="100%"
         height="450px"
-        frameborder=0
-        src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=FMXBZ-TXULW-2SVRL-RY734-IDFSF-2QFWF&referer=chashi">
-      </iframe>
-      <br/>
-      <br/>
-      <el-row :gutter="20" >
+        frameborder="0"
+        src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=FMXBZ-TXULW-2SVRL-RY734-IDFSF-2QFWF&referer=chashi"
+      />
+      <br>
+      <br>
+      <el-row :gutter="20">
         <el-col :offset="19">
           <el-button type="primary" @click="configSelectAddress">
             确定选中地址
@@ -264,7 +284,7 @@ export default {
   beforeCreate() {
   },
   mounted() {
-    window.addEventListener('message',this.handleMapEvent)
+    window.addEventListener('message', this.handleMapEvent)
   },
   created() {
     this.statuss = getDictDataList('sys_status')
@@ -372,11 +392,13 @@ export default {
           // formData.append('longAlat', this.temp.longAlat)
           formData.append('merchantInfo', '')
           formData.append('usageNotice', '')
+          formData.append('startTime', this.temp.startTime)
+          formData.append('endTime', this.temp.endTime)
 
-          if (this.temp.opsTime) {
-            formData.append('startTime', this.temp.opsTime[0])
-            formData.append('endTime', this.temp.opsTime[1])
-          }
+          // if (this.temp.opsTime) {
+          //   formData.append('startTime', this.temp.opsTime[0])
+          //   formData.append('endTime', this.temp.opsTime[1])
+          // }
           createMerchantPic(formData).then(() => {
             // this.list.unshift(this.temp)
             this.fetchData()
@@ -422,11 +444,11 @@ export default {
       if (this.temp.longitude) {
         this.temp.longAlat = this.temp.longitude + ',' + this.temp.latitude
       }
-      if (this.temp.startTime) {
-        this.temp.opsTime = []
-        this.temp.opsTime.push(this.temp.startTime)
-        this.temp.opsTime.push(this.temp.endTime)
-      }
+      // if (this.temp.startTime) {
+      //   this.temp.opsTime = []
+      //   this.temp.opsTime.push(this.temp.startTime)
+      //   this.temp.opsTime.push(this.temp.endTime)
+      // }
     },
     handleUpdate(row) {
       this.chakan = false
@@ -463,11 +485,11 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
 
-      if (this.temp.startTime) {
-        this.temp.opsTime = []
-        this.temp.opsTime.push(this.temp.startTime)
-        this.temp.opsTime.push(this.temp.endTime)
-      }
+      // if (this.temp.startTime) {
+      //   this.temp.opsTime = []
+      //   this.temp.opsTime.push(this.temp.startTime)
+      //   this.temp.opsTime.push(this.temp.endTime)
+      // }
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -528,11 +550,13 @@ export default {
           formData.append('carouselUrlName', this.temp.carouselUrlName)
           formData.append('id', this.temp.id)
           formData.append('officeCode', this.temp.officeCode)
+          formData.append('startTime', this.temp.startTime)
+          formData.append('endTime', this.temp.endTime)
 
-          if (this.temp.opsTime) {
-            formData.append('startTime', this.temp.opsTime[0])
-            formData.append('endTime', this.temp.opsTime[1])
-          }
+          // if (this.temp.opsTime) {
+          //   formData.append('startTime', this.temp.opsTime[0])
+          //   formData.append('endTime', this.temp.opsTime[1])
+          // }
 
           for (var pair of formData.entries()) {
             console.log(pair[0] + ' - ' + pair[1].toString())
@@ -632,7 +656,7 @@ export default {
         // }))
         let isExist = false
         this.logoFileLists.forEach(function(file) {
-          if (file.uid === param.file.uid){
+          if (file.uid === param.file.uid) {
             isExist = true
           }
         })
@@ -709,7 +733,7 @@ export default {
         // }))
         let isExist = false
         this.bannerFileLists.forEach(function(file) {
-          if (file.uid === param.file.uid){
+          if (file.uid === param.file.uid) {
             isExist = true
           }
         })
@@ -723,7 +747,7 @@ export default {
         // }))
         let isExist = false
         this.bannerFileLists.forEach(function(file) {
-          if (file.uid === param.file.uid){
+          if (file.uid === param.file.uid) {
             isExist = true
           }
         })

@@ -59,10 +59,10 @@
           <el-input-number v-model="temp.reductionAmount" controls-position="right" label="减" />
         </el-form-item>
         <el-form-item label="开始日期" prop="startTime">
-          <el-date-picker v-model="temp.startTime" type="date" placeholder="请选择开始日期" />
+          <el-date-picker v-model="temp.startTime" type="date" placeholder="请选择开始日期" value-format="yyyy-MM-dd"/>
         </el-form-item>
         <el-form-item label="结束日期" prop="endTime">
-          <el-date-picker v-model="temp.endTime" type="date" placeholder="请选择结束日期" />
+          <el-date-picker v-model="temp.endTime" type="date" placeholder="请选择结束日期" value-format="yyyy-MM-dd"/>
         </el-form-item>
       </el-form>
       <div v-if="!chakan" slot="footer" class="dialog-footer">

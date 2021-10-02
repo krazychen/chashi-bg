@@ -52,3 +52,13 @@ export function getMerchantOrder(id) {
   })
 }
 
+
+// 获取茶室时间范围
+export function getTimeRange(data) {
+  return request({
+    url: '/csMerchantOrder/getTimeRange',
+    method: 'post',
+    data
+  })
+}
+

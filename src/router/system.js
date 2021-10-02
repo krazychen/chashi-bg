@@ -45,6 +45,20 @@ export const systemRoutes = [
     ]
   },
   {
+    path: '/roomUsed',
+    component: Layout,
+    name: '房态管理',
+    meta: { roles: ['cs:tearoom:page'], title: '房态管理', icon: 'example' },
+    children: [
+      {
+        path: 'merchantSetting',
+        name: '房态管理',
+        component: () => import('@/views/chashi/csRoomUsed'),
+        meta: { roles: ['cs:tearoom:page'], title: '房态管理', faicon: 'table' }
+      }
+    ]
+  },
+  {
     path: '/merchantSetting',
     component: Layout,
     name: '商户设置',

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-if="userType == 'superadmin' " v-model="listQuery.merchantId" placeholder="请选择商店">
+      <el-select v-if="userType === 'superadmin' " v-model="listQuery.merchantId" placeholder="请选择商店">
         <el-option
           v-for="item in merchantOptions"
           :key="item.value"
@@ -212,10 +212,19 @@ export default {
     // 获取当前的用户
     const userInfo = getLoginSysUserVo()
     const userInfoRole = userInfo.sysRoleList
+    this.listLoading = false
     if (userInfoRole) {
       userInfoRole.forEach(function(role) {
         if (role.code === 'superadmin') {
           that.userType = 'superadmin'
+          getMerchantList({}).then(response => {
+            const merchantOptionss = [{}]
+            response.data.records.forEach(function(obj) {
+              const merchantOption = { value: obj.id, label: obj.merchantName }
+              merchantOptionss.push(merchantOption)
+            })
+            that.merchantOptions = merchantOptionss
+          })
         } else {
           that.userType = 'admin'
           getMerchant(userInfo.officeCode).then(response => {
@@ -231,16 +240,16 @@ export default {
 
   },
   created() {
-    if (this.userType === 'superadmin') {
-      getMerchantList({}).then(response => {
-        const merchantOptionss = [{}]
-        response.data.records.forEach(function(obj) {
-          const merchantOption = { value: obj.id, label: obj.merchantName }
-          merchantOptionss.push(merchantOption)
-        })
-        this.merchantOptions = merchantOptionss
-      })
-    }
+    // if (this.userType === 'superadmin') {
+    //   getMerchantList({}).then(response => {
+    //     const merchantOptionss = [{}]
+    //     response.data.records.forEach(function(obj) {
+    //       const merchantOption = { value: obj.id, label: obj.merchantName }
+    //       merchantOptionss.push(merchantOption)
+    //     })
+    //     this.merchantOptions = merchantOptionss
+    //   })
+    // }
   },
   methods: {
     fetchData() {
