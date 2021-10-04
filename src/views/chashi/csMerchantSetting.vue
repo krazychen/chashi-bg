@@ -165,7 +165,31 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="智能锁设备">智能锁设备</el-tab-pane>
+      <el-tab-pane label="智能锁设备">
+        <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
+          <el-tag>通通锁配置</el-tag><br/>
+          <el-form-item label="app_id" prop="ttlClientId">
+            <el-input v-model="temp.ttlClientId" placeholder="ttlock开放平台注册时分配的app_id" />
+          </el-form-item>
+          <el-form-item label="app_secret" prop="ttlClientSecret">
+            <el-input v-model="temp.ttlClientSecret" placeholder="ttlock开放平台注册时分配的app_secret" />
+          </el-form-item>
+          <el-form-item label="lockId" prop="ttlLockId">
+            <el-input v-model="temp.ttlLockId" placeholder="ttlock锁的id" />
+          </el-form-item>
+          <el-form-item label="登录账号" prop="ttlUsername">
+            <el-input v-model="temp.ttlUsername" placeholder="科技侠或通通锁APP的登录账号" />
+          </el-form-item>
+          <el-form-item label="账号密码" prop="ttlPassword">
+            <el-input v-model="temp.ttlPassword" placeholder="科技侠或通通锁APP的登录账号密码" />
+          </el-form-item>
+          <el-form-item>
+            <el-button>取消</el-button>
+            <el-button type="primary" @click="updateData()">保存</el-button>
+          </el-form-item>
+        </el-form>
+
+      </el-tab-pane>
       <el-tab-pane label="智能取电设备">智能取电设备</el-tab-pane>
     </el-tabs>
 
@@ -274,6 +298,11 @@ export default {
         bannerUploadFile: [],
         startTime: '',
         endTime: '',
+        ttlClientId: '',
+        ttlClientSecret: '',
+        ttlLockId: '',
+        ttlUsername: '',
+        ttlPassword: ''
       },
       labels: [],
       facilities: [],
@@ -457,6 +486,11 @@ export default {
           formData.append('orderRefundFee', this.temp.orderRefundFee)
           formData.append('startTime', this.temp.startTime)
           formData.append('endTime', this.temp.endTime)
+          formData.append('ttlClientId', this.temp.ttlClientId)
+          formData.append('ttlClientSecret', this.temp.ttlClientSecret)
+          formData.append('ttlUsername', this.temp.ttlUsername)
+          formData.append('ttlPassword', this.temp.ttlPassword)
+          formData.append('ttlLockId', this.temp.ttlLockId)
           if (this.labels) {
             let tempLabelId = ''
             let tempLabelName = ''
