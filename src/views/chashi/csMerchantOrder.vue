@@ -63,7 +63,8 @@
           <el-table-column align="center" prop="orderOriginPrice" label="订单金额" width="100" />
           <el-table-column align="center" prop="orderDate" label="使用日期" width="120" />
           <el-table-column align="center" prop="orderTimerage" label="使用时间段" width="180" />
-          <el-table-column align="center" prop="paymentType" label="支付类型" width="120" :formatter="paymentType" />
+          <el-table-column align="center" prop="keyboardPwd" label="开锁密码" width="100" />
+          <el-table-column align="center" prop="paymentType" label="支付类型" width="100" :formatter="paymentType" />
           <el-table-column align="center" prop="status" label="订单状态" width="120" :formatter="orderStatus"/>
           <el-table-column label="订单详情" align="center" width="130" class-name="small-padding fixed-width">
             <template slot-scope="scope">
