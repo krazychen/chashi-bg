@@ -20,8 +20,8 @@
       </div>
     </div>
 
-    <div style="width:580px;margin:0 auto; padding:20px 0;">
-      Copyright ©2021-2022 荣景茶业合作联社 <a href="http://www.beian.miit.gov.cn/" target="_blank">闽ICP备15006570号</a>
+    <div style="width:333px;margin:0 auto; padding:20px 0;">
+      Copyright ©2021-2022 荣景茶业合作联社 <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备15006570号</a>
     </div>
   </div>
 </template>
