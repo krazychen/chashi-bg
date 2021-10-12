@@ -21,8 +21,7 @@
     </div>
 
     <div style="width:580px;margin:0 auto; padding:20px 0;">
-      Copyright ©2021-2022 荣景茶业合作联社 <a href="http://www.beian.miit.gov.cn/" target="_blank">待提供</a>
-      <a target="_blank" href="待提供" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;padding: 6px 0px 0px 5px;"><img src="@/assets/beian.jpg" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; ">待提供</p></a>
+      Copyright ©2021-2022 荣景茶业合作联社 <a href="http://www.beian.miit.gov.cn/" target="_blank">闽ICP备15006570号</a>
     </div>
   </div>
 </template>
