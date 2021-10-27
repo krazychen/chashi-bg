@@ -265,6 +265,13 @@ export default {
     updateData() {
       if (this.fileLists.length > 0) {
         this.rulesText.logoUrl = []
+      } else {
+        this.$notify({
+          title: '失败',
+          message: '请上传logo图片',
+          duration: 2000
+        })
+        return
       }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
