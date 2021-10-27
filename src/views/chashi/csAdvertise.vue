@@ -146,7 +146,7 @@ export default {
         view: '查看'
       },
       rulesText: {
-        picUrl: [{ required: true, message: '请上传logo', trigger: 'blur' }],
+        // picUrl: [{ required: true, message: '请上传logo', trigger: 'blur' }],
         jumpLink: [{ required: true, message: '请输入跳转链接', trigger: 'blur' }],
         sort: [{ required: true, message: '请输入排序号', trigger: 'blur' }]
       },
