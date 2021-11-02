@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import { getConfigList, createPicConfig, createConfig, updateConfig, deleteConfig } from '@/api/system/sysConfig'
+import { getConfigList, createPicConfig, createConfig, updateConfig, deleteConfig, updatePicConfig  } from '@/api/system/sysConfig'
 import Pagination from '@/components/Pagination'
 import waves from '@/directive/waves' // waves directive
 import { getDictDataList } from '@/utils/dictUtils'
@@ -190,6 +190,7 @@ export default {
         remarks: ''
       },
       fileLists: [],
+      delFileList: [],
       localFileList: [],
       headers: { 'Content-Type': 'multipart/form-data' },
       dialogFormVisible: false,
@@ -243,6 +244,7 @@ export default {
         configKey: '',
         configTextValue: '',
         configPicValue: '',
+        configPicName: '',
         configContentValue: '',
         configType: '0',
         uploadFile: [],
@@ -327,23 +329,64 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          updateConfig(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
+          if (this.temp.configType === '1') {
+            const formData = new FormData()
+
+            // 新增的文件
+            if (this.fileLists) {
+              this.fileLists.forEach(function(file) {
+                if (!file.url) {
+                  formData.append('uploadFileAdd', file, file.name)
+                }
+              })
             }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
+            // 处理删除的文件
+            if (this.delFileList.length > 0) {
+              const delFiles = []
+              this.delFileList.forEach(function(fileName) {
+                delFiles.push(fileName.name)
+              })
+              formData.append('uploadFileDel', delFiles)
+            }
+
+            formData.append('id', this.temp.id)
+            formData.append('configName', this.temp.configName)
+            formData.append('configKey', this.temp.configKey)
+            formData.append('configType', this.temp.configType)
+            formData.append('configPicValue', this.temp.configPicValue)
+            formData.append('configPicName', this.temp.configPicName)
+            formData.append('isSys', this.temp.isSys)
+            formData.append('remarks', this.temp.remarks)
+            updatePicConfig(formData).then(() => {
+              // this.list.unshift(this.temp)
+              this.fetchData()
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
+          } else {
+            const tempData = Object.assign({}, this.temp)
+            updateConfig(tempData).then(() => {
+              for (const v of this.list) {
+                if (v.id === this.temp.id) {
+                  const index = this.list.indexOf(v)
+                  this.list.splice(index, 1, this.temp)
+                  break
+                }
+              }
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '更新成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          }
         }
       })
     },
@@ -392,7 +435,36 @@ export default {
       //     type: 'image/jpeg'
       //   }))
       // }
+      // this.fileLists = fileList
+
       this.fileLists = fileList
+      if (this.localFileList.length > 0) {
+        const tempLocalFileList = []
+        const tempDelFileList = this.delFileList
+        const urlNameArr = this.temp.configPicName.split(',')
+        const urlValueArr = this.temp.configPicValue.split(',')
+        const tempUrlNameArr = []
+        const tempUrlValueArr = []
+        let remIndex = 0
+        this.localFileList.forEach(function(bannerFile) {
+          if (bannerFile.name !== file.name) {
+            tempLocalFileList.push(bannerFile)
+          } else {
+            tempDelFileList.push(bannerFile)
+            urlNameArr.forEach(function(fileName) {
+              if (fileName !== bannerFile.name) {
+                tempUrlNameArr.push(fileName)
+                tempUrlValueArr.push(urlValueArr[remIndex])
+              }
+              remIndex++
+            })
+          }
+        })
+        this.localFileList = tempLocalFileList
+        this.delFileList = tempDelFileList
+        this.temp.configPicName = tempUrlNameArr.toString()
+        this.temp.configPicValue = tempUrlValueArr.toString()
+      }
     },
     handleExceed(files, fileList) {
       this.$message.warning(`当前限制选择 15 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)

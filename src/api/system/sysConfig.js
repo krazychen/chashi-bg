@@ -18,6 +18,15 @@ export function createPicConfig(data) {
   })
 }
 
+// 创建图片参数配置
+export function updatePicConfig(data) {
+  return request({
+    url: '/sysConfig/updateConfigPic',
+    method: 'post',
+    data
+  })
+}
+
 // 创建参数配置
 export function createConfig(data) {
   return request({
