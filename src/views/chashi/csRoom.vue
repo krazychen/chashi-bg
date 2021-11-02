@@ -70,6 +70,16 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="时间间隔" prop="timeRange">
+          <el-select v-model="timeRange" placeholder="请选择">
+            <el-option
+              v-for="item in rangeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="建议使用人数" prop="recomNumUsers">
           <el-input v-model="temp.recomNumUsers" placeholder="请输入建议使用人数(格式:3~5)" />
         </el-form-item>
@@ -163,6 +173,7 @@ export default {
         { value: '5', label: '5小时' }, { value: '6', label: '6小时' },
         { value: '7', label: '7小时' }, { value: '8', label: '8小时' },
         { value: '9', label: '9小时' }, { value: '10', label: '10小时' }],
+      rangeOptions: [{ value: '0.5', label: '0.5小时' }, { value: '1', label: '1小时' }],
       temp: {
         id: undefined,
         roomName: '',
@@ -170,6 +181,7 @@ export default {
         facilitiesName: '',
         hoursAmount: '',
         startTime: '1',
+        timeRange: '0.5',
         recomNumUsers: '',
         roomLogoUrl: '',
         roomLogoName: '',
@@ -249,6 +261,7 @@ export default {
         facilitiesName: '',
         hoursAmount: '',
         startTime: '1',
+        timeRange: '0.5',
         recomNumUsers: '',
         roomLogoUrl: '',
         roomLogoName: '',
@@ -261,6 +274,7 @@ export default {
       }
       this.facilities = []
       this.startTime = '1'
+      this.timeRange = '0.5'
       this.logoFileLists = []
       this.logoDelFileList = []
       this.bannerFileLists = []
@@ -319,6 +333,7 @@ export default {
           }
           formData.append('hoursAmount', this.temp.hoursAmount)
           formData.append('startTime', this.startTime)
+          formData.append('timeRange', this.timeRange)
           formData.append('recomNumUsers', this.temp.recomNumUsers)
           formData.append('doorOpenMethod', 0)
           formData.append('sort', this.temp.sort)
@@ -482,6 +497,7 @@ export default {
           formData.append('facilitiesId', this.facilities)
           formData.append('hoursAmount', this.temp.hoursAmount)
           formData.append('startTime', this.startTime)
+          formData.append('timeRange', this.timeRange)
           formData.append('recomNumUsers', this.temp.recomNumUsers)
           formData.append('doorOpenMethod', 0)
           formData.append('sort', this.temp.sort)
