@@ -16,12 +16,7 @@
           </el-form-item>
           <el-form-item label="标签" prop="merchantPassword">
             <el-select v-model="labels" multiple placeholder="请选择">
-              <el-option
-                v-for="item in labelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
+              <el-option v-for="item in labelOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="所在城市" prop="city">
@@ -121,23 +116,13 @@
         <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
           <el-form-item label="综合设施" prop="facilities">
             <el-select v-model="facilities" multiple placeholder="请选择">
-              <el-option
-                v-for="item in facilitieOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
+              <el-option v-for="item in facilitieOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="服务项目" prop="services">
             <el-select v-model="services" multiple placeholder="请选择">
-              <el-option
-                v-for="item in facilitieOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
+              <el-option v-for="item in facilitieOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
 
@@ -190,7 +175,101 @@
         </el-form>
 
       </el-tab-pane>
-      <el-tab-pane label="智能取电设备">智能取电设备</el-tab-pane>
+      <el-tab-pane label="智能取电设备">
+
+
+      </el-tab-pane>
+
+      <el-tab-pane label="保洁维护">
+        <el-tag>一条记录一个保洁排班信息，可以多条记录，只要时间是生效的，就会通知到对方，用户必须关注公众号并且注册了共享茶室帐户的用户</el-tag><br/><br/>
+
+        <div class="filter-container">
+          <el-date-picker v-model="cleanListQuery.cleanStartTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择值班开始时间"/>
+          <el-date-picker v-model="cleanListQuery.cleanEndTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择值班开始时间"/>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleCleanFilter">
+            查询
+          </el-button>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="resetClean">
+            重置
+          </el-button>
+          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCleanDialog(null, 'create')">
+            新增
+          </el-button>
+        </div>
+
+        <el-table v-loading="cleanListLoading" :data="cleanList" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
+          <el-table-column align="center" prop="startTime" label="值班开始时间" />
+          <el-table-column align="center" prop="endTime" label="值班结束时间" />
+          <el-table-column align="center" prop="notifyTime" label="通知时点" />
+          <el-table-column align="center" prop="notifyFrontTime" label="时点前" />
+          <el-table-column align="center" prop="notifyRearTime" label="时点后" />
+        </el-table>
+        <pagination v-show="cleanTotal>0" :total="cleanTotal" :page.sync="cleanListQuery.current" :limit.sync="cleanListQuery.size" @pagination="fetchCleanData" />
+
+        <el-dialog :title="textMap[dialogCleanStatus]" :visible.sync="dialogCleanFormVisible">
+          <el-form ref="dataForm" :rules="rulesCleanText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
+            <el-form-item label="值班开始时间" prop="startTime">
+              <el-input v-model="tempClean.startTime" placeholder="请输入值班开始时间" />
+            </el-form-item>
+            <el-form-item label="值班结束时间" prop="endTime">
+              <el-input v-model="tempClean.endTime" placeholder="请输入值班结束时间" />
+            </el-form-item>
+            <el-form-item label="通知时点" prop="notifyTime">
+              <el-select v-model="tempClean.notifyTime" placeholder="请选择">
+                <el-option v-for="item in notifyTimeOptions" :key="item.value" :label="item.label" :value="item.value"/>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="提早X分钟前" prop="notifyFrontTime">
+              <el-input v-model="tempClean.notifyFrontTime" placeholder="请输入时间">
+                <template slot="append">分钟</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="结束X分钟后" prop="notifyRearTime">
+              <el-input v-model="tempClean.notifyRearTime" placeholder="请输入时间">
+                <template slot="append">分钟</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="保洁员" prop="openid">
+              <el-input v-model="tempClean.openid" placeholder="请选择值班保洁员的openid" />
+            </el-form-item>
+          </el-form>
+          <div v-if="!cleanChakan" slot="footer" class="dialog-footer">
+            <el-button @click="dialogCleanFormVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" @click="dialogCleanStatus==='create'?createCleanData():updateCleanData()">
+              确定
+            </el-button>
+          </div>
+        </el-dialog>
+
+        <el-dialog title="选择值班保洁员" :visible.sync="dialogReleaseFormVisible">
+          <div class="filter-container">
+            <el-input v-model="userListQuery.nameAphone" placeholder="请输入用户昵称/手机号" style="width: 200px;" class="filter-item" />
+            <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleReleaseFilter">
+              查询
+            </el-button>
+          </div>
+          <el-table v-loading="userListLoading" :data="userList" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
+            <el-table-column align="center" label="头像" width="180 ">
+              <template slot-scope="scope">
+                {{ scope.row.avatarUrl }}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="nickname" label="昵称" />
+            <el-table-column align="center" prop="phone" label="手机号" />
+            <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+              <template slot-scope="scope">
+                <el-button type="primary" @click="handleRelease(scope.row)" >确定选择</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+
+          <pagination v-show="userTotal>0" :total="userTotal" :page.sync="userListQuery.current" :limit.sync="userListQuery.size" @pagination="fetchReleaseData" />
+        </el-dialog>
+      </el-tab-pane>
+
+      <el-tab-pane label="值班维护">智能取电设备</el-tab-pane>
     </el-tabs>
 
     <el-dialog title="选择地址" :visible.sync="dialogMapVisible">
@@ -216,7 +295,7 @@
 </template>
 
 <script>
-import { getMerchant, updateMerchant } from '@/api/chashi/csMerchant'
+import { getMerchant, updateMerchant, getCleanList } from '@/api/chashi/csMerchant'
 import { getLoginSysUserVo } from '@/utils/auth'
 import { getCsLabelList } from '@/api/chashi/csLabel.js'
 import { getFacilitiesList } from '@/api/chashi/csFacilities.js'
@@ -232,14 +311,22 @@ import LinkPlugin from '@ckeditor/ckeditor5-link/src/link'
 import ListPlugin from '@ckeditor/ckeditor5-list/src/list'
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph'
 import { unescape } from '../../utils'
+import { getWxUserList } from '@/api/chashi/wxUser'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'MerchantSetting',
+  components: { Pagination },
   directives: { waves },
   data() {
     return {
       editor1: DecoupledEditor,
       editor2: DecoupledEditor,
+      textMap: {
+        update: '编辑',
+        create: '创建',
+        view: '查看'
+      },
       editorConfig: {
         // The configuration of the editor.
         plugins: [
@@ -304,6 +391,15 @@ export default {
         ttlUsername: '',
         ttlPassword: ''
       },
+      cleanList: null,
+      cleanListLoading: false,
+      cleanTotal: 0,
+      cleanListQuery: {
+        current: 1,
+        cleanStartTime: '',
+        cleanEndTime: '',
+        notifyType: 0
+      },
       labels: [],
       facilities: [],
       services: [],
@@ -321,6 +417,32 @@ export default {
         merchantPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         orderFee: [{ required: true, message: '请输入订单手续费', trigger: 'blur' }],
         contactPhonse: [{ required: true, message: '请输入联系手机', trigger: 'blur' }]
+      },
+      cleanChakan: null,
+      dialogCleanFormVisible: false,
+      dialogCleanStatus: '',
+      tempClean: {
+        merchantId: '',
+        startTime: '',
+        endTime: '',
+        notifyType: '',
+        notifyTime: '',
+        notifyFrontTime: '',
+        notifyRearTime: '',
+        wxuserId: '',
+        nickname: '',
+        openid: ''
+      },
+      notifyTimeOptions: [{ value: '0', label: '预定' }, { value: '1', label: '消费结束' }],
+      rulesCleanText: {
+
+      },
+      dialogReleaseFormVisible: false,
+      userList: null,
+      userListLoading: false,
+      userTotal: 0,
+      userListQuery: {
+        nameAphone: ''
       }
     }
   },
@@ -733,7 +855,69 @@ export default {
 
     configSelectAddress() {
       this.dialogMapVisible = false
+    },
+
+    // ============== 保洁相关 =======================
+    resetClean() { // 重置
+      this.cleanListQuery.cleanStartTime = ''
+      this.cleanListQuery.cleanEndTime = ''
+      this.fetchCleanData()
+    },
+
+    handleCleanFilter() {
+      this.cleanListQuery.page = 1
+      this.fetchCleanData()
+    },
+    fetchCleanData() {
+      this.cleanListLoading = true
+      getCleanList(this.cleanListQuery).then(response => {
+        this.cleanList = response.data.records
+        this.cleanTotal = parseInt(response.data.total)
+        this.cleanListLoading = false
+      })
+    },
+    handleCleanDialog(row, type) { // 创建/查看/编辑详情
+      if (type === 'create') {
+        this.cleanChakan = false
+        this.dialogCleanStatus = 'create'
+        this.resetClean()
+      } else if (type === 'update') {
+        this.cleanChakan = false
+        this.dialogCleanStatus = 'update'
+        this.temp = Object.assign({}, row) // copy obj
+      } else {
+        this.cleanChakan = true
+        this.dialogCleanStatus = 'view'
+        this.temp = Object.assign({}, row) // copy obj
+      }
+      this.dialogCleanFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    selectClean() {
+      this.dialogReleaseFormVisible = true
+    },
+    handleReleaseFilter() {
+      this.userListQuery.page = 1
+      this.fetchReleaseData()
+    },
+    fetchReleaseData() {
+      this.userListLoading = true
+      getWxUserList(this.userListQuery).then(response => {
+        this.userList = response.data.records
+        this.userTotal = parseInt(response.data.total)
+        this.userListLoading = false
+      })
+    },
+    handleRelease(row) {
+      console.log(row)
+      this.tempClean.wxuserId = row.id
+      this.tempClean.nickname = row.nickname
+      this.tempClean.openid = row.openid
+      this.dialogReleaseFormVisible = false
     }
+    // ============== 保洁相关 =======================
   }
 }
 </script>

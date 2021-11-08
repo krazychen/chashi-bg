@@ -61,3 +61,11 @@ export function getMerchant(id) {
   })
 }
 
+// 获取保洁信息
+export function getCleanList(data) {
+  return request({
+    url: '/csMerchantNotify/getPageList',
+    method: 'post',
+    data
+  })
+}

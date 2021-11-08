@@ -77,7 +77,7 @@
 
     <el-dialog title="发放优惠卷" :visible.sync="dialogReleaseFormVisible">
       <div class="filter-container">
-        <el-input v-model="userListQuery.userName" placeholder="请输入用户昵称/手机号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleReleaseFilter" />
+        <el-input v-model="userListQuery.nameAphone" placeholder="请输入用户昵称/手机号" style="width: 200px;" class="filter-item" />
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleReleaseFilter">
           查询
         </el-button>
