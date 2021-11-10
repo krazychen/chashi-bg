@@ -71,7 +71,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="时间间隔" prop="timeRange">
-          <el-select v-model="timeRange" placeholder="请选择">
+          <el-select v-model="temp.timeRange" placeholder="请选择">
             <el-option
               v-for="item in rangeOptions"
               :key="item.value"
@@ -486,14 +486,15 @@ export default {
           }
 
           formData.append('roomName', this.temp.roomName)
-          if (this.temp.facilitiesId) {
-            const idArr = this.temp.facilitiesId.split(',')
-            const optionss = []
-            idArr.forEach(function(obj, index) {
-              optionss.push(obj)
-            })
-            this.facilities = optionss
-          }
+          // if (this.facilitiesId) {
+          //   console.log(this.facilitiesId)
+          //   const idArr = this.facilitiesId.split(',')
+          //   const optionss = []
+          //   idArr.forEach(function(obj, index) {
+          //     optionss.push(obj)
+          //   })
+          //   this.facilities = optionss
+          // }
           formData.append('facilitiesId', this.facilities)
           formData.append('hoursAmount', this.temp.hoursAmount)
           formData.append('startTime', this.startTime)

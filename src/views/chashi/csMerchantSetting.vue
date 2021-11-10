@@ -12,11 +12,11 @@
             <el-input v-model="temp.merchantName" placeholder="请输入商店名称" />
           </el-form-item>
           <el-form-item label="联系手机" prop="contactPhonse">
-            <el-input v-model="temp.contactPhonse" placeholder="联系手机"/>
+            <el-input v-model="temp.contactPhonse" placeholder="联系手机" />
           </el-form-item>
-          <el-form-item label="标签" prop="merchantPassword">
+          <el-form-item label="标签" prop="labels">
             <el-select v-model="labels" multiple placeholder="请选择">
-              <el-option v-for="item in labelOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              <el-option v-for="item in labelOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="所在城市" prop="city">
@@ -24,7 +24,7 @@
           </el-form-item>
           <el-form-item label="地址" prop="address">
             <el-input v-model="temp.address" placeholder="地址" style="width: 71%; padding-right: 10px" :disabled="true" />
-            <el-button @click="selectAddress" type="primary">选择地址</el-button>
+            <el-button type="primary" @click="selectAddress">选择地址</el-button>
           </el-form-item>
           <el-form-item label="经纬度" prop="longAlat">
             <el-input v-model="temp.longAlat" placeholder="经纬度" :disabled="true" />
@@ -47,21 +47,21 @@
               placeholder="起始时间"
               style="width: 47%; padding-right: 5px"
               :picker-options="{
-              start: '00:00',
-              step: '01:00',
-              end: '24:00'
-            }"
+                start: '00:00',
+                step: '01:00',
+                end: '24:00'
+              }"
             />
             <el-time-select
               v-model="temp.endTime"
               placeholder="结束时间"
               style="width: 47%"
               :picker-options="{
-              start: '00:00',
-              step: '01:00',
-              end: '24:00',
-              minTime: temp.startTime
-            }"
+                start: '00:00',
+                step: '01:00',
+                end: '24:00',
+                minTime: temp.startTime
+              }"
             />
           </el-form-item>
           <el-form-item>
@@ -116,13 +116,13 @@
         <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
           <el-form-item label="综合设施" prop="facilities">
             <el-select v-model="facilities" multiple placeholder="请选择">
-              <el-option v-for="item in facilitieOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              <el-option v-for="item in facilitieOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
 
           <el-form-item label="服务项目" prop="services">
             <el-select v-model="services" multiple placeholder="请选择">
-              <el-option v-for="item in facilitieOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              <el-option v-for="item in facilitieOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
 
@@ -152,7 +152,7 @@
       </el-tab-pane>
       <el-tab-pane label="智能锁设备">
         <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
-          <el-tag>通通锁配置</el-tag><br/>
+          <el-tag>通通锁配置</el-tag><br>
           <el-form-item label="app_id" prop="ttlClientId">
             <el-input v-model="temp.ttlClientId" placeholder="ttlock开放平台注册时分配的app_id" />
           </el-form-item>
@@ -175,17 +175,14 @@
         </el-form>
 
       </el-tab-pane>
-      <el-tab-pane label="智能取电设备">
-
-
-      </el-tab-pane>
+      <el-tab-pane label="智能取电设备" />
 
       <el-tab-pane label="保洁维护">
-        <el-tag>一条记录一个保洁排班信息，可以多条记录，只要时间是生效的，就会通知到对方，用户必须关注公众号并且注册了共享茶室帐户的用户</el-tag><br/><br/>
+        <el-tag>一条记录一个保洁排班信息，可以多条记录，只要时间是生效的，就会通知到对方，用户必须关注公众号，查看openid方法查看https://www.it120.cc/help/dbtods.html</el-tag><br><br>
 
         <div class="filter-container">
-          <el-date-picker v-model="cleanListQuery.cleanStartTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择值班开始时间"/>
-          <el-date-picker v-model="cleanListQuery.cleanEndTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择值班开始时间"/>
+          <el-date-picker v-model="cleanListQuery.queryStartTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择值班开始时间" />
+          <el-date-picker v-model="cleanListQuery.queryEndTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择值班开始时间" />
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleCleanFilter">
             查询
           </el-button>
@@ -200,27 +197,36 @@
         <el-table v-loading="cleanListLoading" :data="cleanList" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
           <el-table-column align="center" prop="startTime" label="值班开始时间" />
           <el-table-column align="center" prop="endTime" label="值班结束时间" />
-          <el-table-column align="center" prop="notifyTime" label="通知时点" />
+          <el-table-column align="center" prop="notifyTime" label="通知时点" :formatter="notifyTimeFormat" />
           <el-table-column align="center" prop="notifyFrontTime" label="时点前" />
           <el-table-column align="center" prop="notifyRearTime" label="时点后" />
+          <el-table-column align="center" prop="openid" label="保洁员OpenId" />
+          <el-table-column align="center" prop="remark" label="备注" />
+          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+            <template slot-scope="scope">
+              <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleCleanDialog(scope.row, 'view')" />
+              <i class="el-icon-edit" title="修改" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleCleanDialog(scope.row, 'update')" />
+              <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handleCleanDialog(scope.row)" />
+            </template>
+          </el-table-column>
         </el-table>
         <pagination v-show="cleanTotal>0" :total="cleanTotal" :page.sync="cleanListQuery.current" :limit.sync="cleanListQuery.size" @pagination="fetchCleanData" />
 
         <el-dialog :title="textMap[dialogCleanStatus]" :visible.sync="dialogCleanFormVisible">
-          <el-form ref="dataForm" :rules="rulesCleanText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
+          <el-form ref="cleanDataForm" :rules="rulesCleanText" :model="tempClean" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
             <el-form-item label="值班开始时间" prop="startTime">
-              <el-input v-model="tempClean.startTime" placeholder="请输入值班开始时间" />
+              <el-date-picker v-model="tempClean.startTime" placeholder="请输入值班开始时间" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" />
             </el-form-item>
             <el-form-item label="值班结束时间" prop="endTime">
-              <el-input v-model="tempClean.endTime" placeholder="请输入值班结束时间" />
+              <el-date-picker v-model="tempClean.endTime" placeholder="请输入值班结束时间" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" />
             </el-form-item>
             <el-form-item label="通知时点" prop="notifyTime">
-              <el-select v-model="tempClean.notifyTime" placeholder="请选择">
-                <el-option v-for="item in notifyTimeOptions" :key="item.value" :label="item.label" :value="item.value"/>
+              <el-select v-model="tempClean.notifyTime" placeholder="请选择" @change="notifyTimeChange">
+                <el-option v-for="item in notifyTimeOptions" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
             <el-form-item label="提早X分钟前" prop="notifyFrontTime">
-              <el-input v-model="tempClean.notifyFrontTime" placeholder="请输入时间">
+              <el-input v-model="tempClean.notifyFrontTime" placeholder="请输入时间" :disabled="notifyFrontTimeState">
                 <template slot="append">分钟</template>
               </el-input>
             </el-form-item>
@@ -232,6 +238,9 @@
             <el-form-item label="保洁员" prop="openid">
               <el-input v-model="tempClean.openid" placeholder="请选择值班保洁员的openid" />
             </el-form-item>
+            <el-form-item label="备注" prop="remark">
+              <el-input v-model="tempClean.remark" type="textarea" :rows="3" placeholder="请输入备注，用来区分保洁员" />
+            </el-form-item>
           </el-form>
           <div v-if="!cleanChakan" slot="footer" class="dialog-footer">
             <el-button @click="dialogCleanFormVisible = false">
@@ -242,34 +251,84 @@
             </el-button>
           </div>
         </el-dialog>
-
-        <el-dialog title="选择值班保洁员" :visible.sync="dialogReleaseFormVisible">
-          <div class="filter-container">
-            <el-input v-model="userListQuery.nameAphone" placeholder="请输入用户昵称/手机号" style="width: 200px;" class="filter-item" />
-            <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleReleaseFilter">
-              查询
-            </el-button>
-          </div>
-          <el-table v-loading="userListLoading" :data="userList" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
-            <el-table-column align="center" label="头像" width="180 ">
-              <template slot-scope="scope">
-                {{ scope.row.avatarUrl }}
-              </template>
-            </el-table-column>
-            <el-table-column align="center" prop="nickname" label="昵称" />
-            <el-table-column align="center" prop="phone" label="手机号" />
-            <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
-              <template slot-scope="scope">
-                <el-button type="primary" @click="handleRelease(scope.row)" >确定选择</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-
-          <pagination v-show="userTotal>0" :total="userTotal" :page.sync="userListQuery.current" :limit.sync="userListQuery.size" @pagination="fetchReleaseData" />
-        </el-dialog>
       </el-tab-pane>
 
-      <el-tab-pane label="值班维护">智能取电设备</el-tab-pane>
+      <el-tab-pane label="值班维护">
+
+        <el-tag>一条记录一个值班排班信息，可以多条记录，只要时间是生效的，就会通知到对方，用户必须关注公众号，查看openid方法查看https://www.it120.cc/help/dbtods.html</el-tag><br><br>
+
+        <div class="filter-container">
+          <el-date-picker v-model="workListQuery.queryStartTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择值班开始时间" />
+          <el-date-picker v-model="workListQuery.queryEndTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择值班开始时间" />
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleWorkFilter">
+            查询
+          </el-button>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="resetWork">
+            重置
+          </el-button>
+          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleWorkDialog(null, 'create')">
+            新增
+          </el-button>
+        </div>
+
+        <el-table v-loading="workListLoading" :data="workList" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
+          <el-table-column align="center" prop="startTime" label="值班开始时间" />
+          <el-table-column align="center" prop="endTime" label="值班结束时间" />
+          <el-table-column align="center" prop="notifyTime" label="通知时点" :formatter="notifyTimeFormat" />
+          <el-table-column align="center" prop="notifyFrontTime" label="时点前" />
+          <el-table-column align="center" prop="notifyRearTime" label="时点后" />
+          <el-table-column align="center" prop="openid" label="值班员OpenId" />
+          <el-table-column align="center" prop="remark" label="备注" />
+          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+            <template slot-scope="scope">
+              <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleWorkDialog(scope.row, 'view')" />
+              <i class="el-icon-edit" title="修改" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleWorkDialog(scope.row, 'update')" />
+              <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handlewWorkDialog(scope.row)" />
+            </template>
+          </el-table-column>
+        </el-table>
+        <pagination v-show="workTotal>0" :total="workTotal" :page.sync="workListQuery.current" :limit.sync="workListQuery.size" @pagination="fetchWorkData" />
+
+        <el-dialog :title="textMap[dialogWorkStatus]" :visible.sync="dialogWorkFormVisible">
+          <el-form ref="workDataForm" :rules="rulesCleanText" :model="tempWork" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
+            <el-form-item label="值班开始时间" prop="startTime">
+              <el-date-picker v-model="tempWork.startTime" placeholder="请输入值班开始时间" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" />
+            </el-form-item>
+            <el-form-item label="值班结束时间" prop="endTime">
+              <el-date-picker v-model="tempWork.endTime" placeholder="请输入值班结束时间" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" />
+            </el-form-item>
+            <el-form-item label="通知时点" prop="notifyTime">
+              <el-select v-model="tempWork.notifyTime" placeholder="请选择" @change="workNotifyTimeChange">
+                <el-option v-for="item in notifyTimeOptions" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="提早X分钟前" prop="notifyFrontTime">
+              <el-input v-model="tempWork.notifyFrontTime" placeholder="请输入时间" :disabled="workNotifyFrontTimeState">
+                <template slot="append">分钟</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="结束X分钟后" prop="notifyRearTime">
+              <el-input v-model="tempWork.notifyRearTime" placeholder="请输入时间">
+                <template slot="append">分钟</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="保洁员" prop="openid">
+              <el-input v-model="tempWork.openid" placeholder="请选择值班保洁员的openid" />
+            </el-form-item>
+            <el-form-item label="备注" prop="remark">
+              <el-input v-model="tempWork.remark" type="textarea" :rows="3" placeholder="请输入备注，用来区分值班员" />
+            </el-form-item>
+          </el-form>
+          <div v-if="!workChakan" slot="footer" class="dialog-footer">
+            <el-button @click="dialogWorkFormVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" @click="dialogWorkStatus==='create'?createWorkData():updateWorkData()">
+              确定
+            </el-button>
+          </div>
+        </el-dialog>
+      </el-tab-pane>
     </el-tabs>
 
     <el-dialog title="选择地址" :visible.sync="dialogMapVisible">
@@ -277,12 +336,12 @@
         id="mapPage"
         width="100%"
         height="450px"
-        frameborder=0
-        src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=FMXBZ-TXULW-2SVRL-RY734-IDFSF-2QFWF&referer=chashi">
-      </iframe>
-      <br/>
-      <br/>
-      <el-row :gutter="20" >
+        frameborder="0"
+        src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=FMXBZ-TXULW-2SVRL-RY734-IDFSF-2QFWF&referer=chashi"
+      />
+      <br>
+      <br>
+      <el-row :gutter="20">
         <el-col :offset="19">
           <el-button type="primary" @click="configSelectAddress">
             确定选中地址
@@ -295,7 +354,7 @@
 </template>
 
 <script>
-import { getMerchant, updateMerchant, getCleanList } from '@/api/chashi/csMerchant'
+import { getMerchant, updateMerchant, getCleanList, updateCleanObj, createCleanObj } from '@/api/chashi/csMerchant'
 import { getLoginSysUserVo } from '@/utils/auth'
 import { getCsLabelList } from '@/api/chashi/csLabel.js'
 import { getFacilitiesList } from '@/api/chashi/csFacilities.js'
@@ -311,7 +370,6 @@ import LinkPlugin from '@ckeditor/ckeditor5-link/src/link'
 import ListPlugin from '@ckeditor/ckeditor5-list/src/list'
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph'
 import { unescape } from '../../utils'
-import { getWxUserList } from '@/api/chashi/wxUser'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -396,8 +454,8 @@ export default {
       cleanTotal: 0,
       cleanListQuery: {
         current: 1,
-        cleanStartTime: '',
-        cleanEndTime: '',
+        queryStartTime: '',
+        queryEndTime: '',
         notifyType: 0
       },
       labels: [],
@@ -425,24 +483,54 @@ export default {
         merchantId: '',
         startTime: '',
         endTime: '',
-        notifyType: '',
+        notifyType: '0',
         notifyTime: '',
         notifyFrontTime: '',
         notifyRearTime: '',
         wxuserId: '',
         nickname: '',
-        openid: ''
+        openid: '',
+        remark: ''
       },
-      notifyTimeOptions: [{ value: '0', label: '预定' }, { value: '1', label: '消费结束' }],
+      notifyFrontTimeState: false,
+      notifyTimeOptions: [{ value: '0', label: '订单预定' }, { value: '1', label: '消费结束' }],
       rulesCleanText: {
-
+        startTime: [{ required: true, message: '请输入开始日期', trigger: 'blur' }],
+        endTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
+        notifyTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
+        openid: [{ required: true, message: '请输入保洁员的openid', trigger: 'blur' }]
       },
-      dialogReleaseFormVisible: false,
-      userList: null,
-      userListLoading: false,
-      userTotal: 0,
-      userListQuery: {
-        nameAphone: ''
+      workList: null,
+      workListLoading: false,
+      workTotal: 0,
+      workListQuery: {
+        current: 1,
+        queryStartTime: '',
+        queryEndTime: '',
+        notifyType: 1
+      },
+      workChakan: null,
+      dialogWorkFormVisible: false,
+      dialogWorkStatus: '',
+      tempWork: {
+        merchantId: '',
+        startTime: '',
+        endTime: '',
+        notifyType: '0',
+        notifyTime: '',
+        notifyFrontTime: '',
+        notifyRearTime: '',
+        wxuserId: '',
+        nickname: '',
+        openid: '',
+        remark: ''
+      },
+      workNotifyFrontTimeState: false,
+      rulesWorkText: {
+        tempWorkstartTime: [{ required: true, message: '请输入开始日期', trigger: 'blur' }],
+        tempWorkendTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
+        tempWorknotifyTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
+        tempWorkopenid: [{ required: true, message: '请输入值班员的openid', trigger: 'blur' }]
       }
     }
   },
@@ -859,11 +947,18 @@ export default {
 
     // ============== 保洁相关 =======================
     resetClean() { // 重置
-      this.cleanListQuery.cleanStartTime = ''
-      this.cleanListQuery.cleanEndTime = ''
+      this.cleanListQuery.queryStartTime = ''
+      this.cleanListQuery.queryStartTime = ''
       this.fetchCleanData()
     },
-
+    notifyTimeChange(item) {
+      if (item === '0') {
+        this.notifyFrontTimeState = true
+        this.tempClean.notifyFrontTime = ''
+      } else {
+        this.notifyFrontTimeState = false
+      }
+    },
     handleCleanFilter() {
       this.cleanListQuery.page = 1
       this.fetchCleanData()
@@ -880,44 +975,199 @@ export default {
       if (type === 'create') {
         this.cleanChakan = false
         this.dialogCleanStatus = 'create'
-        this.resetClean()
+        this.tempClean.startTime = ''
+        this.tempClean.endTime = ''
+        this.tempClean.notifyType = '0'
+        this.tempClean.notifyTime = ''
+        this.tempClean.notifyFrontTime = ''
+        this.tempClean.notifyRearTime = ''
+        this.tempClean.wxuserId = ''
+        this.tempClean.nickname = ''
+        this.tempClean.openid = ''
+        this.tempClean.remark = ''
       } else if (type === 'update') {
         this.cleanChakan = false
         this.dialogCleanStatus = 'update'
-        this.temp = Object.assign({}, row) // copy obj
+        this.tempClean = Object.assign({}, row) // copy obj
+        this.tempClean.notifyTime = this.tempClean.notifyTime.toString()
+        if (!this.tempClean.notifyTime === '0') {
+          this.notifyFrontTimeState = true
+        } else {
+          this.notifyFrontTimeState = false
+        }
       } else {
         this.cleanChakan = true
         this.dialogCleanStatus = 'view'
-        this.temp = Object.assign({}, row) // copy obj
+        this.tempClean = Object.assign({}, row) // copy obj
+        this.tempClean.notifyTime = this.tempClean.notifyTime.toString()
+        if (!this.tempClean.notifyTime === '0') {
+          this.notifyFrontTimeState = true
+        } else {
+          this.notifyFrontTimeState = false
+        }
       }
       this.dialogCleanFormVisible = true
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['cleanDataForm'].clearValidate()
       })
     },
-    selectClean() {
-      this.dialogReleaseFormVisible = true
-    },
-    handleReleaseFilter() {
-      this.userListQuery.page = 1
-      this.fetchReleaseData()
-    },
-    fetchReleaseData() {
-      this.userListLoading = true
-      getWxUserList(this.userListQuery).then(response => {
-        this.userList = response.data.records
-        this.userTotal = parseInt(response.data.total)
-        this.userListLoading = false
+    createCleanData() {
+      this.$refs['cleanDataForm'].validate((valid) => {
+        if (valid) {
+          this.tempClean.merchantId = this.temp.id
+          console.log(this.tempClean)
+          createCleanObj(this.tempClean).then(() => {
+            this.fetchCleanData()
+            this.dialogCleanFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '创建成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
       })
     },
-    handleRelease(row) {
-      console.log(row)
-      this.tempClean.wxuserId = row.id
-      this.tempClean.nickname = row.nickname
-      this.tempClean.openid = row.openid
-      this.dialogReleaseFormVisible = false
-    }
+    updateCleanData() {
+      this.$refs['cleanDataForm'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.tempClean)
+          console.log(tempData)
+          updateCleanObj(tempData).then(() => {
+            this.fetchCleanData()
+            this.dialogCleanFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    notifyTimeFormat(row) {
+      let vv = '-'
+      const typ = this.notifyTimeOptions
+      if (typ === undefined || typ.length < 1) {
+        return vv
+      }
+      const temp = row.notifyTime.toString()
+      typ.forEach(function(aa, bb) {
+        if (aa.value === temp) {
+          console.log(1111)
+          vv = aa.label
+        }
+      })
+      return vv
+    },
     // ============== 保洁相关 =======================
+
+    // ============== 值班相关 =======================
+    resetWork() { // 重置
+      this.workListQuery.queryStartTime = ''
+      this.workListQuery.queryStartTime = ''
+      this.fetchWorkData()
+    },
+    workNotifyTimeChange(item) {
+      if (item === '0') {
+        this.workNotifyFrontTimeState = true
+        this.tempWork.notifyFrontTime = ''
+      } else {
+        this.workNotifyFrontTimeState = false
+      }
+    },
+    handleWorkFilter() {
+      this.workListQuery.page = 1
+      this.fetchWorkData()
+    },
+    fetchWorkData() {
+      this.workListLoading = true
+      getCleanList(this.workListQuery).then(response => {
+        this.workList = response.data.records
+        this.workTotal = parseInt(response.data.total)
+        this.workListLoading = false
+      })
+    },
+    handleWorkDialog(row, type) { // 创建/查看/编辑详情
+      if (type === 'create') {
+        this.workChakan = false
+        this.dialogWorkStatus = 'create'
+        this.tempWork.startTime = ''
+        this.tempWork.endTime = ''
+        this.tempWork.notifyType = '1'
+        this.tempWork.notifyTime = ''
+        this.tempWork.notifyFrontTime = ''
+        this.tempWork.notifyRearTime = ''
+        this.tempWork.wxuserId = ''
+        this.tempWork.nickname = ''
+        this.tempWork.openid = ''
+        this.tempWork.remark = ''
+      } else if (type === 'update') {
+        this.workChakan = false
+        this.dialogWorkStatus = 'update'
+        this.tempWork = Object.assign({}, row) // copy obj
+        this.tempWork.notifyTime = this.tempWork.notifyTime.toString()
+        if (!this.tempWork.notifyTime === '0') {
+          this.workNotifyFrontTimeState = true
+        } else {
+          this.workNotifyFrontTimeState = false
+        }
+      } else {
+        this.workChakan = true
+        this.dialogWorkStatus = 'view'
+        this.tempWork = Object.assign({}, row) // copy obj
+        this.tempWork.notifyTime = this.tempWork.notifyTime.toString()
+        if (!this.tempWork.notifyTime === '0') {
+          this.workNotifyFrontTimeState = true
+        } else {
+          this.workNotifyFrontTimeState = false
+        }
+      }
+      this.dialogWorkFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['workDataForm'].clearValidate()
+      })
+    },
+    createWorkData() {
+      this.$refs['workDataForm'].validate((valid) => {
+        if (valid) {
+          this.tempWork.merchantId = this.temp.id
+          console.log(this.tempWork)
+          createCleanObj(this.tempWork).then(() => {
+            this.fetchWorkData()
+            this.dialogWorkFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '创建成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    updateWorkData() {
+      this.$refs['workDataForm'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.tempWork)
+          console.log(tempData)
+          updateCleanObj(tempData).then(() => {
+            this.fetchWorkData()
+            this.dialogWorkFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    }
+    // ============== 值班相关 =======================
+
   }
 }
 </script>

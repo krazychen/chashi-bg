@@ -69,3 +69,21 @@ export function getCleanList(data) {
     data
   })
 }
+
+// 创建保洁信息
+export function createCleanObj(data) {
+  return request({
+    url: '/csMerchantNotify/add',
+    method: 'post',
+    data
+  })
+}
+
+// 更新保洁信息
+export function updateCleanObj(data) {
+  return request({
+    url: '/csMerchantNotify/update',
+    method: 'post',
+    data
+  })
+}
