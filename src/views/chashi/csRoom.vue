@@ -123,7 +123,9 @@
             <img width="100%" :src="bannerDialogImageUrl" alt="">
           </el-dialog>
         </el-form-item>
-
+        <el-form-item label="茶室门锁lockId" prop="sort">
+          <el-input v-model="temp.rttlLockId" placeholder="请输入茶室门锁lockId" />
+        </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input v-model="temp.sort" placeholder="请输入排序号" />
         </el-form-item>
@@ -188,6 +190,7 @@ export default {
         roomBannerUrl: '',
         roomBannerName: '',
         doorOpenMethod: '',
+        rttlLockId: '',
         sort: '',
         merchantId: '',
         merchantObj: {}
@@ -268,6 +271,7 @@ export default {
         roomBannerUrl: '',
         roomBannerName: '',
         doorOpenMethod: '',
+        rttlLockId: '',
         sort: '',
         merchantId: '',
         merchantObj: {}
@@ -336,6 +340,7 @@ export default {
           formData.append('timeRange', this.timeRange)
           formData.append('recomNumUsers', this.temp.recomNumUsers)
           formData.append('doorOpenMethod', 0)
+          formData.append('rttlLockId', this.temp.rttlLockId)
           formData.append('sort', this.temp.sort)
           console.log(this.merchantId)
           formData.append('merchantId', this.merchantId)
@@ -501,6 +506,7 @@ export default {
           formData.append('timeRange', this.timeRange)
           formData.append('recomNumUsers', this.temp.recomNumUsers)
           formData.append('doorOpenMethod', 0)
+          formData.append('rttlLockId', this.temp.rttlLockId)
           formData.append('sort', this.temp.sort)
           formData.append('merchantId', this.merchantId)
           formData.append('id', this.temp.id)

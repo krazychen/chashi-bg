@@ -87,3 +87,11 @@ export function updateCleanObj(data) {
     data
   })
 }
+
+// 删除保洁信息
+export function deleteCleanObj(id) {
+  return request({
+    url: '/csMerchantNotify/delete/' + id,
+    method: 'post'
+  })
+}

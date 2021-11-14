@@ -152,14 +152,14 @@
       </el-tab-pane>
       <el-tab-pane label="智能锁设备">
         <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
-          <el-tag>通通锁配置</el-tag><br>
+          <el-tag>通通锁配置，每个茶室的门锁lockId需要在茶室内维护</el-tag><br>
           <el-form-item label="app_id" prop="ttlClientId">
             <el-input v-model="temp.ttlClientId" placeholder="ttlock开放平台注册时分配的app_id" />
           </el-form-item>
           <el-form-item label="app_secret" prop="ttlClientSecret">
             <el-input v-model="temp.ttlClientSecret" placeholder="ttlock开放平台注册时分配的app_secret" />
           </el-form-item>
-          <el-form-item label="lockId" prop="ttlLockId">
+          <el-form-item label="大门lockId" prop="ttlLockId">
             <el-input v-model="temp.ttlLockId" placeholder="ttlock锁的id" />
           </el-form-item>
           <el-form-item label="登录账号" prop="ttlUsername">
@@ -206,7 +206,7 @@
             <template slot-scope="scope">
               <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleCleanDialog(scope.row, 'view')" />
               <i class="el-icon-edit" title="修改" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleCleanDialog(scope.row, 'update')" />
-              <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handleCleanDialog(scope.row)" />
+              <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handleDelete(scope.row)" />
             </template>
           </el-table-column>
         </el-table>
@@ -283,7 +283,7 @@
             <template slot-scope="scope">
               <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleWorkDialog(scope.row, 'view')" />
               <i class="el-icon-edit" title="修改" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleWorkDialog(scope.row, 'update')" />
-              <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handlewWorkDialog(scope.row)" />
+              <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handleDelete(scope.row)" />
             </template>
           </el-table-column>
         </el-table>
@@ -354,7 +354,7 @@
 </template>
 
 <script>
-import { getMerchant, updateMerchant, getCleanList, updateCleanObj, createCleanObj } from '@/api/chashi/csMerchant'
+import { getMerchant, updateMerchant, getCleanList, updateCleanObj, createCleanObj, deleteCleanObj } from '@/api/chashi/csMerchant'
 import { getLoginSysUserVo } from '@/utils/auth'
 import { getCsLabelList } from '@/api/chashi/csLabel.js'
 import { getFacilitiesList } from '@/api/chashi/csFacilities.js'
@@ -1045,6 +1045,18 @@ export default {
             })
           })
         }
+      })
+    },
+    handleDelete(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      deleteCleanObj(this.temp.id).then(() => {
+        this.fetchData()
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
       })
     },
     notifyTimeFormat(row) {
