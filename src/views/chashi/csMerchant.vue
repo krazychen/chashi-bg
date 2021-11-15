@@ -358,8 +358,10 @@ export default {
       this.viewCodeDisabled = false
       this.resetTemp()
       this.logoFileLists = []
+      this.logoDelFileList = []
       this.bannerFileLists = []
       this.logoLocalFileList = []
+      this.bannerDelFileList = []
       this.bannerLocalFileList = []
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -453,6 +455,12 @@ export default {
     handleUpdate(row) {
       this.chakan = false
       this.viewCodeDisabled = true
+      this.logoFileLists = []
+      this.logoDelFileList = []
+      this.bannerFileLists = []
+      this.logoLocalFileList = []
+      this.bannerDelFileList = []
+      this.bannerLocalFileList = []
       this.temp = Object.assign({}, row) // copy obj
       if (this.temp.logoUrlValue) {
         const logoPicLists = this.temp.logoUrlValue.split(',')

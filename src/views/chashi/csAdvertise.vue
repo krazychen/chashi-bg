@@ -244,6 +244,8 @@ export default {
     },
     handleUpdate(row) {
       this.chakan = false
+      this.fileLists = []
+      this.delFileList = []
       this.temp = Object.assign({}, row) // copy obj
       if (this.temp.picUrl) {
         const picLists = this.temp.picUrl.split(',')
