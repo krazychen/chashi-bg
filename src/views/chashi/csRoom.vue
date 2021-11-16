@@ -27,8 +27,11 @@
       <el-table-column align="center" prop="recomNumUsers" label="建议使用人数" width="180" />
       <el-table-column align="center" prop="createTime" label="创建时间" width="180" />
       <el-table-column align="center" prop="status" label="状态" :formatter="statusFormat" />
+      <el-table-column align="center" prop="releaseStatus" label="营业状态" :formatter="releaseStatusFormat" />
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <i v-if="scope.row.releaseStatus==='1'" class="el-icon-remove-outline" title="开始休息" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="updateReleaseStatus(scope.row)" />
+          <i v-else class="el-icon-circle-check" title="开始营业" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="updateReleaseStatus(scope.row)" />
           <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleView(scope.row)" />
           <i class="el-icon-edit" title="修改" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleUpdate(scope.row)" />
           <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handleDelete(scope.row)" />
@@ -143,7 +146,7 @@
 </template>
 
 <script>
-import { getRoomList, createRoomPic, updateRoom, deleteRoom, updateStatusById, exportList } from '@/api/chashi/csRoom'
+import { getRoomList, createRoomPic, updateRoom, deleteRoom, updateStatusById, updateReleaseStatusById, exportList } from '@/api/chashi/csRoom'
 import { getMerchant } from '@/api/chashi/csMerchant'
 import { getLoginSysUserVo } from '@/utils/auth'
 import { getFacilitiesList } from '@/api/chashi/csFacilities.js'
@@ -734,6 +737,25 @@ export default {
       })
     },
 
+    updateReleaseStatus(row) {
+      let vv = '0'
+      let msg = '营业中'
+      if (row.releaseStatus === '0') {
+        vv = '1'
+      }
+      if (row.releaseStatus === '1') {
+        vv = '0'
+        msg = '休息中'
+      }
+      this.statusQueryParam.releaseStatus = vv
+      this.statusQueryParam.id = row.id
+      updateReleaseStatusById(this.statusQueryParam).then(() => {
+        this.fetchData()
+        // const mess = vv === '0' ? '已启用' : '已停用'
+        this.$message(msg)
+      })
+    },
+
     statusFormat(row) {
       let vv = '-'
       const typ = this.statuss
@@ -746,6 +768,15 @@ export default {
         }
       })
       return vv
+    },
+
+    releaseStatusFormat(row) {
+      if (row.releaseStatus === '0') {
+        return '休息中'
+      }
+      if (row.releaseStatus === '1') {
+        return '营业中'
+      }
     },
 
     exportList() {

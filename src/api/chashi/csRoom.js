@@ -53,6 +53,15 @@ export function updateStatusById(data) {
   })
 }
 
+// 修改茶室营业状态
+export function updateReleaseStatusById(data) {
+  return request({
+    url: '/csTearoom/updateReleaseStatus/',
+    method: 'post',
+    data
+  })
+}
+
 // 导出茶室列表
 export function exportList(data) {
   return request({
