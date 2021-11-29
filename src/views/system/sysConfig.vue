@@ -320,7 +320,8 @@ export default {
       if (this.temp.configContentValue) {
         this.temp.configContentValue = unescape(this.temp.configContentValue)
       }
-      this.temp.configValue = unescape(this.temp.configTextValue)
+      this.temp.configTextValue = unescape(this.temp.configTextValue)
+      this.temp.configContentValue = unescape(this.temp.configContentValue)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
