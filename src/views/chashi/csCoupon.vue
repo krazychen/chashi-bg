@@ -346,7 +346,7 @@ export default {
       createReleasedCoupon(this.releasedTemp).then(() => {
         this.$notify({
           title: '发放优惠卷成功',
-          message: '给用户' + row.phone + '发放' + this.releasedTemp.releasedNum + '张优惠卷成功',
+          message: '给用户' + row.nickname + '发放' + this.releasedTemp.releasedNum + '张优惠卷成功',
           type: 'success',
           duration: 2000
         })

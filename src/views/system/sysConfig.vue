@@ -320,6 +320,7 @@ export default {
       if (this.temp.configContentValue) {
         this.temp.configContentValue = unescape(this.temp.configContentValue)
       }
+      this.temp.configValue = unescape(this.temp.configTextValue)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -509,7 +510,7 @@ export default {
     configValueFormat(row) {
       let configValue = ''
       if (row.configType === '0') {
-        configValue = row.configTextValue
+        configValue = unescape(row.configTextValue)
       } else if (row.configType === '1') {
         configValue = row.configPicValue
       } else {
