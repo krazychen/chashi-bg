@@ -175,7 +175,33 @@
         </el-form>
 
       </el-tab-pane>
-      <el-tab-pane label="智能取电设备" />
+      <el-tab-pane label="智能取电设备" >
+        <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
+          <el-tag>曼顿空开配置</el-tag><br>
+          <el-form-item label="client id" prop="kkClientId">
+            <el-input v-model="temp.kkClientId" placeholder="曼顿空开client id" />
+          </el-form-item>
+          <el-form-item label="AppSecret" prop="kkAppSecret">
+            <el-input v-model="temp.kkAppSecret" placeholder="曼顿空开appSecret" />
+          </el-form-item>
+          <el-form-item label="projectCode" prop="kkProjectCode">
+            <el-input v-model="temp.kkProjectCode" placeholder="曼顿空开projectCode" />
+          </el-form-item>
+          <el-form-item label="redirect_uri" prop="kkRedirectUri">
+            <el-input v-model="temp.kkRedirectUri" placeholder="曼顿空开redirect_uri" />
+          </el-form-item>
+          <el-form-item label="曼顿空开uname" prop="kkUname">
+            <el-input v-model="temp.kkUname" placeholder="曼顿空开uname" />
+          </el-form-item>
+          <el-form-item label="曼顿空开password" prop="kkPassword">
+            <el-input v-model="temp.kkPassword" placeholder="曼顿空开password" />
+          </el-form-item>
+          <el-form-item>
+            <el-button>取消</el-button>
+            <el-button type="primary" @click="updateData()">保存</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
 
       <el-tab-pane label="保洁维护">
         <el-tag>一条记录一个保洁排班信息，可以多条记录，只要时间是生效的，就会通知到对方，用户必须关注公众号，查看openid方法查看https://www.it120.cc/help/dbtods.html</el-tag><br><br>
@@ -447,7 +473,13 @@ export default {
         ttlClientSecret: '',
         ttlLockId: '',
         ttlUsername: '',
-        ttlPassword: ''
+        ttlPassword: '',
+        kkClientId: '',
+        kkAppSecret: '',
+        kkProjectCode: '',
+        kkRedirectUri: '',
+        kkUname: '',
+        kkPassword: ''
       },
       cleanList: null,
       cleanListLoading: false,
@@ -701,6 +733,14 @@ export default {
           formData.append('ttlUsername', this.temp.ttlUsername)
           formData.append('ttlPassword', this.temp.ttlPassword)
           formData.append('ttlLockId', this.temp.ttlLockId)
+
+          formData.append('kkClientId', this.temp.kkClientId)
+          formData.append('kkAppSecret', this.temp.kkAppSecret)
+          formData.append('kkProjectCode', this.temp.kkProjectCode)
+          formData.append('kkRedirectUri', this.temp.kkRedirectUri)
+          formData.append('kkUname', this.temp.kkUname)
+          formData.append('kkPassword', this.temp.kkPassword)
+
           if (this.labels) {
             let tempLabelId = ''
             let tempLabelName = ''

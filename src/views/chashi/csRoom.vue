@@ -129,6 +129,12 @@
         <el-form-item label="茶室门锁lockId" prop="sort">
           <el-input v-model="temp.rttlLockId" placeholder="请输入茶室门锁lockId" />
         </el-form-item>
+        <el-form-item label="曼顿空开mac" prop="sort">
+          <el-input v-model="temp.kkMac" placeholder="请输入曼顿空开mac" />
+        </el-form-item>
+        <el-form-item label="曼顿空开线路" prop="sort">
+          <el-input v-model="temp.kkOcSwitch" placeholder="请输入曼顿空开线路" />
+        </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input v-model="temp.sort" placeholder="请输入排序号" />
         </el-form-item>
@@ -194,6 +200,8 @@ export default {
         roomBannerName: '',
         doorOpenMethod: '',
         rttlLockId: '',
+        kkMac: '',
+        kkOcSwitch: '',
         sort: '',
         merchantId: '',
         merchantObj: {}
@@ -275,6 +283,8 @@ export default {
         roomBannerName: '',
         doorOpenMethod: '',
         rttlLockId: '',
+        kkMac: '',
+        kkOcSwitch: '',
         sort: '',
         merchantId: '',
         merchantObj: {}
@@ -344,6 +354,8 @@ export default {
           formData.append('recomNumUsers', this.temp.recomNumUsers)
           formData.append('doorOpenMethod', 0)
           formData.append('rttlLockId', this.temp.rttlLockId)
+          formData.append('kkMac', this.temp.kkMac)
+          formData.append('kkOcSwitch', this.temp.kkOcSwitch)
           formData.append('sort', this.temp.sort)
           console.log(this.merchantId)
           formData.append('merchantId', this.merchantId)
