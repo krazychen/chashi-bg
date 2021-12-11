@@ -152,6 +152,23 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-tab-pane label="已失效">
+          <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
+            <el-table-column align="center" prop="nickname" label="用户昵称" width="150" />
+            <el-table-column align="center" prop="wxuserPhone" label="用户手机" width="150" />
+            <el-table-column align="center" prop="roomName" label="茶室名称" width="180" />
+            <el-table-column align="center" prop="orderPrice" label="付费金额" width="100" />
+            <el-table-column align="center" prop="orderOriginPrice" label="订单金额" width="100" />
+            <el-table-column align="center" prop="orderDate" label="使用日期" width="120" />
+            <el-table-column align="center" prop="orderTimerage" label="使用时间段" width="180" />
+            <el-table-column align="center" prop="paymentType" label="支付类型" width="120" :formatter="paymentType" />
+            <el-table-column align="center" prop="status" label="订单状态" width="120" :formatter="orderStatus"/>
+            <el-table-column label="订单详情" align="center" width="130" class-name="small-padding fixed-width">
+              <template slot-scope="scope">
+                <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleViewAUpdate(scope.row, 'view')" />
+              </template>
+            </el-table-column>
+          </el-table>
 
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.size" @pagination="fetchData" />
       </el-tab-pane>
@@ -302,8 +319,12 @@ export default {
         return '支付失败'
       } else if (row.paymentStatus === 2) {
         return '支付成功'
-      } else {
+      } else if (row.paymentStatus === 3) {
+        return '支付取消'
+      } else if (row.paymentStatus === 4) {
         return '支付关闭'
+      } else if (row.paymentStatus === 5) {
+        return '支付退款'
       }
     },
     handleClick(tab, event) {
@@ -330,6 +351,10 @@ export default {
           break
         case '已退款':
           this.listQuery.queryType = 7
+          this.fetchData()
+          break
+        case '已失效':
+          this.listQuery.queryType = 8
           this.fetchData()
           break
         default:

@@ -522,6 +522,8 @@ export default {
           formData.append('recomNumUsers', this.temp.recomNumUsers)
           formData.append('doorOpenMethod', 0)
           formData.append('rttlLockId', this.temp.rttlLockId)
+          formData.append('kkMac', this.temp.kkMac)
+          formData.append('kkOcSwitch', this.temp.kkOcSwitch)
           formData.append('sort', this.temp.sort)
           formData.append('merchantId', this.merchantId)
           formData.append('id', this.temp.id)
