@@ -432,6 +432,9 @@ export default {
       }
       this.dialogFormVisible = true
       this.temp = Object.assign({}, row) // copy obj
+      this.fileLists = []
+      this.localFileList = []
+      this.delFileList = []
       if (this.temp.logoUrl) {
         this.localFileList = []
         const cop = {}
