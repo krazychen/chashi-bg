@@ -614,7 +614,7 @@ export default {
         // }))
         let isExist = false
         this.logoFileLists.forEach(function(file) {
-          if (file.uid === param.file.uid){
+          if (file.uid === param.file.uid) {
             isExist = true
           }
         })

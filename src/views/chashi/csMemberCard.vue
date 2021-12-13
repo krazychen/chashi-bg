@@ -567,12 +567,29 @@ export default {
         // this.temp.uploadFile.push(new File([fileObj], new Date().getTime() + '.jpg', {
         //   type: 'image/jpeg'
         // }))
-        this.fileLists.push(param.file)
+        let isExist = false
+        this.fileLists.forEach(function(file) {
+          if (file.uid === param.file.uid) {
+            isExist = true
+          }
+        })
+        if (isExist !== true) {
+          this.fileLists.push(param.file)
+        }
       } else if (fileObj.type === 'image/png') {
         // this.temp.uploadFile.push(new File([fileObj], new Date().getTime() + '.png', {
         //   type: 'image/png'
         // }))
-        this.fileLists.push(param.file)
+        // this.fileLists.push(param.file)
+        let isExist = false
+        this.fileLists.forEach(function(file) {
+          if (file.uid === param.file.uid) {
+            isExist = true
+          }
+        })
+        if (isExist !== true) {
+          this.fileLists.push(param.file)
+        }
       } else {
         this.$message.error('只能上传jpg/png文件')
         return
