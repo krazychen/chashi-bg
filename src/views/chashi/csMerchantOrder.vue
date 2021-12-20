@@ -152,7 +152,10 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-tab-pane label="已失效">
+
+        <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.size" @pagination="fetchData" />
+      </el-tab-pane>
+      <el-tab-pane label="已失效">
           <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
             <el-table-column align="center" prop="nickname" label="用户昵称" width="150" />
             <el-table-column align="center" prop="wxuserPhone" label="用户手机" width="150" />

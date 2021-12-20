@@ -18,7 +18,7 @@
       style="width: 100%;"
     >
       <el-table-column align="center" label="商户图片" width="180">
-        <template   slot-scope="scope">
+        <template slot-scope="scope">
           <img :src="scope.row.merchant.logoUrlValue"  min-width="50" height="50" />
         </template>
       </el-table-column>
@@ -50,11 +50,7 @@
         </el-form-item>
         <el-form-item label="服务设施" prop="facilities">
           <el-select v-model="facilities" multiple placeholder="请选择">
-            <el-option
-              v-for="item in facilitieOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+            <el-option v-for="item in facilitieOptions" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -65,21 +61,13 @@
         </el-form-item>
         <el-form-item label="起订时间" prop="startTime">
           <el-select v-model="startTime" placeholder="请选择">
-            <el-option
-              v-for="item in timeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+            <el-option v-for="item in timeOptions" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="时间间隔" prop="timeRange">
           <el-select v-model="temp.timeRange" placeholder="请选择">
-            <el-option
-              v-for="item in rangeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+            <el-option v-for="item in rangeOptions" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>

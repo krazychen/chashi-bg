@@ -3,6 +3,18 @@ const Layout = () => import('@/layout')
 // 後台管理相關的 routes
 export const superadminRoutes = [
   {
+    path: '/statical',
+    name: '数据统计',
+    component: Layout,
+    meta: { roles: ['sys:user:page'], title: '数据统计', icon: 'example' },
+    children: [{
+      path: 'statical',
+      component: () => import('@/views/chashi/csMerchantStatical'),
+      name: '数据统计2',
+      meta: { roles: ['sys:user:page'], title: '数据统计', icon: 'example' }
+    }]
+  },
+  {
     path: '/system',
     component: Layout,
     name: '系统管理',
