@@ -52,7 +52,6 @@ export function getMerchantOrder(id) {
   })
 }
 
-
 // 获取茶室时间范围
 export function getTimeRange(data) {
   return request({
@@ -62,3 +61,19 @@ export function getTimeRange(data) {
   })
 }
 
+// 获取茶室时间范围
+export function getCsMerchantOrderTotal(data) {
+  return request({
+    url: '/csMerchant/getCsMerchantOrderTotal',
+    method: 'post',
+    data
+  })
+}
+
+// 获取统计数据
+export function getCsMerchantTotalStatical(id) {
+  return request({
+    url: '/csMerchant/getCsMerchantTotalStatical',
+    method: 'get'
+  })
+}

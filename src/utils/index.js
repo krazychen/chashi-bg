@@ -282,3 +282,32 @@ export function accDiv(arg1, arg2) {
   r2 = Number(arg2.toString().replace('.', ''))
   return (r1 / r2) * Math.pow(10, t2 - t1)
 }
+
+export function getDateBefore(date) {
+  let base = new Date(date).getTime()
+
+  const oneDay = 24 * 3600 * 1000
+
+  var dateArr = []
+
+  // const data = [Math.random() * 300]
+
+  const time = new Date(base)
+
+  dateArr.push([time.getFullYear(), time.getMonth() + 1, time.getDate()].join('/'))
+
+  for (let i = 1; i < 7; i++) {
+    const now = new Date(base -= oneDay)
+
+    dateArr.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'))
+
+    // dateArr.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]))
+  }
+  const newdateArr = dateArr
+  return newdateArr
+}
+
+// 保留n位小数
+export function roundFun(value, n) {
+  return Math.round(value * Math.pow(10, n)) / Math.pow(10, n)
+}
