@@ -71,3 +71,11 @@ export function exportList(data) {
     data
   })
 }
+
+// 获取茶室详情
+export function getRoomDetailInfo(id) {
+  return request({
+    url: '/csTearoom/info/' + id,
+    method: 'get'
+  })
+}

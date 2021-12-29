@@ -77,3 +77,13 @@ export function getCsMerchantTotalStatical(id) {
     method: 'get'
   })
 }
+
+// 导出订单列表
+export function exportList(data) {
+  return request({
+    url: '/csMerchantOrder/exportList',
+    method: 'post',
+    responseType: 'blob',
+    data
+  })
+}

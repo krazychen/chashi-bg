@@ -11,7 +11,8 @@
       </el-select>
       <el-input v-model="listQuery.nameAphone" placeholder="请输入用户昵称/手机号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">新增</el-button>
+      <el-button class="filter-item" v-if="userType === 'superadmin' " style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">新增</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-download" @click="exportList">导出</el-button>
     </div>
     <el-tabs type="border-card" @tab-click="handleClick">
       <el-tab-pane label="全部">
@@ -184,7 +185,7 @@
 </template>
 
 <script>
-import { getMerchantOrderList } from '@/api/chashi/csMerchantOrder'
+import { getMerchantOrderList, exportList } from '@/api/chashi/csMerchantOrder'
 import { getMerchant, getMerchantList } from '@/api/chashi/csMerchant'
 import { getLoginSysUserVo } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
@@ -367,6 +368,9 @@ export default {
     },
     handleCreate() {
       this.dialogAddFormVisible = true
+    },
+    exportList() {
+      exportList(this.listQuery)
     }
   }
 }

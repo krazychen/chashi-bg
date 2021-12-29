@@ -289,8 +289,10 @@ export default {
         return '支付失败'
       } else if (row.paymentStatus === 2) {
         return '支付成功'
-      } else {
+      } else if (row.paymentStatus === 3) {
         return '支付关闭'
+      } else {
+        return '支付取消'
       }
     },
     statusFormat(row) {
