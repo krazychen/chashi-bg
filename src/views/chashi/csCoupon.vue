@@ -89,7 +89,7 @@
           </template>
         </el-table-column>
         <el-table-column align="center" prop="nickname" label="昵称" />
-        <el-table-column align="center" prop="phone" label="手机号" />
+        <el-table-column align="center" prop="phoneNumber" label="手机号" />
         <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button type="primary" @click="handleReleaseCoupon(scope.row)" >发放优惠卷</el-button>
