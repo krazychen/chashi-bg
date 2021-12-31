@@ -503,7 +503,40 @@ export default {
           //   })
           //   this.facilities = optionss
           // }
-          formData.append('facilitiesId', this.facilities)
+          // if (this.temp.facilitiesId) {
+          //   const idArr = this.temp.facilitiesId.split(',')
+          //   const optionss = []
+          //   idArr.forEach(function(obj, index) {
+          //     optionss.push(obj)
+          //   })
+          //   this.facilities = optionss
+          //   console.log('123213213213')
+          //   console.log(optionss)
+          // }
+          // formData.append('facilitiesId', this.facilities)
+          if (this.facilities) {
+            let tempFacilitieId = ''
+            let tempFacilitieName = ''
+            const that = this
+            this.facilities.forEach(function(facilitie, index, arr) {
+              const obj = that.facilitieOptions.find((item) => {
+                return item.value === facilitie
+              })
+              if (index === (arr.length - 1)) {
+                tempFacilitieId += facilitie
+                tempFacilitieName += obj.label
+              } else {
+                tempFacilitieId += facilitie + ','
+                tempFacilitieName += obj.label + ','
+              }
+            })
+            console.log('123213213213')
+            console.log(tempFacilitieId)
+            console.log(tempFacilitieName)
+            formData.append('facilitiesId', tempFacilitieId)
+            formData.append('facilitiesName', tempFacilitieName)
+          }
+          // formData.append('facilitiesId', this.facilities)
           formData.append('hoursAmount', this.temp.hoursAmount)
           formData.append('startTime', this.startTime)
           formData.append('timeRange', this.timeRange)
