@@ -356,24 +356,24 @@
         </el-dialog>
       </el-tab-pane>
 
-      <el-tab-pane label="提醒设备配置" >
-        <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
-          <el-tag>提醒声音配置</el-tag><br>
-          <el-form-item label="门锁开启提醒声音I" prop="txApi1">
-            <el-input v-model="temp.txApi1" placeholder="第二个门锁开启后的提醒声音" />
-          </el-form-item>
-          <el-form-item label="结束前10分钟的提醒声音" prop="txApi2">
-            <el-input v-model="temp.txApi2" placeholder="结束前10分钟的提醒声音" />
-          </el-form-item>
-          <el-form-item label="结束前2分钟的提醒声音" prop="txApi3">
-            <el-input v-model="temp.txApi3" placeholder="结束前2分钟的提醒声音" />
-          </el-form-item>
-          <el-form-item>
-            <el-button>取消</el-button>
-            <el-button type="primary" @click="updateData()">保存</el-button>
-          </el-form-item>
-        </el-form>
-      </el-tab-pane>
+<!--      <el-tab-pane label="提醒设备配置" >-->
+<!--        <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">-->
+<!--          <el-tag>提醒声音配置</el-tag><br>-->
+<!--          <el-form-item label="门锁开启提醒声音I" prop="txApi1">-->
+<!--            <el-input v-model="temp.txApi1" placeholder="第二个门锁开启后的提醒声音" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="结束前10分钟的提醒声音" prop="txApi2">-->
+<!--            <el-input v-model="temp.txApi2" placeholder="结束前10分钟的提醒声音" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="结束前2分钟的提醒声音" prop="txApi3">-->
+<!--            <el-input v-model="temp.txApi3" placeholder="结束前2分钟的提醒声音" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item>-->
+<!--            <el-button>取消</el-button>-->
+<!--            <el-button type="primary" @click="updateData()">保存</el-button>-->
+<!--          </el-form-item>-->
+<!--        </el-form>-->
+<!--      </el-tab-pane>-->
     </el-tabs>
 
     <el-dialog title="选择地址" :visible.sync="dialogMapVisible">

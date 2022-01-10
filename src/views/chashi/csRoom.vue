@@ -44,7 +44,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.size" @pagination="fetchData" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="right" label-width="110px" style="width: 500px; margin-left:50px;">
         <el-form-item label="茶室名称" prop="roomName">
           <el-input v-model="temp.roomName" placeholder="请输入茶室名称" />
         </el-form-item>
@@ -114,15 +114,54 @@
             <img width="100%" :src="bannerDialogImageUrl" alt="">
           </el-dialog>
         </el-form-item>
-        <el-form-item label="茶室门锁lockId" prop="sort">
+        <el-form-item label="茶室门锁lockId" prop="rttlLockId">
           <el-input v-model="temp.rttlLockId" placeholder="请输入茶室门锁lockId" />
         </el-form-item>
-        <el-form-item label="曼顿空开mac" prop="sort">
-          <el-input v-model="temp.kkMac" placeholder="请输入曼顿空开mac" />
+        <el-row type="flex" class="row-bg">
+          <el-col :span="12">
+            <el-form-item label="曼顿空开mac" prop="kkMac">
+              <el-input v-model="temp.kkMac" placeholder="请输入曼顿空开mac" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="曼顿空开线路" prop="kkOcSwitch">
+              <el-input v-model="temp.kkOcSwitch" placeholder="请输入曼顿空开线路" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="声音提醒url" prop="syUrl">
+          <el-input v-model="temp.syUrl" placeholder="请输入声音提醒url" />
         </el-form-item>
-        <el-form-item label="曼顿空开线路" prop="sort">
-          <el-input v-model="temp.kkOcSwitch" placeholder="请输入曼顿空开线路" />
-        </el-form-item>
+        <el-row type="flex" class="row-bg">
+          <el-col :span="12">
+            <el-form-item label="声音ProKey" prop="syProKey">
+              <el-input v-model="temp.syProKey" placeholder="请输入声音提醒ProKey" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="声音sname" prop="sySname">
+              <el-input v-model="temp.sySname" placeholder="请输入声音提醒sname" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex" class="row-bg">
+          <el-col :span="8">
+            <el-form-item label="声音sid1" prop="sySid1">
+              <el-input v-model="temp.sySid1" placeholder="请输入声音提醒sid1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="声音sid2" prop="sySid2">
+              <el-input v-model="temp.sySid2" placeholder="请输入声音提醒sid2" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="声音sid3" prop="sySid3">
+              <el-input v-model="temp.sySid3" placeholder="请输入声音提醒sid3" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-form-item label="排序" prop="sort">
           <el-input v-model="temp.sort" placeholder="请输入排序号" />
         </el-form-item>
@@ -190,6 +229,12 @@ export default {
         rttlLockId: '',
         kkMac: '',
         kkOcSwitch: '',
+        syUrl: '',
+        syProKey: '',
+        sySname: '',
+        sySid1: '',
+        sySid2: '',
+        sySid3: '',
         sort: '',
         merchantId: '',
         merchantObj: {}
@@ -273,6 +318,12 @@ export default {
         rttlLockId: '',
         kkMac: '',
         kkOcSwitch: '',
+        syUrl: '',
+        syProKey: '',
+        sySname: '',
+        sySid1: '',
+        sySid2: '',
+        sySid3: '',
         sort: '',
         merchantId: '',
         merchantObj: {}
@@ -344,6 +395,12 @@ export default {
           formData.append('rttlLockId', this.temp.rttlLockId)
           formData.append('kkMac', this.temp.kkMac)
           formData.append('kkOcSwitch', this.temp.kkOcSwitch)
+          formData.append('syUrl', this.temp.kkMac)
+          formData.append('syProKey', this.temp.kkMac)
+          formData.append('sySname', this.temp.kkMac)
+          formData.append('sySid1', this.temp.kkMac)
+          formData.append('sySid2', this.temp.kkMac)
+          formData.append('sySid3', this.temp.kkMac)
           formData.append('sort', this.temp.sort)
           console.log(this.merchantId)
           formData.append('merchantId', this.merchantId)
@@ -545,6 +602,12 @@ export default {
           formData.append('rttlLockId', this.temp.rttlLockId)
           formData.append('kkMac', this.temp.kkMac)
           formData.append('kkOcSwitch', this.temp.kkOcSwitch)
+          formData.append('syUrl', this.temp.kkMac)
+          formData.append('syProKey', this.temp.kkMac)
+          formData.append('sySname', this.temp.kkMac)
+          formData.append('sySid1', this.temp.kkMac)
+          formData.append('sySid2', this.temp.kkMac)
+          formData.append('sySid3', this.temp.kkMac)
           formData.append('sort', this.temp.sort)
           formData.append('merchantId', this.merchantId)
           formData.append('id', this.temp.id)
