@@ -164,21 +164,17 @@ export default {
       const that = this
       getCsMerchantOrderTotal({ }).then(response => {
         that.datalist = response.data.records
-        console.log(that.datalist)
         dateList.forEach(function(obj) {
           const option = []
           option.push(obj)
           for (let i = 0; i < that.datalist.length; i++) {
             let ldate = that.datalist[i].orderDate.split(' ')[0]
             ldate = ldate.replaceAll('-', '/')
-            console.log(ldate +'---'+obj)
             if (ldate === obj) {
-              console.log('3333')
               option.push(that.datalist[i].orderNums)
               break
             }
           }
-          console.log(option.length)
           if (option.length !== 2) {
             option.push(0)
           }
