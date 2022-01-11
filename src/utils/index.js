@@ -294,12 +294,12 @@ export function getDateBefore(date) {
 
   const time = new Date(base)
 
-  dateArr.push([time.getFullYear(), time.getMonth() + 1, time.getDate()].join('/'))
+  dateArr.push([time.getFullYear(), (time.getMonth() < 10 ? '0' : '') + (time.getMonth() + 1), (time.getDate() < 10 ? '0' : '') + time.getDate()].join('/'))
 
   for (let i = 1; i < 7; i++) {
     const now = new Date(base -= oneDay)
 
-    dateArr.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'))
+    dateArr.push([now.getFullYear(), (now.getMonth() < 10 ? '0' : '') + (now.getMonth() + 1), (now.getDate() < 10 ? '0' : '') + now.getDate()].join('/'))
 
     // dateArr.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]))
   }
