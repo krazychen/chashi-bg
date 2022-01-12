@@ -57,30 +57,15 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rulesText" :model="temp" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
         <el-form-item label="图片" prop="avatar">
-          <el-upload
-            accept="image/png,image/jpg,image/jpeg"
-            action="auto"
-            :http-request="uploadSectionFile"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
-            :on-exceed="handleExceed"
-            :file-list="localFileList"
-            :headers="headers"
-            :limit="1"
-            disabled="true"
-          >
-            <i class="el-icon-plus" />
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
+          <template   slot-scope="scope">
+            <img :src="temp.avatarUrl"  min-width="50" height="50" />
+          </template>
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="temp.nickname" placeholder="昵称" />
         </el-form-item>
         <el-form-item label="手机号码" prop="sort">
-          <el-input v-model="temp.menberType" placeholder="会员类型" />
+          <el-input v-model="temp.phoneNumber" placeholder="会员类型" />
         </el-form-item>
         <el-form-item label="会员类型" prop="sort">
           <el-input v-model="temp.menberType" placeholder="会员类型" />
