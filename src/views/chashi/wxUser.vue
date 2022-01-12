@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.nickname" placeholder="昵称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.phone" placeholder="手机号码" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.phoneNumber" placeholder="手机号码" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
@@ -10,9 +10,9 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="rest">
         重置
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        新增
-      </el-button>
+<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">-->
+<!--        新增-->
+<!--      </el-button>-->
     </div>
     <el-table
       v-loading="listLoading"
@@ -205,9 +205,11 @@ export default {
       }
     },
     rest() { // 重置
-      this.listQuery.configName = ''
-      this.listQuery.configKey = ''
-      this.listQuery.isSys = ''
+      this.listQuery = {
+        current: 1,
+        nickname: '',
+        phoneNumber: ''
+      }
       this.fetchData()
     },
 

@@ -251,7 +251,7 @@ export default {
           that.userType = 'admin'
           getMerchant(userInfo.officeCode).then(response => {
             that.listQuery.merchantId = response.data.id
-            that.fetchData()
+            // that.fetchData()
           })
         }
       })
@@ -276,10 +276,10 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      console.log(1111)
       console.log(this.listQuery.merchantId)
       getMerchantOrderList(this.listQuery).then(response => {
         this.list = response.data.records
+        // console.log(this.list)
         this.total = parseInt(response.data.total)
         this.listLoading = false
       })
