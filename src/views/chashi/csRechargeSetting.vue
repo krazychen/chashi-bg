@@ -41,7 +41,8 @@
           <el-table-column align="center" prop="rechargeAmount" label="充值金额" width="150" />
           <el-table-column align="center" prop="rechargeGived" label="赠送金额" width="100" />
           <el-table-column align="center" prop="integral" label="积分" width="100" />
-          <el-table-column align="center" prop="orderDate" label="购买日期" width="100" />
+          <el-table-column align="center" prop="orderDate" label="购买日期" width="200" />
+          <el-table-column align="center" prop="sourceType" label="充值类型" width="100" :formatter="sourceTypeStatus"/>
           <el-table-column align="center" prop="paymentStatus" label="支付状态" width="100" :formatter="paymentStatus"/>
         </el-table>
 
@@ -293,6 +294,13 @@ export default {
         return '支付关闭'
       } else {
         return '支付取消'
+      }
+    },
+    sourceTypeStatus(row) {
+      if (row.sourceType === 0) {
+        return '系统发放'
+      } else {
+        return '用户购买'
       }
     },
     statusFormat(row) {
