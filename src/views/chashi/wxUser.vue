@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column align="center" label="头像" width="180">
         <template   slot-scope="scope">
-          <img :src="scope.row.avatar"  min-width="50" height="50" />
+          <img :src="scope.row.avatarUrl"  min-width="50" height="50" />
         </template>
       </el-table-column>
       <el-table-column align="center" prop="nickname" label="昵称" width="150" />
@@ -42,6 +42,7 @@
       <el-table-column align="center" prop="status" label="状态" :formatter="statusFormat" />
       <el-table-column label="操作" align="center" width="120" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <i class="el-icon-tickets" title="发放会员" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleRelease(scope.row)" />
           <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleView(scope.row)" />
 <!--          <i class="el-icon-edit" title="修改" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleUpdate(scope.row)" />-->
 <!--          <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handleDelete(scope.row)" />-->
@@ -104,7 +105,7 @@
 </template>
 
 <script>
-import { getWxUserList, updateStatusById } from '@/api/chashi/wxUser'
+import { getWxUserList, updateStatusById, addCsRechargeRecord } from '@/api/chashi/wxUser'
 import Pagination from '@/components/Pagination'
 import waves from '@/directive/waves' // waves directive
 import { getDictDataList } from '@/utils/dictUtils'
@@ -132,7 +133,7 @@ export default {
         id: undefined,
         nickname: '',
         phoneNumber: '',
-        avatar: '',
+        avatarUrl: '',
         menberType: '',
         integral: '',
         balance: ''
@@ -306,6 +307,43 @@ export default {
         }
       })
       return vv
+    },
+
+    handleRelease(row) {
+      if (this.temp.status === '2') {
+        this.$message('已禁用的用户无法再充值！')
+        return
+      }
+      this.$prompt('请输入要充值的金额', '充值', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[0-9.]+$/,
+        inputErrorMessage: '请输入正整数！'
+      }).then(({ value }) => {
+        console.log(row)
+        const rechargeTemp = {}
+        rechargeTemp.wxuserId = row.id
+        rechargeTemp.wxuserPhone = row.phoneNumber
+        rechargeTemp.openid = row.openid
+        rechargeTemp.rechargeAmount = value
+        rechargeTemp.rechargeGived = 0
+
+        console.log(rechargeTemp)
+        addCsRechargeRecord(rechargeTemp).then(response => {
+          this.$notify({
+            title: '成功',
+            message: '手工充值成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.fetchData()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消手工充值'
+        })
+      })
     }
 
   }

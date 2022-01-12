@@ -587,9 +587,6 @@ export default {
                 tempFacilitieName += obj.label + ','
               }
             })
-            console.log('123213213213')
-            console.log(tempFacilitieId)
-            console.log(tempFacilitieName)
             formData.append('facilitiesId', tempFacilitieId)
             formData.append('facilitiesName', tempFacilitieName)
           }

@@ -52,3 +52,12 @@ export function getWxUser(id) {
   })
 }
 
+// 手工增加余额
+export function addCsRechargeRecord(data) {
+  return request({
+    url: '/csRechargeRecord/add',
+    method: 'post',
+    data
+  })
+}
+
