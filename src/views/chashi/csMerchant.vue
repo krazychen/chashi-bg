@@ -130,6 +130,35 @@
           />
         </el-form-item>
 
+        <el-form-item label="非营业时间">
+          <el-time-select
+            v-model="temp.exStartTime"
+            placeholder="未营业开始时间"
+            style="width: 47%; padding-right: 5px"
+            :picker-options="{
+              start: '00:00',
+              step: '01:00',
+              end: '24:00',
+              minTime: temp.startTime,
+            }"
+          />
+          <el-time-select
+            v-model="temp.exEndTime"
+            placeholder="未营业结束时间"
+            style="width: 47%"
+            :picker-options="{
+              start: '00:00',
+              step: '01:00',
+              end: '24:00',
+              minTime: temp.exStartTime,
+              maxTime: temp.endTime
+            }"
+          />
+        </el-form-item>
+        <el-form-item label="营业时间描述" prop="opDescription">
+          <el-input v-model="temp.opDescription" placeholder="营业时间描述" />
+        </el-form-item>
+
         <el-form-item label="商店Logo" prop="logoPicValue">
           <el-upload
             accept="image/png,image/jpg,image/jpeg"
@@ -248,6 +277,9 @@ export default {
         opsTime: [],
         startTime: '',
         endTime: '',
+        exStartTime: '',
+        exEndTime: '',
+        opDescription: '',
         logoUploadFile: [],
         bannerUploadFile: []
       },
@@ -342,6 +374,9 @@ export default {
         opsTime: [],
         startTime: '',
         endTime: '',
+        exStartTime: '',
+        exEndTime: '',
+        opDescription: '',
         logoUploadFile: [],
         bannerUploadFile: []
       }
@@ -396,6 +431,9 @@ export default {
           formData.append('usageNotice', '')
           formData.append('startTime', this.temp.startTime)
           formData.append('endTime', this.temp.endTime)
+          formData.append('exStartTime', this.temp.exStartTime)
+          formData.append('exEndTime', this.temp.exEndTime)
+          formData.append('opDescription', this.temp.opDescription)
 
           // if (this.temp.opsTime) {
           //   formData.append('startTime', this.temp.opsTime[0])
@@ -560,7 +598,9 @@ export default {
           formData.append('officeCode', this.temp.officeCode)
           formData.append('startTime', this.temp.startTime)
           formData.append('endTime', this.temp.endTime)
-
+          formData.append('exStartTime', this.temp.exStartTime)
+          formData.append('exEndTime', this.temp.exEndTime)
+          formData.append('opDescription', this.temp.opDescription)
           // if (this.temp.opsTime) {
           //   formData.append('startTime', this.temp.opsTime[0])
           //   formData.append('endTime', this.temp.opsTime[1])
