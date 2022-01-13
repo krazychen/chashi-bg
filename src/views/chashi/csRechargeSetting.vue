@@ -38,8 +38,8 @@
           </el-table-column>
           <el-table-column align="center" prop="wxuserName" label="用户昵称" width="150" />
           <el-table-column align="center" prop="wxuserPhone" label="用户手机" width="150" />
-          <el-table-column align="center" prop="rechargeAmount" label="充值金额" width="150" />
-          <el-table-column align="center" prop="rechargeGived" label="赠送金额" width="100" />
+          <el-table-column align="center" prop="rechargeAmount" label="充值金额" width="150" :formatter="rechargeAmountFormat"/>
+          <el-table-column align="center" prop="rechargeGived" label="赠送金额" width="100" :formatter="rechargeGivedFormat"/>
           <el-table-column align="center" prop="integral" label="积分" width="100" />
           <el-table-column align="center" prop="orderDate" label="购买日期" width="200" />
           <el-table-column align="center" prop="sourceType" label="充值类型" width="100" :formatter="sourceTypeStatus"/>
@@ -99,6 +99,7 @@ import { createRechargeRecord, getRechargeRecordList } from '@/api/chashi/csRech
 import Pagination from '@/components/Pagination'
 import waves from '@/directive/waves' // waves directive
 import { getDictDataList } from '@/utils/dictUtils'
+import { roundFun } from '../../utils'
 
 export default {
   name: 'CsMemberCard',
@@ -315,6 +316,12 @@ export default {
         }
       })
       return vv
+    },
+    rechargeAmountFormat(row) {
+      return roundFun(row.rechargeAmount, 2)
+    },
+    rechargeGivedFormat(row) {
+      return roundFun(row.rechargeGived, 2)
     },
     handleRelease(row) {
       if (this.temp.status === '2') {

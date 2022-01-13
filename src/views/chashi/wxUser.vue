@@ -38,7 +38,7 @@
       <el-table-column align="center" prop="phoneNumber" label="手机号码" width="150" />
       <el-table-column align="center" prop="menberType" label="会员类型" width="150" />
       <el-table-column align="center" prop="integral" label="积分" width="150" />
-      <el-table-column align="center" prop="balance" label="余额" width="150" />
+      <el-table-column align="center" prop="balance" label="余额" width="150" :formatter="balanceFormat" />
       <el-table-column align="center" prop="status" label="状态" :formatter="statusFormat" />
       <el-table-column label="操作" align="center" width="120" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -94,6 +94,7 @@ import { getWxUserList, updateStatusById, addCsRechargeRecord } from '@/api/chas
 import Pagination from '@/components/Pagination'
 import waves from '@/directive/waves' // waves directive
 import { getDictDataList } from '@/utils/dictUtils'
+import { roundFun } from '../../utils'
 
 export default {
   name: 'WxUser',
@@ -292,6 +293,10 @@ export default {
         }
       })
       return vv
+    },
+
+    balanceFormat(row) {
+      return roundFun(row.balance, 2)
     },
 
     handleRelease(row) {
