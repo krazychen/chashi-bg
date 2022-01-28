@@ -95,3 +95,12 @@ export function deleteCleanObj(id) {
     method: 'post'
   })
 }
+
+// 修改商家营业状态
+export function updateReleaseStatusById(data) {
+  return request({
+    url: '/csMerchant/updateReleaseStatus/',
+    method: 'post',
+    data
+  })
+}

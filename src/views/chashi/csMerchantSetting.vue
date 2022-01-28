@@ -64,9 +64,44 @@
               }"
             />
           </el-form-item>
+          <el-form-item label="非营业时间">
+            <el-time-select
+              v-model="temp.exStartTime"
+              placeholder="未营业开始时间"
+              style="width: 47%; padding-right: 5px"
+              :picker-options="{
+              start: '00:00',
+              step: '01:00',
+              end: '24:00',
+              minTime: temp.startTime,
+            }"
+            />
+            <el-time-select
+              v-model="temp.exEndTime"
+              placeholder="未营业结束时间"
+              style="width: 47%"
+              :picker-options="{
+              start: '00:00',
+              step: '01:00',
+              end: '24:00',
+              minTime: temp.exStartTime,
+              maxTime: temp.endTime
+            }"
+            />
+          </el-form-item>
+          <el-form-item label="营业时间描述" prop="opDescription">
+            <el-input v-model="temp.opDescription" placeholder="营业时间描述" />
+          </el-form-item>
+          <el-form-item label="营业状态" prop="releaseStatus">
+            <el-select v-model="temp.releaseStatus" placeholder="请选择" disabled>
+              <el-option v-for="item in releaseStatusOptions" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+          </el-form-item>
           <el-form-item>
             <el-button>取消</el-button>
             <el-button type="primary" @click="updateData()">保存</el-button>
+            <el-button v-if="temp.releaseStatus==='1'" type="primary" @click="updateReleaseStatus('0')">开始休息</el-button>
+            <el-button v-else type="primary" @click="updateReleaseStatus('1')">开始营业</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -399,7 +434,7 @@
 </template>
 
 <script>
-import { getMerchant, updateMerchant, getCleanList, updateCleanObj, createCleanObj, deleteCleanObj } from '@/api/chashi/csMerchant'
+import { getMerchant, updateMerchant, getCleanList, updateCleanObj, createCleanObj, deleteCleanObj, updateReleaseStatusById } from '@/api/chashi/csMerchant'
 import { getLoginSysUserVo } from '@/utils/auth'
 import { getCsLabelList } from '@/api/chashi/csLabel.js'
 import { getFacilitiesList } from '@/api/chashi/csFacilities.js'
@@ -488,6 +523,9 @@ export default {
         bannerUploadFile: [],
         startTime: '',
         endTime: '',
+        exStartTime: '',
+        exEndTime: '',
+        opDescription: '',
         ttlClientId: '',
         ttlClientSecret: '',
         ttlLockId: '',
@@ -501,8 +539,10 @@ export default {
         kkPassword: '',
         txApi1: '',
         txApi2: '',
-        txApi3: ''
+        txApi3: '',
+        releaseStatus: ''
       },
+      releaseStatusOptions: [{ value: '0', label: '歇业' }, { value: '1', label: '营业' }],
       cleanList: null,
       cleanListLoading: false,
       cleanTotal: 0,
@@ -585,6 +625,10 @@ export default {
         tempWorkendTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
         tempWorknotifyTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
         tempWorkopenid: [{ required: true, message: '请输入值班员的openid', trigger: 'blur' }]
+      },
+      statusQueryParam: {
+        id: undefined,
+        releaseStatus: undefined
       }
     }
   },
@@ -750,6 +794,9 @@ export default {
           formData.append('orderRefundFee', this.temp.orderRefundFee)
           formData.append('startTime', this.temp.startTime)
           formData.append('endTime', this.temp.endTime)
+          formData.append('exStartTime', this.temp.exStartTime)
+          formData.append('exEndTime', this.temp.exEndTime)
+          formData.append('opDescription', this.temp.opDescription)
           formData.append('ttlClientId', this.temp.ttlClientId)
           formData.append('ttlClientSecret', this.temp.ttlClientSecret)
           formData.append('ttlUsername', this.temp.ttlUsername)
@@ -1242,9 +1289,21 @@ export default {
           })
         }
       })
-    }
+    },
     // ============== 值班相关 =======================
 
+    updateReleaseStatus(newStatus) {
+      let msg = '营业中'
+      if (newStatus === '1') {
+        msg = '休息中'
+      }
+      this.statusQueryParam.releaseStatus = newStatus
+      this.statusQueryParam.id = this.temp.id
+      updateReleaseStatusById(this.statusQueryParam).then(() => {
+        this.fetchData()
+        this.$message(msg)
+      })
+    }
   }
 }
 </script>
