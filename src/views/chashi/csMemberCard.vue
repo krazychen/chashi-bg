@@ -622,12 +622,13 @@ export default {
       })
     },
 
-    statusFormat(row){
+    statusFormat(row) {
       if (row.status === 0) {
         return '禁用'
       } else if (row.status === 1) {
         return '启用'
-    }
+      }
+    },
 
     cardStatus(row) {
       const startTime = new Date(row.startTime)
