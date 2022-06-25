@@ -623,11 +623,17 @@ export default {
     },
 
     statusFormat(row) {
-      if (row.status === 0) {
-        return '禁用'
-      } else if (row.status === 1) {
-        return '启用'
+      let vv = '-'
+      const typ = this.statuss
+      if (typ === undefined || typ.length < 1) {
+        return vv
       }
+      typ.forEach(function(aa, bb) {
+        if (aa.dictValue === row.status) {
+          vv = aa.dictLabel
+        }
+      })
+      return vv
     },
 
     cardStatus(row) {
