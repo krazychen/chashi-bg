@@ -79,6 +79,7 @@
           <el-table-column align="center" prop="endTime" label="有效结束时间" width="100" />
           <el-table-column align="center" prop="" label="剩余优惠时间" width="100" />
           <el-table-column align="center" prop="discountOff" label="折扣" width="100" />
+          <el-table-column align="center" prop="paymentStatus" label="支付状态" :formatter="orderStatus" />
           <el-table-column align="center" prop="status" label="卡片状态" :formatter="cardStatus" />
           <el-table-column align="center" prop="orderDate" label="购买时间" />
         </el-table>
@@ -621,14 +622,41 @@ export default {
       })
     },
 
+    statusFormat(row){
+      if (row.status === 0) {
+        return '禁用'
+      } else if (row.status === 1) {
+        return '启用'
+    }
+
     cardStatus(row) {
       const startTime = new Date(row.startTime)
       const endTime = new Date(row.endTime)
       const nowTime = new Date()
-      if (nowTime >= startTime && nowTime <= endTime) {
-        return '生效中'
+      if (row.paymentStatus === 2) {
+        if (nowTime >= startTime && nowTime <= endTime) {
+          return '生效中'
+        } else {
+          return '已过期'
+        }
       } else {
-        return '已过期'
+        return '无效购买'
+      }
+    },
+
+    orderStatus(row) {
+      if (row.paymentStatus === 0) {
+        return '支付中'
+      } else if (row.paymentStatus === 1) {
+        return '支付失败'
+      } else if (row.paymentStatus === 2) {
+        return '支付成功'
+      } else if (row.paymentStatus === 3) {
+        return '支付取消'
+      } else if (row.paymentStatus === 4) {
+        return '支付关闭'
+      } else if (row.paymentStatus === 5) {
+        return '支付退款'
       }
     },
     onReady1(editor) {
