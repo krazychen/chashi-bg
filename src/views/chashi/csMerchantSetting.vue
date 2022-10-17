@@ -336,7 +336,6 @@
           <el-table-column align="center" prop="startTime" label="值班开始时间" />
           <el-table-column align="center" prop="endTime" label="值班结束时间" />
           <el-table-column align="center" prop="notifyTime" label="通知时点" :formatter="notifyTimeFormat" />
-          <el-table-column align="center" prop="notifyFrontTime" label="时点前" />
           <el-table-column align="center" prop="notifyRearTime" label="时点后" />
           <el-table-column align="center" prop="openid" label="值班员OpenId" />
           <el-table-column align="center" prop="remark" label="备注" />
@@ -385,6 +384,72 @@
               取消
             </el-button>
             <el-button type="primary" @click="dialogWorkStatus==='create'?createWorkData():updateWorkData()">
+              确定
+            </el-button>
+          </div>
+        </el-dialog>
+      </el-tab-pane>
+      <el-tab-pane label="退款通知维护">
+
+        <el-tag>一条记录一个退款通知信息，可以多条记录，只要时间是生效的，就会通知到对方，用户必须关注公众号，查看openid方法查看https://www.it120.cc/help/dbtods.html</el-tag><br><br>
+
+        <div class="filter-container">
+          <el-date-picker v-model="refundListQuery.queryStartTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择通知开始时间" />
+          <el-date-picker v-model="refundListQuery.queryEndTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择通知开始时间" />
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleRefundFilter">
+            查询
+          </el-button>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="resetWork">
+            重置
+          </el-button>
+          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleRefundDialog(null, 'create')">
+            新增
+          </el-button>
+        </div>
+
+        <el-table v-loading="refundListLoading" :data="refundList" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
+          <el-table-column align="center" prop="startTime" label="通知开始时间" />
+          <el-table-column align="center" prop="endTime" label="通知结束时间" />
+          <el-table-column align="center" prop="notifyTime" label="通知时点" :formatter="notifyTimeFormat" />
+          <el-table-column align="center" prop="notifyFrontTime" label="时点前" />
+          <el-table-column align="center" prop="notifyRearTime" label="时点后" />
+          <el-table-column align="center" prop="openid" label="通知人员OpenId" />
+          <el-table-column align="center" prop="remark" label="备注" />
+          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+            <template slot-scope="scope">
+              <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleRefundDialog(scope.row, 'view')" />
+              <i class="el-icon-edit" title="修改" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleRefundDialog(scope.row, 'update')" />
+              <i class="el-icon-delete" title="删除" tooltip="true" style="color: #F56C6C;margin-left:15px;" type="primary" @click="handleDelete(scope.row)" />
+            </template>
+          </el-table-column>
+        </el-table>
+        <pagination v-show="refundTotal>0" :total="refundTotal" :page.sync="refundListQuery.current" :limit.sync="refundListQuery.size" @pagination="fetchRefundData" />
+
+        <el-dialog :title="textMap[dialogRefundStatus]" :visible.sync="dialogRefundFormVisible">
+          <el-form ref="refundDataForm" :rules="rulesCleanText" :model="tempRefund" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
+            <el-form-item label="通知开始时间" prop="startTime">
+              <el-date-picker v-model="tempRefund.startTime" placeholder="请输入通知开始时间" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" />
+            </el-form-item>
+            <el-form-item label="通知结束时间" prop="endTime">
+              <el-date-picker v-model="tempRefund.endTime" placeholder="请输入通知结束时间" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" />
+            </el-form-item>
+            <el-form-item label="结束X分钟后" prop="notifyRearTime">
+              <el-input v-model="tempRefund.notifyRearTime" placeholder="请输入时间">
+                <template slot="append">分钟</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="通知人员" prop="openid">
+              <el-input v-model="tempRefund.openid" placeholder="请选择退款通知人员的openid" />
+            </el-form-item>
+            <el-form-item label="备注" prop="remark">
+              <el-input v-model="tempRefund.remark" type="textarea" :rows="3" placeholder="请输入备注，用来区分退款通知人员" />
+            </el-form-item>
+          </el-form>
+          <div v-if="!refundChakan" slot="footer" class="dialog-footer">
+            <el-button @click="dialogRefundFormVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" @click="dialogRefundStatus==='create'?createRefundData():updateRefundData()">
               确定
             </el-button>
           </div>
@@ -587,7 +652,7 @@ export default {
         remark: ''
       },
       notifyFrontTimeState: false,
-      notifyTimeOptions: [{ value: '0', label: '订单预定' }, { value: '1', label: '消费结束' }],
+      notifyTimeOptions: [{ value: '0', label: '订单预定' }, { value: '1', label: '消费结束' }, { value: '2', label: '退款完成' }],
       rulesCleanText: {
         startTime: [{ required: true, message: '请输入开始日期', trigger: 'blur' }],
         endTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
@@ -625,6 +690,39 @@ export default {
         tempWorkendTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
         tempWorknotifyTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
         tempWorkopenid: [{ required: true, message: '请输入值班员的openid', trigger: 'blur' }]
+      },
+
+      refundList: null,
+      refundListLoading: false,
+      refundTotal: 0,
+      refundListQuery: {
+        current: 1,
+        queryStartTime: '',
+        queryEndTime: '',
+        notifyType: 2
+      },
+      refundChakan: null,
+      dialogRefundFormVisible: false,
+      dialogRefundStatus: '',
+      tempRefund: {
+        merchantId: '',
+        startTime: '',
+        endTime: '',
+        notifyType: '2',
+        notifyTime: '2',
+        notifyFrontTime: '',
+        notifyRearTime: '',
+        wxuserId: '',
+        nickname: '',
+        openid: '',
+        remark: ''
+      },
+      refundNotifyFrontTimeState: false,
+      rulesRefundText: {
+        tempRefundstartTime: [{ required: true, message: '请输入开始日期', trigger: 'blur' }],
+        tempRefundendTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
+        tempRefundnotifyTime: [{ required: true, message: '请输入结束日期', trigger: 'blur' }],
+        tempRefundopenid: [{ required: true, message: '请输入值班员的openid', trigger: 'blur' }]
       },
       statusQueryParam: {
         id: undefined,
@@ -1162,7 +1260,9 @@ export default {
     handleDelete(row) {
       this.temp = Object.assign({}, row) // copy obj
       deleteCleanObj(this.temp.id).then(() => {
-        this.fetchData()
+        this.fetchCleanData()
+        this.fetchWorkData()
+        this.fetchRefundData()
         this.$notify({
           title: '成功',
           message: '删除成功',
@@ -1291,6 +1391,91 @@ export default {
       })
     },
     // ============== 值班相关 =======================
+
+    // ============== 微信退款通知相关 =======================
+    resetRefund() { // 重置
+      this.refundListQuery.queryStartTime = ''
+      this.refundListQuery.queryStartTime = ''
+      this.fetchRefundData()
+    },
+    handleRefundFilter() {
+      this.refundListQuery.page = 1
+      this.fetchRefundData()
+    },
+    fetchRefundData() {
+      this.refundListLoading = true
+      getCleanList(this.refundListQuery).then(response => {
+        this.refundList = response.data.records
+        this.refundTotal = parseInt(response.data.total)
+        this.refundListLoading = false
+      })
+    },
+    handleRefundDialog(row, type) { // 创建/查看/编辑详情
+      if (type === 'create') {
+        this.refundChakan = false
+        this.dialogRefundStatus = 'create'
+        this.tempRefund.startTime = ''
+        this.tempRefund.endTime = ''
+        this.tempRefund.notifyType = '2'
+        this.tempRefund.notifyTime = '2'
+        this.tempRefund.notifyFrontTime = ''
+        this.tempRefund.notifyRearTime = ''
+        this.tempRefund.wxuserId = ''
+        this.tempRefund.nickname = ''
+        this.tempRefund.openid = ''
+        this.tempRefund.remark = ''
+      } else if (type === 'update') {
+        this.refundChakan = false
+        this.dialogRefundStatus = 'update'
+        this.tempRefund = Object.assign({}, row) // copy obj
+        this.tempRefund.notifyTime = this.tempRefund.notifyTime.toString()
+      } else {
+        this.refundChakan = true
+        this.dialogRefundStatus = 'view'
+        this.tempRefund = Object.assign({}, row) // copy obj
+      }
+      this.dialogRefundFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['refundDataForm'].clearValidate()
+      })
+    },
+    createRefundData() {
+      this.$refs['refundDataForm'].validate((valid) => {
+        if (valid) {
+          this.tempRefund.merchantId = this.temp.id
+          console.log(this.tempRefund)
+          createCleanObj(this.tempRefund).then(() => {
+            this.fetchRefundData()
+            this.dialogRefundFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '创建成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    updateRefundData() {
+      this.$refs['refundDataForm'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.tempRefund)
+          console.log(tempData)
+          updateCleanObj(tempData).then(() => {
+            this.fetchRefundData()
+            this.dialogRefundFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    // ============== 微信退款通知相关 =======================
 
     updateReleaseStatus(newStatus) {
       let msg = '营业中'
