@@ -158,6 +158,10 @@
         <el-form-item label="营业时间描述" prop="opDescription">
           <el-input v-model="temp.opDescription" placeholder="营业时间描述" />
         </el-form-item>
+        <el-form-item label="商店小程序排序" prop="merchantOrder">
+          <el-input v-model="temp.merchantOrder" placeholder="数字小的排在前面(1~100)">
+          </el-input>
+        </el-form-item>
 
         <el-form-item label="商店Logo" prop="logoPicValue">
           <el-upload
@@ -280,6 +284,7 @@ export default {
         exStartTime: '',
         exEndTime: '',
         opDescription: '',
+        merchantOrder:'',
         logoUploadFile: [],
         bannerUploadFile: []
       },
@@ -377,6 +382,7 @@ export default {
         exStartTime: '',
         exEndTime: '',
         opDescription: '',
+        merchantOrder:'',
         logoUploadFile: [],
         bannerUploadFile: []
       }

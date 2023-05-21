@@ -306,7 +306,7 @@ export default {
         this.chakan = true
         this.dialogStatus = 'view'
       }
-      this.dialogFormVisible = true
+      this.dialogAddFormVisible = true
       this.temp = Object.assign({}, row) // copy obj
     },
     paymentType(row) {
