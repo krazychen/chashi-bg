@@ -11,7 +11,7 @@ export const superadminRoutes = [
       path: 'statical',
       component: () => import('@/views/chashi/csMerchantStatical'),
       name: '数据统计2',
-      meta: { roles: ['sys:user:page'], title: '数据统计', icon: 'example' }
+      meta: { roles: ['sys:user:page'], title: '数据统计', faicon: 'example' }
     }]
   },
   {

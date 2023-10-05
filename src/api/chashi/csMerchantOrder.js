@@ -35,6 +35,14 @@ export function deleteMerchantOrder(id) {
   })
 }
 
+// 逻辑删除商店订单
+export function logistDeleteMerchantOrder(id) {
+  return request({
+    url: '/csMerchantOrder/deleteMerchantOrder/' + id,
+    method: 'post'
+  })
+}
+
 // 修改商店订单状态
 export function updateStatusById(data) {
   return request({

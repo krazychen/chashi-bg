@@ -28,7 +28,8 @@
           <el-table-column align="center" prop="status" label="订单状态" width="120" :formatter="orderStatus"/>
           <el-table-column label="订单详情" align="center" width="130" class-name="small-padding fixed-width">
             <template slot-scope="scope">
-              <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:15px;" type="primary" @click="handleViewAUpdate(scope.row, 'view')" />
+              <i class="el-icon-camera" title="查看" tooltip="true" style="color: #67C23A;margin-left:0px;" type="primary" @click="handleViewAUpdate(scope.row, 'view')" />
+              <i class="el-icon-delete" title="删除订单" tooltip="true" style="color: #67C23A;margin-left:10px;" type="primary" @click="handleDelete(scope.row, 'view')" />
             </template>
           </el-table-column>
         </el-table>
@@ -185,12 +186,13 @@
 </template>
 
 <script>
-import { getMerchantOrderList, exportList } from '@/api/chashi/csMerchantOrder'
+import { getMerchantOrderList, exportList, logistDeleteMerchantOrder } from '@/api/chashi/csMerchantOrder'
 import { getMerchant, getMerchantList } from '@/api/chashi/csMerchant'
 import { getLoginSysUserVo } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 import CsAddMerchantOrder from '@/views/chashi/csAddMerchantOrder'
 import waves from '@/directive/waves'
+import { deleteAdvertise } from '@/api/chashi/csAdvertise'
 
 export default {
   name: 'CsMerchantOrder',
@@ -276,7 +278,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      console.log(this.listQuery.merchantId)
+      // console.log(this.listQuery.merchantId)
       getMerchantOrderList(this.listQuery).then(response => {
         this.list = response.data.records
         // console.log(this.list)
@@ -308,6 +310,18 @@ export default {
       }
       this.dialogAddFormVisible = true
       this.temp = Object.assign({}, row) // copy obj
+    },
+    handleDelete(row, type) { // 逻辑删除
+      this.temp = Object.assign({}, row) // copy obj
+      logistDeleteMerchantOrder(this.temp.id).then(() => {
+        this.fetchData()
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+      })
     },
     paymentType(row) {
       if (row.paymentType === 1) {
