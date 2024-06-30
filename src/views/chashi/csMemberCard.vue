@@ -60,6 +60,9 @@
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleOrderFilter">
             查询
           </el-button>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="rest2">
+            重置
+          </el-button>
         </div>
         <el-table
           v-loading="orderListLoading"
@@ -71,6 +74,7 @@
           style="width: 100%;"
         >
           <el-table-column type="index" :index="indexMethod" align="center" label="序号" />
+          <el-table-column align="center" prop="wxuserId" label="用户id" width="150" />
           <el-table-column align="center" prop="wxuserName" label="用户昵称" width="150" />
           <el-table-column align="center" prop="wxuserPhone" label="用户手机" width="150" />
           <el-table-column align="center" prop="membercardName" label="会员卡名称" width="150" />
@@ -733,6 +737,14 @@ export default {
     },
     handleOrderFilter() {
       this.orderListQuery.page = 1
+      this.fetchOrderData()
+    },
+    rest2() { // 重置
+      this.orderListQuery = {
+        current: 1,
+        membercardName: '',
+        wxuserPhoneAname: ''
+      }
       this.fetchOrderData()
     },
     fetchOrderData() {

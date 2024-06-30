@@ -71,7 +71,7 @@
         <el-date-picker v-model="listQuery.orderDate" style="width: 90%" type="date" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
       </el-form-item>
       <el-form-item label="预订时长范围" prop="orderTimerage">
-        <el-input v-model="listQuery.orderTimerage"></el-input>
+        <el-input v-model="listQuery.orderTimerage" placeholder="14:00-14:30,14:30-15:00"></el-input>
       </el-form-item>
       <el-form-item label="预订时长数" prop="orderOriginTimenum">
         <el-input v-model="listQuery.orderOriginTimenum"></el-input>

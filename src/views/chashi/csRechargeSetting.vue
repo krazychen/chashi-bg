@@ -32,6 +32,9 @@
           <el-input v-model="orderListQuery.wxuserPhoneAname" placeholder="用户昵称/手机号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleOrderFilter" />
 
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleOrderFilter">查询</el-button>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-refresh" @click="rest">
+            重置
+          </el-button>
         </div>
         <el-table v-loading="orderListLoading" :data="orderList" element-loading-text="Loading" border fit highlight-current-row style="width: 100%;">
           <el-table-column type="index" :index="indexMethod" align="center" label="序号">
@@ -360,6 +363,13 @@ export default {
     },
     handleOrderFilter() {
       this.orderListQuery.page = 1
+      this.fetchOrderData()
+    },
+    rest() { // 重置
+      this.orderListQuery = {
+        current: 1,
+        wxuserPhoneAname: ''
+      }
       this.fetchOrderData()
     },
     fetchOrderData() {
