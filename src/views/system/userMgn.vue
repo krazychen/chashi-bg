@@ -30,9 +30,14 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column align="center" label="序号" width="95">
+<!--      <el-table-column align="center" label="序号" width="95">-->
+<!--        <template slot-scope="scope">-->
+<!--          {{ scope.$index+1 }}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column align="center" label="用户ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="用户名" width="95">
