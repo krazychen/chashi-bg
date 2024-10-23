@@ -32,18 +32,19 @@
       <el-table-column
         prop="id"
         align="center"
-        label="用户ID">
+        label="用户ID"
+        width="150">
       </el-table-column>
-      <el-table-column align="center" label="头像" width="180">
+      <el-table-column align="center" label="头像" width="150">
         <template   slot-scope="scope">
           <img :src="scope.row.avatarUrl"  min-width="50" height="50" />
         </template>
       </el-table-column>
       <el-table-column align="center" prop="nickname" label="昵称" width="150" />
       <el-table-column align="center" prop="phoneNumber" label="手机号码" width="150" />
-      <el-table-column align="center" prop="menberType" label="会员类型" width="150" />
-      <el-table-column align="center" prop="integral" label="积分" width="150" />
-      <el-table-column align="center" prop="balance" label="余额" width="150" :formatter="balanceFormat" />
+      <el-table-column align="center" prop="menberType" label="会员类型" width="120" />
+      <el-table-column align="center" prop="integral" label="积分" width="120" />
+      <el-table-column align="center" prop="balance" label="余额" width="120" :formatter="balanceFormat" />
       <el-table-column align="center" prop="status" label="状态" :formatter="statusFormat" />
       <el-table-column label="操作" align="center" width="120" class-name="small-padding fixed-width">
         <template slot-scope="scope">
