@@ -23,11 +23,16 @@
       highlight-current-row
       style="width: 100%;"
     >
+<!--      <el-table-column-->
+<!--        type="index"-->
+<!--        :index="indexMethod"-->
+<!--        align="center"-->
+<!--        label="序号">-->
+<!--      </el-table-column>-->
       <el-table-column
-        type="index"
-        :index="indexMethod"
+        prop="id"
         align="center"
-        label="序号">
+        label="用户ID">
       </el-table-column>
       <el-table-column align="center" label="头像" width="180">
         <template   slot-scope="scope">
